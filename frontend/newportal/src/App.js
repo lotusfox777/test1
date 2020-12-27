@@ -70,7 +70,7 @@ class App extends React.Component {
     if (currErrMsg === 'Unauthorized') {
       if (currErrMsg !== prevErrMsg) {
         Modal.error({
-          content: t('common:session expired, please re-login again'),
+          content: t('common:請重新登入'),
         });
       }
       logout();
@@ -80,7 +80,7 @@ class App extends React.Component {
         (currErrMsg === prevErrMsg && currOccurTime - prevOccurTime > 1500))
     ) {
       Modal.error({
-        title: t('common:server error'),
+        title: t('common:伺服器錯誤'),
         content: currErrMsg,
       });
     }
