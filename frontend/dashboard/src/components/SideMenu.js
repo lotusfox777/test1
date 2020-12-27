@@ -19,47 +19,48 @@ import {
 } from 'constants/routes';
 import functions from 'constants/functions';
 import { checkUserAuth } from 'utils/authentication';
+import i18n from 'i18next';
 
 const { SubMenu } = Menu;
 
 const menuRouteMap = {
   [CARD_MANAGEMENT]: {
     key: CARD_MANAGEMENT,
-    title: '裝置管理',
+    title: i18n.t('menu:Bracelet management'),
     SubMenus: [
       {
         key: CARD_LIST,
-        name: '裝置管理',
+        name: i18n.t('menu:Bracelet management'),
       },
     ],
   },
   [MEMBER_MANAGEMENT]: {
     key: MEMBER_MANAGEMENT,
-    title: '用戶管理',
+    title: i18n.t('menu:Account management'),
     SubMenus: [
       {
         key: USER_LIST,
-        name: '用戶管理',
+        name: i18n.t('menu:Account management'),
       },
     ],
   },
   [DEVICE_MANAGEMENT]: {
     key: DEVICE_MANAGEMENT,
-    title: '設備管理',
+    title: i18n.t('menu:Device management'),
     SubMenus: [
       {
         key: UFO_LIST,
-        name: 'UFO管理',
+        name: i18n.t('menu:UFO management'),
       },
       {
         key: GUARD_AREA_LIST,
-        name: '守護區域管理',
+        name: i18n.t('menu:Geo-fence management'),
       },
     ],
   },
   [SYSTEM_MANAGEMENT]: {
     key: SYSTEM_MANAGEMENT,
-    title: '系統管理',
+    title: i18n.t('menu:System management'),
     SubMenus: [
       {
         key: PERM_LIST,
@@ -69,11 +70,11 @@ const menuRouteMap = {
   },
   [ASSIST_FINDING_MANAGEMENT]: {
     key: ASSIST_FINDING_MANAGEMENT,
-    title: '協尋管理',
+    title: i18n.t('menu:Finding management'),
     SubMenus: [
       {
         key: SEARCH_MISSING_LIST,
-        name: '協尋管理',
+        name: i18n.t('menu:Finding management'),
       },
     ],
   },
@@ -92,7 +93,7 @@ class SideMenu extends PureComponent {
     };
   }
 
-  filterMenuWithUserAuth = func => {
+  filterMenuWithUserAuth = (func) => {
     const { permissions } = this.props;
     return checkUserAuth({ permissions, func });
   };
@@ -107,9 +108,9 @@ class SideMenu extends PureComponent {
         defaultOpenKeys={[defaultOpenKey]}
         style={{ height: '100%', borderRight: 0 }}>
         {keys(functions)
-          .filter(func => this.filterMenuWithUserAuth(func))
-          .map(key => menuRouteMap[functions[key]])
-          .map(menu => (
+          .filter((func) => this.filterMenuWithUserAuth(func))
+          .map((key) => menuRouteMap[functions[key]])
+          .map((menu) => (
             <SubMenu
               key={menu.key}
               title={
@@ -118,7 +119,7 @@ class SideMenu extends PureComponent {
                   {menu.title}
                 </span>
               }>
-              {menu.SubMenus.map(meunItem => (
+              {menu.SubMenus.map((meunItem) => (
                 <Menu.Item key={meunItem.key}>
                   <Link to={meunItem.key}>{meunItem.name}</Link>
                 </Menu.Item>
@@ -131,7 +132,7 @@ class SideMenu extends PureComponent {
 }
 
 const enhance = compose(
-  connect(state => ({
+  connect((state) => ({
     permissions: state.auth.permissions,
   })),
   withRouter,

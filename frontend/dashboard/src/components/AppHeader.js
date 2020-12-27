@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { compose } from 'ramda';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Layout, Button } from 'antd';
 import { rem } from 'polished';
 import * as actions from 'actions';
+import { withI18next } from 'locales/withI18next';
 
 const StyledHeader = styled(Layout.Header)`
   display: flex;
@@ -46,13 +48,15 @@ class AppHeader extends PureComponent {
   };
 
   render() {
+    const { t } = this.props;
+
     return (
       <StyledHeader>
-        <p>DPlus 後台管理系統</p>
+        <p>DPlus</p>
         <div className="auth-identity">
-          <span className="user-name">{`歡迎回來, ${this.props.loginId}`}</span>
+          <span className="user-name">{`Welcom, ${this.props.loginId}`}</span>
           <Button ghost onClick={this.handleLogout}>
-            登出
+            {t('logout')}
           </Button>
         </div>
       </StyledHeader>
@@ -60,13 +64,13 @@ class AppHeader extends PureComponent {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   loginId: state.auth.loginId,
 });
 
-export default connect(
-  mapStateToProps,
-  {
+export default compose(
+  connect(mapStateToProps, {
     logout: actions.logout,
-  },
+  }),
+  withI18next(['all']),
 )(AppHeader);

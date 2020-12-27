@@ -10,22 +10,22 @@ import { checkUserAuth } from 'utils/authentication';
 
 const FormItem = Form.Item;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   auth: state.auth,
   isLoading: state.auth.isLoading,
   isLoginFailed: state.auth.isLoginFailed,
-  isInitCookieAuth: state.views.isInitCookieAuth
+  isInitCookieAuth: state.views.isInitCookieAuth,
 });
 
 const mapDispatchToProps = {
-  login: actions.login
+  login: actions.login,
 };
 
 const StyledModal = styled(Modal).attrs({
   title: 'DPlus 後台登入',
   bordered: false,
   visible: true,
-  footer: false
+  footer: false,
 })`
   max-width: 500px;
   margin: 0 auto;
@@ -36,7 +36,7 @@ const StyledModal = styled(Modal).attrs({
   }
 `;
 
-export default WrappedComponent => {
+export default (WrappedComponent) => {
   @withRouter
   @connect(mapStateToProps, mapDispatchToProps)
   @Form.create()
@@ -45,13 +45,13 @@ export default WrappedComponent => {
       auth: PropTypes.object.isRequired,
       login: PropTypes.func.isRequired,
       isLoading: PropTypes.bool.isRequired,
-      isLoginFailed: PropTypes.bool.isRequired
+      isLoginFailed: PropTypes.bool.isRequired,
     };
 
     constructor(props) {
       super(props);
       this.state = {
-        isAuthenticated: props.auth.isAuthenticated
+        isAuthenticated: props.auth.isAuthenticated,
       };
     }
 
@@ -64,23 +64,23 @@ export default WrappedComponent => {
     isAuthenticatedRoute = () => {
       const {
         location: { pathname },
-        auth: { permissions }
+        auth: { permissions },
       } = this.props;
 
       if (pathname === '/') {
         return true;
       }
 
-      return checkUserAuth({ permissions, func: getFunc(pathname)  });
+      return checkUserAuth({ permissions, func: getFunc(pathname) });
     };
 
-    handleSubmit = e => {
+    handleSubmit = (e) => {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
         if (!err) {
           this.props.login({
             loginId: values.userName,
-            password: values.password
+            password: values.password,
           });
         }
       });
@@ -94,7 +94,7 @@ export default WrappedComponent => {
         match,
         isLoading,
         isLoginFailed,
-        isInitCookieAuth
+        isInitCookieAuth,
       } = this.props;
 
       if (isInitCookieAuth) {
@@ -114,23 +114,23 @@ export default WrappedComponent => {
           <Form onSubmit={this.handleSubmit} className="login-form">
             <FormItem>
               {getFieldDecorator('userName', {
-                rules: [{ required: true, message: '帳號為必填欄位' }]
+                rules: [{ required: true, message: '帳號為必填欄位' }],
               })(
                 <Input
                   prefix={<Icon type="user" style={{ fontSize: 13 }} />}
                   placeholder="請輸入帳號"
-                />
+                />,
               )}
             </FormItem>
             <FormItem>
               {getFieldDecorator('password', {
-                rules: [{ required: true, message: '密碼為必填欄位' }]
+                rules: [{ required: true, message: '密碼為必填欄位' }],
               })(
                 <Input
                   prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
                   type="password"
                   placeholder="請輸入密碼"
-                />
+                />,
               )}
             </FormItem>
             <FormItem>

@@ -29,28 +29,29 @@ import {
   listRegionsAPI,
 } from '../apis';
 
+import i18n from 'i18next';
 /**
  * Enum
  */
 
-const createObservable = () => Observable.create(observer => observer.next());
+const createObservable = () => Observable.create((observer) => observer.next());
 
 export const Status = {
-  '1': '綁定中',
-  '-1': '未綁定',
+  1: i18n.t('all:On'),
+  '-1': i18n.t('all:Off'),
 };
 
 export const UsageStatus = {
-  '1': '使用中',
-  '0': '未使用',
+  1: '使用中',
+  0: '未使用',
 };
 
 export const Sex = {
-  '1': '男性',
-  '0': '女性',
+  1: i18n.t('all:Male'),
+  0: i18n.t('all:Female'),
 };
 
-export const convetGetSexValue = value => {
+export const convetGetSexValue = (value) => {
   if (!value) {
     return null;
   }
@@ -58,7 +59,7 @@ export const convetGetSexValue = value => {
   return { ...value, sex: value.sex === -1 ? '' : value.sex };
 };
 
-export const convetUpdateSexValue = value => {
+export const convetUpdateSexValue = (value) => {
   return value ? (value.sex === undefined ? -1 : value.sex) : undefined;
 };
 
@@ -100,7 +101,7 @@ export const listCardsEpic = pipe(
   ofType(LIST_CARDS.REQUEST),
   switchMap(({ payload = {} }) =>
     listCardsAPI(payload).pipe(
-      map(res => createAction(LIST_CARDS.SUCCESS)({ ...res, ...payload })),
+      map((res) => createAction(LIST_CARDS.SUCCESS)({ ...res, ...payload })),
       catchRequestError(createAction(LIST_CARDS.FAILURE)),
     ),
   ),
@@ -111,13 +112,13 @@ export const getCardEpic = pipe(
   switchMap(({ payload = {} }) =>
     getCardAPI(payload).pipe(
       pluck('data'),
-      switchMap(card => {
+      switchMap((card) => {
         const identityId = path(['cardOwner', 'identityId'], card);
 
         if (identityId) {
           return getCardHealthAPI(identityId).pipe(
             pluck('data'),
-            map(userHealth =>
+            map((userHealth) =>
               createAction(GET_CARD.SUCCESS)({
                 cardInfo: {
                   ...card,
@@ -142,7 +143,7 @@ export const getCardEpic = pipe(
           ),
         );
       }),
-      catchRequestError(error => createAction(GET_CARD.FAILURE)({ error })),
+      catchRequestError((error) => createAction(GET_CARD.FAILURE)({ error })),
     ),
   ),
 );
@@ -151,13 +152,13 @@ export const listCardHealthEpic = pipe(
   ofType(LIST_CARD_HEALTH.REQUEST),
   switchMap(({ payload = {} }) =>
     listCardHealthAPI(payload).pipe(
-      map(res =>
+      map((res) =>
         createAction(LIST_CARD_HEALTH.SUCCESS)({
           cardHealth: { ...res },
           ...payload,
         }),
       ),
-      catchRequestError(error =>
+      catchRequestError((error) =>
         createAction(LIST_CARD_HEALTH.FAILURE)({ error }),
       ),
     ),
@@ -169,7 +170,7 @@ export const getEditCardEpic = (actions, { getState }) =>
     ofType(GET_EDIT_CARD.REQUEST),
     switchMap(({ payload = '' }) =>
       getCardAPI(payload).pipe(
-        map(res => {
+        map((res) => {
           const data = {
             ...res,
             data: {
@@ -182,7 +183,7 @@ export const getEditCardEpic = (actions, { getState }) =>
 
           return createAction(GET_EDIT_CARD.SUCCESS)(data);
         }),
-        catchRequestError(e => {
+        catchRequestError((e) => {
           message.error(`取得卡片失敗 (${e.message})`);
           return createAction(GET_EDIT_CARD.FAILURE)();
         }),
@@ -196,7 +197,7 @@ export const addCardsEpic = (actions, { getState }) =>
     switchMap(({ payload: { cards, closeModal } = {} }) =>
       addCardsAPI(cards).pipe(
         pluck('data'),
-        mergeMap(data => {
+        mergeMap((data) => {
           const hasErrors = data.failList && data.failList.length > 0;
           if (hasErrors) {
             Modal.warning({
@@ -208,7 +209,8 @@ export const addCardsEpic = (actions, { getState }) =>
                     dangerouslySetInnerHTML={{
                       __html: data.failList
                         .map(
-                          x => `${x.uuid} major(${x.major}) minor(${x.minor})`,
+                          (x) =>
+                            `${x.uuid} major(${x.major}) minor(${x.minor})`,
                         )
                         .join('<br />'),
                     }}
@@ -226,7 +228,7 @@ export const addCardsEpic = (actions, { getState }) =>
             listCards(makeGetQueryParams(getState())),
           ];
         }),
-        catchRequestError(e => {
+        catchRequestError((e) => {
           message.error(
             `新增卡片失敗 (${pathOr(e.message, ['response', 'message'], e)})`,
           );
@@ -266,7 +268,7 @@ export const updateCardEpic = (actions, { getState }) =>
             listCards(makeGetQueryParams(getState())),
           ];
         }),
-        catchRequestError(e => {
+        catchRequestError((e) => {
           message.error(
             `修改卡片失敗 (${pathOr(e.message, ['response', 'message'], e)})`,
           );
@@ -286,7 +288,7 @@ export const deleteCardEpic = (actions, { getState }) =>
           createAction(DELETE_CARD.SUCCESS)(),
           listCards(makeGetQueryParams(getState())),
         ]),
-        catchRequestError(e => {
+        catchRequestError((e) => {
           message.error(
             `刪除卡片失敗 (${pathOr(e.message, ['response', 'message'], e)})`,
           );
@@ -301,7 +303,7 @@ export const listCardActivitiesEpic = (actions, { getState }) =>
     ofType(LIST_CARD_ACTIVITIES.REQUEST),
     switchMap(({ payload: { updateMapCenter, ...payload } = {} }) =>
       listCardActivitiesAPI(payload).pipe(
-        map(response => {
+        map((response) => {
           const data = compose(
             pathOr([], ['cardPositions']),
             head,
@@ -312,7 +314,7 @@ export const listCardActivitiesEpic = (actions, { getState }) =>
             const bounds = new window.google.maps.LatLngBounds();
 
             compose(
-              forEach(x =>
+              forEach((x) =>
                 bounds.extend(
                   new window.google.maps.LatLng({
                     lat: x.latitude,
@@ -330,7 +332,7 @@ export const listCardActivitiesEpic = (actions, { getState }) =>
 
           return createAction(LIST_CARD_ACTIVITIES.SUCCESS)(response);
         }),
-        catchRequestError(e => {
+        catchRequestError((e) => {
           message.error(
             `搜尋卡片軌跡失敗 (${pathOr(
               e.message,
@@ -346,14 +348,14 @@ export const listCardActivitiesEpic = (actions, { getState }) =>
 
 export const exportCardsEpic = pipe(
   ofType(EXPORT_CARDS.REQUEST),
-  switchMap(payload =>
+  switchMap((payload) =>
     exportCardsAPI(payload).pipe(
-      tap(res => {
+      tap((res) => {
         exportToCSV('card-list', res);
         message.success('匯出資料成功');
       }),
       map(createAction(EXPORT_CARDS.SUCCESS)),
-      catchRequestError(e => {
+      catchRequestError((e) => {
         message.error(
           `匯出卡片資料失敗： ${pathOr(e.message, ['response', 'message'], e)}`,
         );
@@ -538,7 +540,7 @@ export default handleActions(
   initalState,
 );
 
-export const makeGetQueryParams = state => ({
+export const makeGetQueryParams = (state) => ({
   body: {},
   page: state.cards.page,
   size: state.cards.size,
