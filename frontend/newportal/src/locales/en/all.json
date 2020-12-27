@@ -1,8 +1,8 @@
 {
   "account": "Account",
   "logout": "Logout",
-  "alart-left": "{{name}} left fence {{position}} at {{time}}",
-  "alart-sos": "{{name}} activated SOS at {{time}}",
+  "alart-left": "<span class='lightblue-font'>{{name}}</span> left fence <span class='lightblue-font'>{{position}}</span> at {{time}}",
+  "alart-sos": "<span class='lightblue-font'>{{name}}</span> activated SOS at {{time}}",
   "violation alerts": "Violation alerts",
   "left fence": "left fence",
   "activated SOS": "activated SOS",

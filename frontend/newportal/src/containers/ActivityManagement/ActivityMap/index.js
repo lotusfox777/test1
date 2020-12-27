@@ -22,6 +22,7 @@ import GeneralSearchDrawer from './GeneralSearchDrawer';
 import DetailSearchDrawer from './DetailSearchDrawer';
 import CardActivities from './CardActivities';
 import GuardAreas from './GuardAreas';
+import { withI18next } from 'locales/withI18next'
 
 const { Content } = Layout;
 const { Search } = Input;
@@ -346,7 +347,7 @@ class ActivityMap extends PureComponent {
   renderControls() {
     const searchAddon = (
       <Select defaultValue="name">
-        <Select.Option value="name">搜尋姓名</Select.Option>
+        <Select.Option value="name">{this.props.t('search name')}</Select.Option>
       </Select>
     );
     const menu = (
@@ -484,4 +485,4 @@ class ActivityMap extends PureComponent {
   }
 }
 
-export default ActivityMap;
+export default withI18next()(ActivityMap);

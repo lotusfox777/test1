@@ -92,6 +92,7 @@ class CurrentGuardAreas extends React.PureComponent {
 
   render() {
     const { notifyHistory, isLoading, onClose, t } = this.props;
+    console.log(notifyHistory)
 
     return (
       <StyleModal
@@ -115,28 +116,24 @@ class CurrentGuardAreas extends React.PureComponent {
                   <StyleList>
                     <Col>
                       <div className="area-row" onClick={this.handleViewCardLoaction(area)}>
-                        <span className="lightblue-font">{area.cardName}</span>
-                        於
-                        <span>
-                          {moment(area.createTime).format(
-                            'YYYY.MM.DD HH:mm:ss'
-                          )}
-                        </span>
-                        {area.sos ? (
-                          <React.Fragment>
-                            <span>發出求救訊息</span>
-                            <span className="lightred-font">
-                              {area.sosMessage}
-                            </span>
-                          </React.Fragment>
-                        ) : (
-                          <React.Fragment>
-                            <span>離開了守護區域</span>
-                            <span className="lightblue-font">
-                              {area.guardareaName}
-                            </span>
-                          </React.Fragment>
-                        )}
+                        {
+                          area.sos ? (
+                            <span dangerouslySetInnerHTML={{
+                              __html: t('alart-sos', {
+                                name: area.cardName,
+                                time: moment(area.createTime).format('YYYY.MM.DD HH:mm:ss')
+                              })
+                            }}/>
+                          ) : (
+                            <span dangerouslySetInnerHTML={{
+                              __html: t('alart-left', {
+                                name: area.cardName,
+                                position: area.guardareaName,
+                                time: moment(area.createTime).format('YYYY.MM.DD HH:mm:ss')
+                              })
+                            }}/>
+                          )
+                        }
                         <span>
                           <Icon type="right" />
                         </span>
