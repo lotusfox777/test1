@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Layout, Row, Col, Button, Select, Input, Menu, Dropdown, notification } from 'antd';
-import { isNil } from 'ramda';
+import { isNil, forEach } from 'ramda';
 import {
   listUFOsInRoundRange,
   addGuardArea,
@@ -36,6 +36,7 @@ const DropdownWithBigFont = styled(Dropdown)`
 const mapStateToProps = state => ({
   guardAreas: state.guardAreas,
   cards: state.cards,
+  unreadNotifyHistory: state.guardAreas.unreadNotifyHistory,
 });
 
 const mapDispatchToProps = {
@@ -75,6 +76,7 @@ class ActivityMap extends PureComponent {
       currentEndTime: undefined,
       currentTimeInterval: undefined,
       loadingCardGrpInfo: false,
+      mapLoaded: false
     };
 
     this.map = null;
@@ -114,6 +116,8 @@ class ActivityMap extends PureComponent {
       needReloadGuardAreas,
       guardAreaType,
       needUpdateMapCenter,
+      mapLoaded,
+      search
     } = this.state;
 
     if (!isLoading && needReloadGuardAreas) {
@@ -138,6 +142,27 @@ class ActivityMap extends PureComponent {
         },
         needUpdateMapCenter: false,
       });
+    }
+
+    if (mapLoaded && !search && prevProps.unreadNotifyHistory !== this.props.unreadNotifyHistory) {
+      const bounds = new window.google.maps.LatLngBounds();
+      forEach(
+        (x) => {
+          bounds.extend(
+            new window.google.maps.LatLng({
+              lat: x.latitude,
+              lng: x.longitude,
+            }),
+          )
+          new window.google.maps.Marker({
+            position: { lat: x.latitude, lng: x.longitude },
+            map: this.map,
+          })
+        },
+        this.props.unreadNotifyHistory.content,
+      );
+      this.map.fitBounds(bounds);
+      this.setState({ mapCenter: bounds.getCenter() });
     }
   };
 
@@ -439,7 +464,10 @@ class ActivityMap extends PureComponent {
             />
           )}
           <GoogleMapComponent
-            onRef={map => (this.map = map)}
+            onRef={map => {
+              this.map = map
+              this.setState({'mapLoaded': true})
+            }}
             center={mapCenter}
             dynamicCircle={selectingGuardCenter}
             creatingGuardArea={loadingCardGrpInfo || isLoading}
