@@ -39,6 +39,7 @@ const LIST_NOTIFY = createRequestTypes('LIST_NOTIFY');
 const CLEAR_NOTIFY = createRequestTypes('CLEAR_NOTIFY');
 const CLEAR_UFOS = createRequestTypes('CLEAR_UFOS');
 const UNREAD_NOTIFY = createRequestTypes('UNREAD_NOTIFY');
+const READ_NOTIFY = createRequestTypes('READ_NOTIFY');
 
 /**
  * Action Creator
@@ -58,6 +59,7 @@ export const listNotify = createAction(LIST_NOTIFY.REQUEST);
 export const clearNotify = createAction(CLEAR_NOTIFY.REQUEST);
 export const clearUfos = createAction(CLEAR_UFOS.REQUEST);
 export const unreadNotify = createAction(UNREAD_NOTIFY.REQUEST);
+export const readNotify = createAction(READ_NOTIFY.REQUEST);
 
 /**
  * Epics
@@ -216,6 +218,22 @@ export const unreadNotifyEpic = pipe(
   ),
 );
 
+export const readNotifyEpic = pipe(
+  ofType(READ_NOTIFY.REQUEST),
+  switchMap(({ payload = {} }) =>
+    unreadNotifyAPI(payload).pipe(
+      map(response => {
+        createAction(READ_NOTIFY.SUCCESS)({ ...response, ...payload })
+        unreadNotify()
+      }),
+      catchRequestError(e => {
+        // message.error(`刪除守護區域UFO失敗 (${e.message})`);
+        return createAction(READ_NOTIFY.FAILURE)();
+      }),
+    ),
+  ),
+);
+
 export const listNotifyEpic = pipe(
   ofType(LIST_NOTIFY.REQUEST),
   switchMap(({ payload = {} }) =>
@@ -256,7 +274,6 @@ const initalState = {
     size: 10,
     hasMore: false,
     content: [],
-    lastUpdatetime: null
   }
 };
 
@@ -447,6 +464,14 @@ export default handleActions(
       ...state,
       isLoadingGuardArea: false,
     }),
+    [READ_NOTIFY.REQUEST]: (state, action) => ({
+      ...state,
+      isLoading: false,
+    }),
+    [READ_NOTIFY.FAILURE]: (state, action) => ({
+      ...state,
+      isLoading: false,
+    }),
     [UNREAD_NOTIFY.REQUEST]: (state, action) => ({
       ...state,
       isLoading: true,
@@ -456,7 +481,6 @@ export default handleActions(
       unreadNotifyHistory: {
         ...action.payload,
         content: concat(state.notifyHistory.content, action.payload.data),
-        lastUpdatetime: new Date().getTime()
       },
       isLoading: false,
     }),

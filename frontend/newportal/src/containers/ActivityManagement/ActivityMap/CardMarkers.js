@@ -74,18 +74,18 @@ class CardMarkers extends Component {
       onMapChange
     } = this.props;
 
-    listCardsCurrentInfo(
-      focusingCardMarkerId
-        ? {
-          id: focusingCardMarkerId,
-          onMapChange
-        }
-        : {}
-    );
+    // listCardsCurrentInfo(
+    //   focusingCardMarkerId
+    //     ? {
+    //       id: focusingCardMarkerId,
+    //       onMapChange
+    //     }
+    //     : {}
+    // );
 
-    this.interval = setInterval(() => {
-      listCardsCurrentInfo({ search: this.props.search });
-    }, 1000 * REFRESH_INTERVAL);
+    // this.interval = setInterval(() => {
+    //   listCardsCurrentInfo({ search: this.props.search });
+    // }, 1000 * REFRESH_INTERVAL);
   }
 
   componentDidUpdate = prevProps => {

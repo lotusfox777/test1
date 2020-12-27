@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { renderToString } from 'react-dom/server'
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Layout, Row, Col, Button, Select, Input, Menu, Dropdown, notification } from 'antd';
@@ -23,6 +24,15 @@ import DetailSearchDrawer from './DetailSearchDrawer';
 import CardActivities from './CardActivities';
 import GuardAreas from './GuardAreas';
 import { withI18next } from 'locales/withI18next'
+import { readNotify } from 'reducers/guardAreas';
+
+window.infoWindows = []
+window.readNotify = function(number) {
+	alert(number)
+}
+window.closeInfoWindow = function() {
+  forEach(x => x.infoWindow.close(), window.infoWindows)
+}
 
 const { Content } = Layout;
 const { Search } = Input;
@@ -39,6 +49,50 @@ const mapStateToProps = state => ({
   unreadNotifyHistory: state.guardAreas.unreadNotifyHistory,
 });
 
+const Info = (data) => (
+  <div style={{ width: 310 }}>
+    <div style={{display: 'flex', alignItems: 'center', marginBottom: '15px'}}>
+      <div style={{
+        width: '60px',
+        height: '60px',
+        overflow: 'hidden',
+        borderRadius: '50%',
+        marginRight: '10px'
+      }}>
+        <img width="100%" src="/img/avatar-pic.png"/>
+      </div>
+      <div>193號</div>
+    </div>
+    <div style={{marginBottom: '15px'}}>
+      <button>顯示動態</button>
+    </div>
+    <div style={{marginBottom: '15px'}}>
+      <a style={{
+        border: '1px solid transparent',
+        padding: '.375rem .75rem',
+        fontSize: '1rem',
+        borderRadius: '.25rem',
+        color: '#fff',
+        backgroundColor: '#0d6efd',
+        borderColor: '#0d6efd',
+        marginRight: '10px'
+      }} href={`javascript:window.readNotify(${data.data.id})`}>確定</a>
+      <a style={{
+        border: '1px solid transparent',
+        padding: '.375rem .75rem',
+        fontSize: '1rem',
+        borderRadius: '.25rem',
+        color: '#fff',
+        backgroundColor: '#6c757d',
+        borderColor: '#6c757d'
+      }} href="javascript:window.closeInfoWindow()">取消</a>
+    </div>
+    <div style={{marginBottom: '15px'}}>
+      <textarea defaultValue="吳興街199號"/>
+    </div>
+  </div>
+)
+
 const mapDispatchToProps = {
   listUFOsInRoundRange,
   listCardsCurrentInfo,
@@ -47,6 +101,7 @@ const mapDispatchToProps = {
   getCardDetail,
   clearUfos,
   listGuardAreas,
+  readNotify
 };
 
 @withDrawer
@@ -76,7 +131,8 @@ class ActivityMap extends PureComponent {
       currentEndTime: undefined,
       currentTimeInterval: undefined,
       loadingCardGrpInfo: false,
-      mapLoaded: false
+      mapLoaded: false,
+      inited: false
     };
 
     this.map = null;
@@ -103,6 +159,40 @@ class ActivityMap extends PureComponent {
     }
   };
 
+  handleMarkers = () => {
+    const bounds = new window.google.maps.LatLngBounds();
+    forEach(
+      (x) => {
+        bounds.extend(
+          new window.google.maps.LatLng({
+            lat: x.latitude,
+            lng: x.longitude,
+          }),
+        )
+        const marker = new window.google.maps.Marker({
+          position: { lat: x.latitude, lng: x.longitude },
+          map: this.map,
+        })
+        marker.addListener('click', (evt) => {
+          window.closeInfoWindow()
+          const infoWindow = new window.google.maps.InfoWindow({
+            position: { lat: x.latitude, lng: x.longitude },
+            content: `<div>${renderToString(
+              <div style={{ width: 310 }}>
+                <Info data={x}/>
+              </div>
+            )}</div>`,
+          })
+          window.infoWindows.push({ infoWindow })
+          infoWindow.open(this.map)
+        })
+      },
+      this.props.unreadNotifyHistory.content,
+    );
+    this.map.fitBounds(bounds);
+    this.setState({ mapCenter: bounds.getCenter() });
+  }
+
   componentDidUpdate = (prevProps, prevState) => {
     const {
       getCardDetail,
@@ -117,7 +207,8 @@ class ActivityMap extends PureComponent {
       guardAreaType,
       needUpdateMapCenter,
       mapLoaded,
-      search
+      search,
+      inited
     } = this.state;
 
     if (!isLoading && needReloadGuardAreas) {
@@ -144,25 +235,15 @@ class ActivityMap extends PureComponent {
       });
     }
 
-    if (mapLoaded && !search && prevProps.unreadNotifyHistory !== this.props.unreadNotifyHistory) {
-      const bounds = new window.google.maps.LatLngBounds();
-      forEach(
-        (x) => {
-          bounds.extend(
-            new window.google.maps.LatLng({
-              lat: x.latitude,
-              lng: x.longitude,
-            }),
-          )
-          new window.google.maps.Marker({
-            position: { lat: x.latitude, lng: x.longitude },
-            map: this.map,
-          })
-        },
-        this.props.unreadNotifyHistory.content,
-      );
-      this.map.fitBounds(bounds);
-      this.setState({ mapCenter: bounds.getCenter() });
+    if (!prevState.mapLoaded && mapLoaded) {
+      this.handleMarkers()
+      this.setState({inited: true})
+    }
+
+    if (inited && prevProps.unreadNotifyHistory.content !== this.props.unreadNotifyHistory.content) {
+      if (!search) {
+        this.handleMarkers()
+      }
     }
   };
 

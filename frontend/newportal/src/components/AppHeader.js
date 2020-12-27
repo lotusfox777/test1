@@ -187,15 +187,13 @@ class AppHeader extends PureComponent {
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-    if (prevProps.unreadNotifyHistory !== this.props.unreadNotifyHistory) {
+    if (JSON.stringify(prevProps.unreadNotifyHistory.content) !== JSON.stringify(this.props.unreadNotifyHistory.content)) {
       this.handleOpenNotifyHistoryModal()
     }
   };
 
   render() {
     const {
-      listNotify,
-      notifyHistory,
       isLoading,
       isUpdatingEmail,
       currentUser,
