@@ -1,4 +1,5 @@
 import React from 'react';
+import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
@@ -28,7 +29,7 @@ import GlobalStyles from './GlobalStyles';
 
 const { Content } = Layout;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isServerError: state.views.isServerError,
   error: state.views.error,
 });
@@ -38,11 +39,12 @@ const mapDispatchToProps = {
 };
 
 @CheckAuth
-@connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)
+@connect(mapStateToProps, mapDispatchToProps)
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   static propTypes = {
     isServerError: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
@@ -52,7 +54,7 @@ class App extends React.Component {
     document.title = APP_TITLE;
   }
 
-  handleApiRequestError = prevProps => {
+  handleApiRequestError = (prevProps) => {
     const {
       logout,
       error: {
@@ -61,6 +63,7 @@ class App extends React.Component {
       },
     } = prevProps;
     const {
+      t,
       error: {
         timestamp: currOccurTime,
         status: currStatusCode,
@@ -71,7 +74,7 @@ class App extends React.Component {
     if (currErrMsg === 'Unauthorized') {
       if (currErrMsg !== prevErrMsg) {
         Modal.error({
-          content: '您的登入已過期，請重新登入',
+          content: t('common:session expired, please re-login again'),
         });
       }
       logout();
@@ -81,7 +84,7 @@ class App extends React.Component {
         (currErrMsg === prevErrMsg && currOccurTime - prevOccurTime > 1500))
     ) {
       Modal.error({
-        title: '伺服器錯誤',
+        title: t('common:server error'),
         content: currErrMsg,
       });
     }
@@ -121,4 +124,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withTranslation()(App);

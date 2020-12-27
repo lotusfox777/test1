@@ -334,7 +334,7 @@ class CardList extends React.Component {
   };
 
   render() {
-    const { cards, allGuardAreas, history } = this.props;
+    const { cards, allGuardAreas, history, t } = this.props;
     const {
       device,
       search,
@@ -354,7 +354,7 @@ class CardList extends React.Component {
     return (
       <React.Fragment>
         <H2>
-          主管理名單
+          主管理名單 {t('common:add')}
           <small>列出您為主管理者之裝置名單，可在此編輯群組及裝置資訊</small>
         </H2>
         <StyleTabCtnr>

@@ -15,6 +15,8 @@ import { DrawerProvider } from './drawer-context';
 import { unregister } from './registerServiceWorker';
 import configureStore, { history } from './store';
 
+import './locales/i18n';
+
 const isMobile = mobileAndTabletCheck();
 const shouldRedirect = isMobile && isProd;
 
@@ -51,7 +53,7 @@ if (!shouldRedirect) {
         </ConfigProvider>
       </ThemeProvider>
     </Provider>,
-    document.getElementById('root')
+    document.getElementById('root'),
   );
 
   unregister();
