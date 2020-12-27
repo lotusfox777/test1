@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { withI18next } from 'locales/withI18next'
 
 import styled from 'styled-components';
 const Styled = styled.div`
@@ -20,18 +21,18 @@ const Styled = styled.div`
 `;
 class Content extends React.Component {
   render() {
-    const { showAccountModal, logout } = this.props;
+    const { showAccountModal, logout, t } = this.props;
     return (
       <Styled>
         <div>
-          <a onClick={showAccountModal}>帳戶管理</a>
+          <a onClick={showAccountModal}>{t('account')}</a>
         </div>
         <div style={{ marginTop: 13 }}>
-          <a onClick={logout}>登出</a>
+          <a onClick={logout}>{t('logout')}</a>
         </div>
       </Styled>
     );
   }
 }
 
-export default Content;
+export default withI18next(['all'])(Content);

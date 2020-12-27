@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Image from 'components/Image';
 import TooltipButton from 'components/TooltipButton';
 import { listCardAuth, getCardDetail, addCardAuth, deleteCardAuth } from 'reducers/cards';
+import { withI18next } from 'locales/withI18next'
 
 const Search = Input.Search;
 
@@ -189,7 +190,7 @@ class CardAuthorityList extends React.PureComponent {
   };
 
   render() {
-    const { cards, addCardAuth, deleteCardAuth } = this.props;
+    const { cards, addCardAuth, deleteCardAuth, t } = this.props;
     const { editModalVisible } = this.state;
 
     const pagination = {
@@ -212,11 +213,11 @@ class CardAuthorityList extends React.PureComponent {
     return (
       <React.Fragment>
         <H2>
-          授權管理
-          <small>列出您所有主管理名單授權為副管理者的帳號</small>
+          {t('authorization management')}
+          {/* <small>列出您所有主管理名單授權為副管理者的帳號</small> */}
         </H2>
         <StyleDescWrap>
-          <Col span={4}>授權名單 {cards.totalAuthCount} 人</Col>
+          <Col span={5}>{t('authorization list')} {cards.totalAuthCount} {t('persons')}</Col>
         </StyleDescWrap>
         <Row>
           <Col span={8}>
@@ -228,7 +229,7 @@ class CardAuthorityList extends React.PureComponent {
             <Row className="list-title">
               <Col span={14}>裝置資訊</Col>
               <Col span={6} style={{ textAlign: 'right' }}>
-                副管理者人數
+                {t('number of assisted monitor person')}
               </Col>
             </Row>
             <List
@@ -272,4 +273,4 @@ class CardAuthorityList extends React.PureComponent {
   }
 }
 
-export default CardAuthorityList;
+export default withI18next(['all'])(CardAuthorityList);

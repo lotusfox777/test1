@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Row, Col } from 'antd';
+import { withI18next } from 'locales/withI18next'
 
 import styled from 'styled-components';
 
@@ -27,6 +28,7 @@ const StylePanelHeader = styled(Row)`
 
 class ListHeader extends React.Component {
   render() {
+    const { t } = this.props
     const guardArea = this.props.guardArea;
 
     return (
@@ -40,11 +42,11 @@ class ListHeader extends React.Component {
           className={
             guardArea.guardareaEnable ? 'lightblue-font' : 'is-disable'
           }>
-          {guardArea.guardareaEnable ? '啟用' : '停用'}
+          {guardArea.guardareaEnable ? t('on') : t('off')}
         </Col>
       </StylePanelHeader>
     );
   }
 }
 
-export default ListHeader;
+export default withI18next(['all'])(ListHeader)

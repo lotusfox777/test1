@@ -14,6 +14,7 @@ import {
 } from 'reducers/guardAreas';
 import { listCardGroups } from 'reducers/cardGroups';
 import { listCards } from 'reducers/cards';
+import { withI18next } from 'locales/withI18next'
 
 const Search = Input.Search;
 const Panel = Collapse.Panel;
@@ -199,6 +200,7 @@ class GuardAreaList extends React.PureComponent {
       allCards = [],
       allCardGroups = [],
       users: { currentUser },
+      t,
     } = this.props;
 
     const content =
@@ -209,15 +211,15 @@ class GuardAreaList extends React.PureComponent {
     return (
       <React.Fragment>
         <H2>
-          守護區域清單
-          <small>列出系統及自訂的守護區域 (自訂區域至多5個)</small>
+          {t('geo-fence list')}
+          {/* <small>列出系統及自訂的守護區域 (自訂區域至多5個)</small> */}
         </H2>
         <StyleDescWrap>
           <Col span={4} onClick={this.handleClickTab('sys')}>
-            系統守護區域 ({guardAreas.sysGuardAreaCount})
+            {t('default')} ({guardAreas.sysGuardAreaCount})
           </Col>
           <Col span={4} onClick={this.handleClickTab('custom')}>
-            自訂守護區域 ({guardAreas.customGuardAreaCount})
+            {t('customize')} ({guardAreas.customGuardAreaCount})
           </Col>
         </StyleDescWrap>
         <Row>
@@ -227,10 +229,10 @@ class GuardAreaList extends React.PureComponent {
         </Row>
         <StyleCollapseHeader>
           <Col span={8} className="padding-left-17">
-            守護區域名稱
+            {t('name')}
           </Col>
-          <Col span={8}>守護範圍</Col>
-          <Col span={8}>啟用狀態</Col>
+          <Col span={8}>{t('range')}</Col>
+          <Col span={8}>{t('status')}</Col>
         </StyleCollapseHeader>
         <StyleCollapsContent>
           <Col lg={24} sm={24} xs={24} md={24}>
@@ -302,4 +304,4 @@ class GuardAreaList extends React.PureComponent {
   }
 }
 
-export default GuardAreaList;
+export default withI18next(['all'])(GuardAreaList)

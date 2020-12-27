@@ -15,6 +15,7 @@ import {
   SAVEAREA_LIST,
   SAVEAREA_HISTORY,
 } from 'constants/routes';
+import { withI18next } from 'locales/withI18next'
 
 const { SubMenu } = Menu;
 
@@ -65,6 +66,7 @@ class SideMenu extends Component {
 
   render() {
     const { defaultOpenKey, pathname } = this.state;
+    const { t } = this.props;
 
     return (
       <Menu
@@ -75,29 +77,29 @@ class SideMenu extends Component {
         <Menu.Item key={menuRouteMap[CARD_MANAGEMENT].key}>
           <Icon type="user" />
           {/*點擊回列表*/}
-          <Link to={CARD_LIST}>主管理名單</Link>
+          <Link to={CARD_LIST}>{t('main monitor list')}</Link>
         </Menu.Item>
         <Menu.Item key={menuRouteMap[SUB_MANAGEMENT].key}>
           <Icon type="team" />
-          <Link to={SUBMANAGER_LIST}>副管理名單</Link>
+          <Link to={SUBMANAGER_LIST}>{t('assisted monitor list')}</Link>
         </Menu.Item>
         <Menu.Item key={menuRouteMap[CARDAUTHORITY_MANAGEMENT].key}>
           <Icon type="solution" />
-          <Link to={CARDAUTHORITY_LIST}>授權管理</Link>
+          <Link to={CARDAUTHORITY_LIST}>{t('authorization management')}</Link>
         </Menu.Item>
         <SubMenu
           key={menuRouteMap[SAVEAREA_MANAGEMENT].key}
           title={
             <span>
               <Icon type="flag" />
-              守護區域管理
+              {t('geo-fence management')}
             </span>
           }>
           <Menu.Item key={SAVEAREA_LIST}>
-            <Link to={SAVEAREA_LIST}>守護區域清單</Link>
+            <Link to={SAVEAREA_LIST}>{t('geo-fence list')}</Link>
           </Menu.Item>
           <Menu.Item key={SAVEAREA_HISTORY}>
-            <Link to={SAVEAREA_HISTORY}>守護紀錄</Link>
+            <Link to={SAVEAREA_HISTORY}>{t('violation logs')}</Link>
           </Menu.Item>
         </SubMenu>
         {/*any(role => role === 'ROLE_ADMIN', roles) && <div />*/}
@@ -109,6 +111,7 @@ class SideMenu extends Component {
 const enhance = compose(
   connect(state => ({})),
   withRouter,
+  withI18next(['all']),
 );
 
 export default enhance(SideMenu);

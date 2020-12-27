@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import { Switch, Row, Col, Modal } from 'antd';
 import StyleButton from 'components/Button';
 import styled from 'styled-components';
+import { withI18next } from 'locales/withI18next'
 
 const { confirm } = Modal;
 
@@ -99,7 +100,8 @@ class ViewGuardArea extends React.PureComponent {
       onChangeEnable,
       onClickEdit,
       onViewRange,
-      disableEdit
+      disableEdit,
+      t
     } = this.props;
 
     const startTime = moment(guardArea.startTime);
@@ -112,7 +114,7 @@ class ViewGuardArea extends React.PureComponent {
             {guardArea.name}
           </Col>
           <Col span={8}>
-            守護範圍：{' '}
+            {t('range')}：{' '}
             {guardArea.isSystemArea ? (
               <span className="text--greyishbrown">依系統設定</span>
             ) : (
@@ -120,7 +122,7 @@ class ViewGuardArea extends React.PureComponent {
             )}
           </Col>
           <Col span={8} className="text-vertical--center">
-            <span style={gutter}>啟用狀態</span>
+            <span style={gutter}>{t('status')}</span>
             <Switch
               checked={guardArea.guardareaEnable}
               onChange={onChangeEnable(guardArea)}
@@ -128,19 +130,19 @@ class ViewGuardArea extends React.PureComponent {
           </Col>
         </Row>
         <Row>
-          <Col span={4}>範圍有效時間</Col>
+          <Col span={4}>{t('available time')}</Col>
           <Col span={20} className="view-date">
             <span>
               {startTime.isValid() ? startTime.format('YYYY.MM.DD HH:mm') : '-'}
             </span>
-            <span>至</span>
+            <span>{t('datetime-to')}</span>
             <span>
               {endTime.isValid() ? endTime.format('YYYY.MM.DD HH:mm') : '-'}
             </span>
           </Col>
         </Row>
         <Row className="text-vertical--center">
-          <Col span={4}>守護名單</Col>
+          <Col span={4}>{t('device list')}</Col>
           <Col>
             <StyleCardWrap>
               {guardArea.cards.map(c => (
@@ -156,7 +158,7 @@ class ViewGuardArea extends React.PureComponent {
           {!guardArea.isSystemArea ? (
             <Col span={4}>
               <a onClick={this.handleDelete} className="delete-btn">
-                刪除守護區域
+                {t('delete')}
               </a>
             </Col>
           ) : null}
@@ -167,11 +169,11 @@ class ViewGuardArea extends React.PureComponent {
             <StyleButton
               style={gutter}
               type="white"
-              text="查看範圍"
+              text={t('view range')}
               onClick={onViewRange}
             />
             <StyleButton
-              text="編輯"
+              text={t('edit')}
               onClick={onClickEdit(guardArea)}
               disabled={disableEdit}
             />
@@ -182,4 +184,4 @@ class ViewGuardArea extends React.PureComponent {
   }
 }
 
-export default ViewGuardArea;
+export default withI18next(['all'])(ViewGuardArea)

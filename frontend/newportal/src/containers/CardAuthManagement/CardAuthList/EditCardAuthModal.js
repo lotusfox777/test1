@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Modal, List, Input, Row, Col, Avatar, Button, Form } from 'antd';
 import Image from 'components/Image';
 import StyleButton from '../../../components/Button';
+import { withI18next } from 'locales/withI18next'
 
 const confirm = Modal.confirm;
 const Search = Input.Search;
@@ -161,7 +162,8 @@ class EditCardAuthModal extends PureComponent {
       isUpdating,
       isLoading,
       isDeleting,
-      form: { getFieldDecorator }
+      form: { getFieldDecorator },
+      t,
     } = this.props;
     const footer = [
       <StyleButton
@@ -176,7 +178,7 @@ class EditCardAuthModal extends PureComponent {
       <Modal
         visible={true}
         width="55%"
-        title="編輯授權名單"
+        title={t('edit authorization list')}
         footer={footer}
         onCancel={onClose}
         bodyStyle={styles.modalBody}>
@@ -197,7 +199,7 @@ class EditCardAuthModal extends PureComponent {
             <div>{card.cardName}</div>
             <div>{card.uuid}</div>
           </Card>
-          <H4>副管理者名單</H4>
+          <H4>{t('assisted monitor list')}</H4>
           <StyleSubCtrlList
             style={{
               margin: '6px 0px 29px 0px'
@@ -219,7 +221,7 @@ class EditCardAuthModal extends PureComponent {
               </List.Item>
             )}
           />
-          <H4>新增副管理者</H4>
+          <H4>{t('add assisted monitor list')}</H4>
           <Form className="mb90">
             <Form.Item>
               {getFieldDecorator('memberId', {
@@ -232,7 +234,7 @@ class EditCardAuthModal extends PureComponent {
                       type="primary"
                       loading={isUpdating}
                       onClick={this.handleAdd}>
-                      發送邀請
+                      {t('send')}
                     </Button>
                   }
                   onSearch={this.handleAdd}
@@ -246,4 +248,4 @@ class EditCardAuthModal extends PureComponent {
   }
 }
 
-export default EditCardAuthModal;
+export default withI18next(['all'])(EditCardAuthModal);

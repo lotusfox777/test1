@@ -15,6 +15,7 @@ import { HOME, ACTIVITY_MAP, CARD_LIST } from 'constants/routes';
 import CurrentGuardAreas from './CurrentGuardAreas';
 import DropdownMenu from './DropdownMenu';
 import { withDrawer } from '../drawer-context';
+import { withI18next } from 'locales/withI18next'
 
 const StyledMenu = styled(Col)`
   margin-left: 48px;
@@ -100,6 +101,7 @@ class AppHeader extends PureComponent {
       currentTab: indexOf(pathname, [ACTIVITY_MAP, HOME]) > -1 ? 'activity' : 'card',
       pathname,
     };
+
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -165,13 +167,14 @@ class AppHeader extends PureComponent {
   };
 
   renderPopover = () => {
+    const { t } = this.props
     return (
       <div className="test">
         <div>
-          <a onClick={this.handleAccountModal}>帳戶管理</a>
+          <a onClick={this.handleAccountModal}>{t('account')}</a>
         </div>
         <div>
-          <a onClick={this.handleLogout}>登出</a>
+          <a onClick={this.handleLogout}>{t('logout')}</a>
         </div>
       </div>
     );
@@ -186,6 +189,7 @@ class AppHeader extends PureComponent {
       currentUser,
       history,
       accountModalVisible,
+      t,
     } = this.props;
     const { notifyHistoryModalVisible, currentTab } = this.state;
 
@@ -205,12 +209,12 @@ class AppHeader extends PureComponent {
                 onClick={this.handleSwitchTab({
                   currentTab: 'activity',
                 })}>
-                動態搜尋
+                {t('search trace')}
               </Link>
             </Menu.Item>
             <Menu.Item key="card">
               <Link to={CARD_LIST} onClick={this.handleSwitchTab({ currentTab: 'card' })}>
-                裝置管理
+                {t('bracelet management')}
               </Link>
             </Menu.Item>
           </Menu>
@@ -292,4 +296,5 @@ export default compose(
   withRouter,
   withDrawer,
   connect(mapStateToProps, mapDispatchToProps),
+  withI18next(['all']),
 )(AppHeader);

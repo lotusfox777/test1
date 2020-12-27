@@ -7,6 +7,7 @@ import BasicModal from './BasicModal';
 import styled from 'styled-components';
 import { ACTIVITY_MAP, SAVEAREA_HISTORY } from 'constants/routes';
 import { Link } from 'react-router-dom';
+import { withI18next } from 'locales/withI18next'
 
 const modalTitle = {
   fontFamily: 'MicrosoftJhengHei',
@@ -90,11 +91,11 @@ class CurrentGuardAreas extends React.PureComponent {
   };
 
   render() {
-    const { notifyHistory, isLoading, onClose } = this.props;
+    const { notifyHistory, isLoading, onClose, t } = this.props;
 
     return (
       <StyleModal
-        title={<span style={modalTitle}>即時守護通知</span>}
+        title={<span style={modalTitle}>{t('violation alerts')}</span>}
         width="55%"
         onCancel={onClose}>
         <div style={infiniteContainer}>
@@ -156,7 +157,7 @@ class CurrentGuardAreas extends React.PureComponent {
         <div className="footer">
           <StyleButton
             onClick={onClose}
-            text={<Link to={SAVEAREA_HISTORY}>查看守護紀錄</Link>}
+            text={<Link to={SAVEAREA_HISTORY}>{t('view violation logs')}</Link>}
             type="lightblue"
           />
 
@@ -166,4 +167,4 @@ class CurrentGuardAreas extends React.PureComponent {
   }
 }
 
-export default CurrentGuardAreas;
+export default withI18next(['all'])(CurrentGuardAreas);

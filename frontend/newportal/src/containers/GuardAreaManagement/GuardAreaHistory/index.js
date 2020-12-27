@@ -13,6 +13,7 @@ import {
   clearCardActivities,
 } from 'reducers/cards';
 import { thousandSeparators } from 'utils/webHelper';
+import { withI18next } from 'locales/withI18next'
 
 const Search = Input.Search;
 
@@ -203,7 +204,7 @@ class GuardAreaHistory extends React.PureComponent {
   };
 
   render() {
-    const { cards, history } = this.props;
+    const { cards, history, t } = this.props;
     const { visible, currentCard } = this.state;
 
     const pagination = {
@@ -216,18 +217,18 @@ class GuardAreaHistory extends React.PureComponent {
     return (
       <React.Fragment>
         <H2>
-          守護紀錄
-          <small>列出所有裝置離開守護區域之紀錄</small>
+          {t('violation logs')}
+          {/* <small>列出所有裝置離開守護區域之紀錄</small> */}
         </H2>
         <StyleDescWrap>
           <Col span={4}>
             <span onClick={this.handleChangeCardType(1)}>
-              主管理名單 ({cards.primaryCardCount})
+              {t('Main monitor list')} ({cards.primaryCardCount})
             </span>
           </Col>
           <Col>
             <span onClick={this.handleChangeCardType(2)}>
-              副管理名單 ({cards.secondaryCardCount})
+              {t('assisted monitor list')} ({cards.secondaryCardCount})
             </span>
           </Col>
         </StyleDescWrap>
@@ -241,12 +242,12 @@ class GuardAreaHistory extends React.PureComponent {
             <List
               header={
                 <Row className="ant-list__header">
-                  <Col span={4}>裝置 (主/副管理名單)</Col>
+                  <Col span={4}>{t('bracelet')} (主/副管理名單)</Col>
                   <Col span={14} style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    守護區域數
+                    {t('qty of geo-fence')}
                   </Col>
                   <Col span={2} offset={4}>
-                    查看紀錄
+                    {t('logs')}
                   </Col>
                 </Row>
               }
@@ -275,7 +276,7 @@ class GuardAreaHistory extends React.PureComponent {
                         title={
                           <div>
                             {item.cardName && <span className="card-name">{item.cardName}</span>}
-                            {item.type === 1 ? <span className="card-main">主管理名單</span> : null}
+                            {item.type === 1 ? <span className="card-main">{t('main monitor')}</span> : null}
                           </div>
                         }
                         description={item.uuid}
@@ -327,4 +328,4 @@ class GuardAreaHistory extends React.PureComponent {
   }
 }
 
-export default GuardAreaHistory;
+export default withI18next(['all'])(GuardAreaHistory)

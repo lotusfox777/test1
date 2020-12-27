@@ -4,6 +4,7 @@ import { Layout } from 'antd';
 import { SideMenu } from 'components';
 import GuardAreaList from 'containers/GuardAreaManagement/GuardAreaList/index';
 import GuardAreaHistory from 'containers/GuardAreaManagement/GuardAreaHistory/index';
+import { withI18next } from 'locales/withI18next'
 
 import styled from 'styled-components';
 import { SAVEAREA_LIST, SAVEAREA_HISTORY } from 'constants/routes';
@@ -83,21 +84,22 @@ const StyleContent = styled(Content)`
     padding: 0px 5px;
   }
 `;
-export default class DeviceManagement extends PureComponent {
+class DeviceManagement extends PureComponent {
   renderBreadcrumb = () => {
+    const { t } = this.props
     switch (this.props.location.pathname) {
     case SAVEAREA_LIST:
       return (
         <div className="breadcrumb">
-            守護區域管理
+            {t('geo-fence management')}
           <span>/</span>
-            守護區域清單
+            {t('geo-fence list')}
         </div>
       );
     case SAVEAREA_HISTORY:
       return (
         <div className="breadcrumb">
-            守護區域管理
+            {t('geo-fence management')}
           <span>/</span>
             守護區域記錄
         </div>
@@ -125,3 +127,4 @@ export default class DeviceManagement extends PureComponent {
     );
   }
 }
+export default withI18next(['all'])(DeviceManagement)

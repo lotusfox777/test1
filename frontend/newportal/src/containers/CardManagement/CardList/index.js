@@ -1,5 +1,4 @@
 import React from 'react';
-import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { Row, Col, List, Avatar, Tabs, Input } from 'antd';
 import styled from 'styled-components';
@@ -21,6 +20,7 @@ import { listEnabledGuardAreas } from 'reducers/guardAreas';
 import Image from 'components/Image';
 import { DEVICE_TYPE } from 'constants/device';
 import { ACTIVITY_MAP, CARD_LIST } from 'constants/routes';
+import { withI18next } from 'locales/withI18next'
 
 import NewCardModal from './NewCardModal';
 import BatchCardModal from './BatchCardModal';
@@ -334,7 +334,7 @@ class CardList extends React.Component {
   };
 
   render() {
-    const { cards, allGuardAreas, history } = this.props;
+    const { cards, allGuardAreas, history, t } = this.props;
     const {
       device,
       search,
@@ -354,18 +354,18 @@ class CardList extends React.Component {
     return (
       <React.Fragment>
         <H2>
-          主管理名單
-          <small>列出您為主管理者之裝置名單，可在此編輯群組及裝置資訊</small>
+          {t('main monitor list')}
+          {/* <small>列出您為主管理者之裝置名單，可在此編輯群組及裝置資訊</small> */}
         </H2>
         <StyleTabCtnr>
           <StyleTab onTabClick={this.changeTab} type="card">
-            <TabPane tab="個人名單" key="1">
+            <TabPane tab={t('individual list')} key="1">
               <React.Fragment>
                 <Row>
                   {!editModelVisible ? (
                     <Col>
                       <Row className="mb5">
-                        <Col className="text-perrywinkle">主管理名單 {cards.total} 人</Col>
+                        <Col className="text-perrywinkle">{t('main monitor list')} {cards.total} {t('persons')}</Col>
                       </Row>
                       <Row>
                         <Col span={8}>
@@ -378,12 +378,12 @@ class CardList extends React.Component {
                         <Col span={16} style={{ textAlign: 'right' }}>
                           <StyleButton
                             className="mr9"
-                            text="新增裝置"
+                            text={t('add bracelet')}
                             onClick={this.handleNewModalVisible}
                           />
                           <StyleButton
                             type="darkblue"
-                            text="批次新增裝置"
+                            text={t('batch bracelet')}
                             onClick={this.handleBatchModalVisible}
                           />
                         </Col>
@@ -448,7 +448,7 @@ class CardList extends React.Component {
                 </Row>
               </React.Fragment>
             </TabPane>
-            <TabPane tab="群組名單" key="2">
+            <TabPane tab={t('group list')} key="2">
               <CardGroupList />
             </TabPane>
           </StyleTab>
@@ -469,4 +469,4 @@ class CardList extends React.Component {
   }
 }
 
-export default withTranslation()(CardList);
+export default withI18next(['all'])(CardList);

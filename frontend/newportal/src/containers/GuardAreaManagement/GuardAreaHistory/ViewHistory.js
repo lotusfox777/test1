@@ -7,6 +7,7 @@ import StyleButton from 'components/Button';
 import styled from 'styled-components';
 import { ACTIVITY_MAP, CARD_LIST } from 'constants/routes';
 import { isNil } from 'ramda';
+import { withI18next } from 'locales/withI18next'
 
 const modalTitle = {
   fontFamily: 'MicrosoftJhengHei',
@@ -167,12 +168,12 @@ class ViewHistory extends React.PureComponent {
   };
 
   render() {
-    const { activitiesLog, card, isLoading, guardAreas, onCancel } = this.props;
+    const { activitiesLog, card, isLoading, guardAreas, onCancel, t } = this.props;
 
     return (
       <React.Fragment>
         <Modal
-          title={<span style={modalTitle}>查看個人守護紀錄</span>}
+          title={<span style={modalTitle}>{t('violation logs')}</span>}
           visible={true}
           width="50%"
           footer={null}
@@ -188,10 +189,10 @@ class ViewHistory extends React.PureComponent {
             <Col span={19}>
               <div style={{ marginBottom: 10 }}>
                 <span className="card-name">{card.cardName}</span>
-                <span className="lightblue">{card.status === 1 ? '主管理名單' : null}</span>
+                <span className="lightblue">{card.status === 1 ? t('main monitor') : null}</span>
                 <div className="card-no">{card.uuid}</div>
               </div>
-              <div className="guardarea-title">守護區域</div>
+              <div className="guardarea-title">{t('geo-fence')}</div>
               <StyleCardWrap>
                 {guardAreas.map(c => (
                   <div key={c.id}>{c.name}</div>
@@ -219,16 +220,18 @@ class ViewHistory extends React.PureComponent {
                           <span className="lightblue-font">{area.cardName}</span>
                           {!isNil(area.sosMessage) ? (
                             <React.Fragment>
-                              於<span>{moment(area.createTime).format('YYYY.MM.DD HH:mm:ss')}</span>
-                              <span>{area.sosMessage}</span>
+                              <span>{t('activated SOS')}</span>
+                              <span>{t('datetime-at')}</span>
+                              <span>{moment(area.createTime).format('YYYY.MM.DD HH:mm:ss')}</span>
                               <span>
                                 <Icon type="right" />
                               </span>
                             </React.Fragment>
                           ) : (
                             <React.Fragment>
-                              於<span>{moment(area.createTime).format('YYYY.MM.DD HH:mm:ss')}</span>
-                              <span>離開了守護區域</span>
+                              <span>{t('left fence')}</span>
+                              <span>{t('datetime-at')}</span>
+                              <span>{moment(area.createTime).format('YYYY.MM.DD HH:mm:ss')}</span>
                               <span className="lightblue-font">{area.guardareaName}</span>
                               <span>
                                 <Icon type="right" />
@@ -266,4 +269,4 @@ class ViewHistory extends React.PureComponent {
   }
 }
 
-export default ViewHistory;
+export default withI18next(['all'])(ViewHistory);

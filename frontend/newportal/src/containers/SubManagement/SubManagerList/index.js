@@ -8,6 +8,7 @@ import { DEVICE_TYPE } from 'constants/device';
 import { ACTIVITY_MAP } from 'constants/routes';
 import { listCards, deleteCardInvite } from 'reducers/cards';
 import { HeartRateModal } from 'components/device';
+import { withI18next } from 'locales/withI18next'
 
 const Search = Input.Search;
 const confirm = Modal.confirm;
@@ -219,7 +220,7 @@ class SubManagerList extends React.PureComponent {
 
   render() {
     const { device, heartRateModalVisible } = this.state;
-    const { cards } = this.props;
+    const { cards, t } = this.props;
 
     const pagination = {
       current: cards.page + 1,
@@ -233,11 +234,11 @@ class SubManagerList extends React.PureComponent {
     return (
       <React.Fragment>
         <H2>
-          副管理名單
-          <small>列出您被授權為副管理者之名單，副管理者僅可查看或接收裝置動態</small>
+          {t('assisted monitor list')}
+          {/* <small>列出您被授權為副管理者之名單，副管理者僅可查看或接收裝置動態</small> */}
         </H2>
         <StyleDescWrap>
-          <Col span={4}>副管理名單 {cards.total} 人</Col>
+          <Col span={4}>{t('assisted monitor list')} {cards.total} {t('persons')}</Col>
         </StyleDescWrap>
         <Row>
           <Col span={8}>
@@ -299,4 +300,4 @@ class SubManagerList extends React.PureComponent {
   }
 }
 
-export default SubManagerList;
+export default withI18next(['all'])(SubManagerList);

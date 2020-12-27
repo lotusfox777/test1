@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { findIndex, propEq, compose, forEach, slice, pathOr, flatten, pluck, length } from 'ramda';
 import { Drawer, Row, Col, Button, Select, DatePicker, Form, Divider, message } from 'antd';
-
+import { withI18next } from 'locales/withI18next'
 import { listCardGroups } from 'reducers/cardGroups';
 
 import { listCards, listMultipleCardsActivities, clearCardActivities } from 'reducers/cards';
 
 const formItemLayout = {
   labelCol: {
-    span: 3,
+    span: 4,
   },
   wrapperCol: {
     span: 12,
@@ -251,30 +251,31 @@ class GeneralSearchDrawer extends Component {
     const {
       onClose,
       form: { getFieldDecorator },
+      t,
     } = this.props;
 
     return (
       <DrawerWithoutMask
-        width="300"
-        title="動態搜尋"
+        width="400"
+        title={t('search trace')}
         placement="left"
         mask={false}
         visible={true}
         onClose={onClose}>
-        <h4>設定查詢區間</h4>
-        <p>搜尋區間最多一日</p>
-        <FormItem label="自" {...formItemLayout}>
+        {/* <h4>設定查詢區間</h4>
+        <p>搜尋區間最多一日</p> */}
+        <FormItem label={t('datetime-from')} {...formItemLayout}>
           {getFieldDecorator('startTime', {
             rules: [{ required: true, message: '此欄位必填' }],
           })(<DatePicker style={{ width: 210 }} showTime format="YYYY-MM-DD HH:mm:ss" />)}
         </FormItem>
-        <FormItem label="至" {...formItemLayout}>
+        <FormItem label={t('datetime-to')} {...formItemLayout} labelAlign="left">
           {getFieldDecorator('endTime', {
             rules: [{ required: true, message: '此欄位必填' }],
           })(<DatePicker style={{ width: 210 }} showTime format="YYYY-MM-DD HH:mm:ss" />)}
         </FormItem>
         <Row type="flex" align="middle" gutter={8}>
-          <Col span={2}>每</Col>
+          <Col span={2}>{t('datetime-per')}</Col>
           <Col span={9}>
             <FormItem style={{ marginBottom: 0 }}>
               {getFieldDecorator('intervalMin', {
@@ -288,18 +289,18 @@ class GeneralSearchDrawer extends Component {
               )}
             </FormItem>
           </Col>
-          <Col span={9}>顯示一筆資料</Col>
+          <Col span={9}>{t('show the data')}</Col>
         </Row>
         <Divider />
-        <h4>選取查詢名單</h4>
+        <h4>{t('Search name')}</h4>
         <FormItem>{this.renderCardDropdown()}</FormItem>
 
         <Button style={{ width: '100%' }} type="primary" onClick={this.handleSearch}>
-          開始搜尋
+          {t('start')}
         </Button>
       </DrawerWithoutMask>
     );
   }
 }
 
-export default GeneralSearchDrawer;
+export default withI18next(['all'])(GeneralSearchDrawer);

@@ -1,5 +1,6 @@
 import React from 'react';
-import { withTranslation } from 'react-i18next';
+import { I18nextProvider } from 'react-i18next'
+import initialI18nInstance from 'locales/i18n'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
@@ -40,7 +41,7 @@ const mapDispatchToProps = {
 
 @CheckAuth
 @connect(mapStateToProps, mapDispatchToProps)
-class App extends React.Component {
+class App extends React.Component {  
   static propTypes = {
     isServerError: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
@@ -91,6 +92,9 @@ class App extends React.Component {
   };
 
   render() {
+    const { pageProps } = this.props
+    const { i18n } = pageProps || {}
+
     const {
       history: {
         location: { pathname },
@@ -99,25 +103,27 @@ class App extends React.Component {
     const showNavbar = pathname !== `/${OAUTH}`;
 
     return (
-      <Layout>
-        <GlobalStyles />
-        {showNavbar && <AppHeader />}
-        <Content>
-          <Switch>
-            <Route exact path="/" component={ActivityManagement} />
-            <Route path={`${RESETPASS}/:subPath`} component={Forgotpassword} />
-            <Route path={`${REGISTER_ACTIVE}/:subPath`} component={RegisterActivePage} />
-            <Route path={`${EMAIL_REPLACE}/:subPath`} component={EmailReplacePage} />
-            <Route path={`/${ACTIVITY_MANAGEMENT}/:subPath`} component={ActivityManagement} />
-            <Route path={`/${CARD_MANAGEMENT}/:subPath`} component={CardManagement} />
-            <Route path={`/${SAVEAREA_MANAGEMENT}/:subPath`} component={GuardAreaManagement} />
-            <Route path={`/${OAUTH}`} component={OAuth} />
-            <Route component={NotFound} />
-          </Switch>
-        </Content>
-      </Layout>
+      <I18nextProvider i18n={i18n || initialI18nInstance}>
+        <Layout>
+          <GlobalStyles />
+          {showNavbar && <AppHeader />}
+          <Content>
+            <Switch>
+              <Route exact path="/" component={ActivityManagement} />
+              <Route path={`${RESETPASS}/:subPath`} component={Forgotpassword} />
+              <Route path={`${REGISTER_ACTIVE}/:subPath`} component={RegisterActivePage} />
+              <Route path={`${EMAIL_REPLACE}/:subPath`} component={EmailReplacePage} />
+              <Route path={`/${ACTIVITY_MANAGEMENT}/:subPath`} component={ActivityManagement} />
+              <Route path={`/${CARD_MANAGEMENT}/:subPath`} component={CardManagement} />
+              <Route path={`/${SAVEAREA_MANAGEMENT}/:subPath`} component={GuardAreaManagement} />
+              <Route path={`/${OAUTH}`} component={OAuth} />
+              <Route component={NotFound} />
+            </Switch>
+          </Content>
+        </Layout>
+      </I18nextProvider>
     );
   }
 }
 
-export default withTranslation()(App);
+export default App;

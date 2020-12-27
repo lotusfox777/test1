@@ -29,6 +29,7 @@ import {
   StyleSubCtrlList,
   StyleSubCtrlRow,
 } from './components';
+import { withI18next } from 'locales/withI18next'
 
 const FormItem = Form.Item;
 const Search = Input.Search;
@@ -44,7 +45,7 @@ function beforeUpload(file) {
 }
 
 @Form.create()
-export default class EditCardModal extends React.PureComponent {
+class EditCardModal extends React.PureComponent {
   static defaultProps = {
     card: {
       uuid: '',
@@ -294,6 +295,7 @@ export default class EditCardModal extends React.PureComponent {
       isUpdating,
       form: { getFieldDecorator },
       onClose,
+      t,
     } = this.props;
 
     return (
@@ -303,7 +305,7 @@ export default class EditCardModal extends React.PureComponent {
             <Breadcrumb.Item
               style={{ cursor: 'pointer', textDecoration: 'underline' }}
               onClick={onClose}>
-              個人名單
+              {t('individual list')}
             </Breadcrumb.Item>
             <Breadcrumb.Item>{card.uuid}</Breadcrumb.Item>
           </Breadcrumb>
@@ -364,11 +366,11 @@ export default class EditCardModal extends React.PureComponent {
                 </Col>
               </Row>
               <Row style={{ color: '#9b9b9b' }}>
-                <Col span={4}>裝置期限</Col>
+                <Col span={4}>{t('expiration date')}</Col>
                 <Col>{moment(card.expireTime).format('YYYY.MM.DD')}</Col>
               </Row>
               <Row className="row--flex">
-                <Col span={4}>名稱 </Col>
+                <Col span={4}>{t('name')} </Col>
                 <Col span={20}>
                   {edit ? (
                     <Input
@@ -388,7 +390,7 @@ export default class EditCardModal extends React.PureComponent {
                 </Row>
               ) : null}
               <Row className="row--flex mb39">
-                <Col span={4}>守護區域 </Col>
+                <Col span={4}>{t('geo-fence')} </Col>
                 <Col span={18}>{edit ? this.renderSelectGuardArea() : this.renderGuardArea()}</Col>
               </Row>
               <Row>
@@ -411,13 +413,13 @@ export default class EditCardModal extends React.PureComponent {
                     <div>
                       <StyleButton
                         className="font-size-md mr-3--percent"
-                        text="動態查詢"
+                        text={t('search trace')}
                         onClick={this.handleViewCardLoaction}
                       />
                       <StyleButton
                         type="darkblue"
                         className="font-size-md"
-                        text="編輯"
+                        text={t('edit')}
                         onClick={this.handleEdit}
                       />
                     </div>
@@ -429,8 +431,8 @@ export default class EditCardModal extends React.PureComponent {
           <StyleSubCtrlRow className="mb92">
             <hr />
             <Col>
-              <div className="title_01">新增副管理者</div>
-              <div className="title_02">傳送副管理者授權連結，副管理者將可查看該裝置人員之動向</div>
+              <div className="title_01">{t('add assisted monitor list')}</div>
+              {/* <div className="title_02">傳送副管理者授權連結，副管理者將可查看該裝置人員之動向</div> */}
             </Col>
             <Col span={16}>
               <Form>
@@ -439,10 +441,10 @@ export default class EditCardModal extends React.PureComponent {
                     rules: [{ type: 'email', message: 'E-mail格式不合' }],
                   })(
                     <Search
-                      placeholder="請輸入副管理者 email"
+                      placeholder={t('please type email of assisted monitor')}
                       enterButton={
                         <Button type="primary" loading={isUpdating} onClick={this.inviteSubManager}>
-                          發送邀請
+                          {t('send')}
                         </Button>
                       }
                       onSearch={this.inviteSubManager}
@@ -452,7 +454,7 @@ export default class EditCardModal extends React.PureComponent {
               </Form>
             </Col>
             <Col span={24} className="title_03">
-              副管理者名單
+              {t('assisted monitor list')}
             </Col>
             <Col span={24}>
               <StyleSubCtrlList
@@ -479,7 +481,7 @@ export default class EditCardModal extends React.PureComponent {
           <div className="mb92">
             <StyleButton
               type="red"
-              text="刪除裝置"
+              text={t('delete bracelet')}
               className="font-size-md"
               onClick={this.deleteCard}
             />
@@ -489,3 +491,5 @@ export default class EditCardModal extends React.PureComponent {
     );
   }
 }
+
+export default withI18next(['all'])(EditCardModal)
