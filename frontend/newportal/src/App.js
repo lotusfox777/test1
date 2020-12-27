@@ -41,10 +41,6 @@ const mapDispatchToProps = {
 @CheckAuth
 @connect(mapStateToProps, mapDispatchToProps)
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   static propTypes = {
     isServerError: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
