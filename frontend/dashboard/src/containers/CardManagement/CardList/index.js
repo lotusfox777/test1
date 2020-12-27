@@ -18,6 +18,7 @@ import EditCardModal from './EditCardModal';
 import CardContactModal from './CardContactModal';
 import ImportModal from './ImportModal';
 import MapModal from './MapModal';
+import { withI18next } from 'locales/withI18next';
 
 const { Content } = Layout;
 const { Option } = Select;
@@ -43,7 +44,7 @@ const Search = styled(Input.Search)`
   width: 220px !important;
 `;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   cards: state.cards,
 });
 
@@ -56,10 +57,7 @@ const mapDispatchToProps = {
   listCardHealth,
 };
 
-@connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)
+@connect(mapStateToProps, mapDispatchToProps)
 class CardList extends PureComponent {
   constructor(props) {
     super(props);
@@ -97,7 +95,7 @@ class CardList extends PureComponent {
     });
   };
 
-  handleEditModalVisible = editingCard => {
+  handleEditModalVisible = (editingCard) => {
     this.setState(
       {
         editingCard,
@@ -111,14 +109,14 @@ class CardList extends PureComponent {
     );
   };
 
-  handleMapModalVisible = editingCard => {
+  handleMapModalVisible = (editingCard) => {
     this.setState({
       editingCard,
       mapModalVisible: !this.state.mapModalVisible,
     });
   };
 
-  handleCardHealthModalVisible = editingCard => {
+  handleCardHealthModalVisible = (editingCard) => {
     this.setState(
       {
         editingCard,
@@ -137,7 +135,7 @@ class CardList extends PureComponent {
     // });
   };
 
-  handleTableChange = pagination => {
+  handleTableChange = (pagination) => {
     const { cards } = this.props;
     this.props.listCards({
       body: cards.body,
@@ -151,7 +149,7 @@ class CardList extends PureComponent {
     exportCards({ body: cards.body });
   };
 
-  handleSearch = search => {
+  handleSearch = (search) => {
     const { searchType } = this.state;
     const { cards, listCards } = this.props;
     if (search !== cards.search) {
@@ -165,11 +163,11 @@ class CardList extends PureComponent {
     }
   };
 
-  handleSearchTypeChange = value => {
+  handleSearchTypeChange = (value) => {
     this.setState({ searchType: value });
   };
 
-  handleRegionChange = value => {
+  handleRegionChange = (value) => {
     const { cards, listCards } = this.props;
 
     listCards({
@@ -179,7 +177,7 @@ class CardList extends PureComponent {
     });
   };
 
-  handlePageChange = e => {
+  handlePageChange = (e) => {
     const { cards, listCards } = this.props;
     let page = +e.target.value;
 
@@ -197,7 +195,7 @@ class CardList extends PureComponent {
     }
   };
 
-  handlePageSizeChange = size => {
+  handlePageSizeChange = (size) => {
     const { cards, listCards } = this.props;
     listCards({
       size: Number(size),
@@ -223,53 +221,54 @@ class CardList extends PureComponent {
       searchType,
     } = this.state;
     const {
+      t,
       cards: { total, page, size, content, isLoading, isDownloading, regions },
     } = this.props;
 
     const columns = [
       {
-        title: '裝置號',
+        title: t('all:Bracelet number'),
         dataIndex: 'uuid',
         render: (v, r) => `${v} (${r.major}) (${r.minor})`,
       },
       {
-        title: '姓名',
+        title: t('all:Name'),
         dataIndex: 'name',
       },
       {
-        title: '身分證字號',
+        title: t('all:ID'),
         dataIndex: 'identityId',
       },
       {
-        title: '聯絡電話',
+        title: t('all:Phone number'),
         dataIndex: 'contactMobile',
       },
       {
-        title: '使用狀態',
+        title: t('all:Status'),
         dataIndex: 'usageStatus',
         width: 90,
-        render: val => <span>{val === 1 ? '已使用' : '未使用'}</span>,
+        render: (val) => <span>{val === 1 ? '已使用' : '未使用'}</span>,
       },
       {
-        title: '電量',
+        title: t('all:Battery'),
         dataIndex: 'battery',
         width: 65,
       },
       {
-        title: '主管理電話',
+        title: t('all:Main monitor phone number'),
         dataIndex: 'majorContactMobile',
       },
       {
-        title: '主管理帳號',
+        title: t('all:Main monitor account'),
         dataIndex: 'memberId',
       },
       {
-        title: '裝置',
+        title: t('all:Devices type'),
         dataIndex: 'deviceType',
-        render: v => (v === 0 ? 'beacon' : 'GPS手錶'),
+        render: (v) => (v === 0 ? 'beacon' : 'GPS手錶'),
       },
       {
-        title: '區域',
+        title: t('all:Region'),
         dataIndex: 'regionInfoName',
       },
       {
@@ -311,22 +310,22 @@ class CardList extends PureComponent {
     return (
       <Layout>
         <Content style={{ padding: '0px 24px 0px 8px' }}>
-          <h1>裝置管理</h1>
+          <h1>{t('menu:Bracelet management')}</h1>
           <Row style={styles.mb15}>
             <Col span={16}>
               <Select onChange={this.handlePageSizeChange} defaultValue="10">
-                <Option value="10">10 筆/頁</Option>
-                <Option value="25">25 筆/頁</Option>
-                <Option value="50">50 筆/頁</Option>
-                <Option value="100">100 筆/頁</Option>
+                <Option value="10">10 {t('record/page')}</Option>
+                <Option value="25">25 {t('record/page')}</Option>
+                <Option value="50">50 {t('record/page')}</Option>
+                <Option value="100">100 {t('record/page')}</Option>
               </Select>
               <div style={{ ...styles.ml15, display: 'inline-block' }}>
-                跳至
+                {t('To')}
                 <Input
                   onPressEnter={this.handlePageChange}
                   style={{ width: '65px', margin: '0 7px' }}
                 />
-                頁
+                {t('Page')}
               </div>
               <Button
                 icon="upload"
@@ -334,14 +333,14 @@ class CardList extends PureComponent {
                 loading={isDownloading}
                 style={styles.ml15}
                 actionTypes={FORM_FIELDS.READABLE}>
-                匯出資料
+                {t('Export')}
               </Button>
               <Button
                 icon="download"
                 onClick={this.handleImportModalVisible}
                 style={styles.ml15}
                 actionTypes={FORM_FIELDS.READABLE}>
-                匯入資料
+                {t('Import')}
               </Button>
             </Col>
             <Col span={8} style={{ ...styles.textRight, ...styles.floatRight }}>
@@ -349,39 +348,39 @@ class CardList extends PureComponent {
                 style={styles.mr12}
                 onClick={this.handleNewModalVisible}
                 actionTypes={FORM_FIELDS.EDITABLE}>
-                新增裝置
+                {t('Add Bracelet')}
               </Button>
               <Button
                 onClick={this.handleBatchModalVisible}
                 actionTypes={FORM_FIELDS.EDITABLE}>
-                批次新增
+                {t('Batch Bracelet')}
               </Button>
             </Col>
           </Row>
           <div style={{ ...styles.mb15, ...styles.mt30, display: 'flex' }}>
             <div style={{ width: 350 }}>
               <Search
-                placeholder="搜尋裝置資料"
+                placeholder={t('all:搜尋裝置資料')}
                 addonBefore={
                   <Select
                     defaultValue={searchType}
                     onChange={this.handleSearchTypeChange}
                     style={{ width: 100 }}>
-                    <Option value="input">裝置號</Option>
-                    <Option value="name">姓名</Option>
-                    <Option value="identityId">身分證字號</Option>
-                    <Option value="mobile">手機號碼</Option>
+                    <Option value="input">{t('all:Bracelet number')}</Option>
+                    <Option value="name">{t('all:Name')}</Option>
+                    <Option value="identityId">{t('all:ID')}</Option>
+                    <Option value="mobile">{t('all:Phone number')}</Option>
                   </Select>
                 }
                 onSearch={this.handleSearch}
               />
             </div>
             <div>
-              區域
+              {t('all:Region')}
               <Select
                 onChange={this.handleRegionChange}
                 style={{ width: 100, marginLeft: 10 }}>
-                {regions.map(i => {
+                {regions.map((i) => {
                   return (
                     <Option key={i.id} value={i.id}>
                       {i.name}
@@ -400,7 +399,7 @@ class CardList extends PureComponent {
             pagination={pagination}
             loading={isLoading}
             onChange={this.handleTableChange}
-            locale={{ emptyText: '沒有資料。' }}
+            locale={{ emptyText: t('all:no data') }}
           />
           {newModalVisible && (
             <NewCardModal
@@ -447,4 +446,4 @@ class CardList extends PureComponent {
   }
 }
 
-export default CardList;
+export default withI18next(['all', 'menu'])(CardList);

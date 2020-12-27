@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { pathOr, join, map, filter, compose } from 'ramda';
+import { pathOr, join, map, filter, compose, propEq, allPass } from 'ramda';
 import moment from 'moment';
 import styled from 'styled-components';
 import { Modal, Form, Input, Row, Col, Button, Select } from 'antd';
@@ -17,6 +17,7 @@ import {
 import DatePicker from './DatePicker';
 import MapModal from './MapModal';
 import { RequiredMark } from './style';
+import { withI18next } from 'locales/withI18next';
 
 const { TextArea } = Input;
 const Option = Select.Option;
@@ -49,7 +50,7 @@ const styles = {
   w85: { width: '85%' },
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   cardInfo: state.cards.cardInfo,
   regions: state.cards.regions,
 });
@@ -60,10 +61,7 @@ const mapDispatchToProps = {
 };
 
 @Form.create()
-@connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)
+@connect(mapStateToProps, mapDispatchToProps)
 class EditCardModal extends PureComponent {
   constructor(props) {
     super(props);
@@ -114,10 +112,10 @@ class EditCardModal extends PureComponent {
   };
 
   handleDelete = () => {
-    const { card, onClose, deleteCard } = this.props;
+    const { t, card, onClose, deleteCard } = this.props;
 
     confirm({
-      title: `確定要刪除卡片 ${card.uuid}`,
+      title: t('all:確定要刪除卡片', { id: card.uuid }),
       onOk() {
         deleteCard(card.id);
         onClose();
@@ -133,6 +131,7 @@ class EditCardModal extends PureComponent {
 
   render() {
     const {
+      t,
       card,
       regions,
       cardInfo: {
@@ -154,23 +153,23 @@ class EditCardModal extends PureComponent {
         type="danger"
         style={{ float: 'left' }}
         onClick={this.handleDelete}>
-        刪除卡片
+        {t('all:Delete')}
       </Button>,
       <Button key="cancel" onClick={onClose}>
-        取消
+        {t('all:Cancel')}
       </Button>,
       ...(isEditing
         ? [
             <Button key="cancle-edit" onClick={this.handleCancelEdit}>
-              取消編輯
+              {t('all:Cancel')}
             </Button>,
             <Button key="save" type="primary" onClick={this.handleSave}>
-              確認
+              {t('all:Ok')}
             </Button>,
           ]
         : [
             <Button key="enable-edit" type="primary" onClick={this.handleEdit}>
-              編輯
+              {t('all:Edit')}
             </Button>,
           ]),
     ];
@@ -178,7 +177,7 @@ class EditCardModal extends PureComponent {
     return (
       <Modal
         width="75%"
-        title="編輯卡片"
+        title={t('all:Edit')}
         visible={true}
         onCancel={onClose}
         maskClosable={false}
@@ -199,20 +198,20 @@ class EditCardModal extends PureComponent {
           </RowM>
 
           <RowM>
-            <ColLabel span={3}>電量</ColLabel>
+            <ColLabel span={3}>{t('all:Battery')}</ColLabel>
             <ColContent span={8}>{card.battery}</ColContent>
-            <ColLabel span={3}>使用狀態</ColLabel>
+            <ColLabel span={3}>{t('all:Status')}</ColLabel>
             <ColContent span={4}>
               {UsageStatus[String(card.usageStatus)]}
             </ColContent>
-            <ColLabel span={3}>綁定狀態</ColLabel>
+            <ColLabel span={3}>{t('all:Account connection')}</ColLabel>
             <ColContent span={3}>{Status[String(card.status)]}</ColContent>
           </RowM>
 
           <RowM>
             <ColLabel span={3}>
               <RequiredMark />
-              使用期限
+              {t('all:Expiration date')}
             </ColLabel>
             <Col span={isEditing ? 5 : 4}>
               <FormItem style={{ marginLeft: 25 }}>
@@ -239,7 +238,7 @@ class EditCardModal extends PureComponent {
                   width: '100%',
                   textAlign: 'center',
                 }}>
-                至
+                {t('all:To')}
               </span>
             </Col>
             <Col span={isEditing ? 5 : 3}>
@@ -261,7 +260,7 @@ class EditCardModal extends PureComponent {
               </FormItem>
             </Col>
             <ColLabel span={3} offset={isEditing ? 4 : 0}>
-              區域
+              {t('all:Region')}
             </ColLabel>
             <ColContent span={4}>
               <FormItem>
@@ -271,7 +270,7 @@ class EditCardModal extends PureComponent {
                     initialValue: card.regionInfoId,
                   })(
                     <Select style={{ width: 110 }}>
-                      {regions.map(i => {
+                      {regions.map((i) => {
                         return (
                           <Option key={i.id} value={i.id}>
                             {i.name}
@@ -284,17 +283,17 @@ class EditCardModal extends PureComponent {
             </ColContent>
           </RowM>
           <RowM>
-            <ColLabel span={3}>受管理者姓名</ColLabel>
+            <ColLabel span={3}>{t('all:Name')}</ColLabel>
             <ColContent span={3}>
               <FormItem>
                 {!isEditing && cardOwner && cardOwner.name}
                 {isEditing &&
                   getFieldDecorator('cardOwner.name', {
                     initialValue: cardOwner && cardOwner.name,
-                  })(<Input style={styles.w85} placeholder="姓名" />)}
+                  })(<Input style={styles.w85} placeholder={t('all:Name')} />)}
               </FormItem>
             </ColContent>
-            <ColLabel span={2}>性別</ColLabel>
+            <ColLabel span={2}>{t('all:Sex')}</ColLabel>
             <ColContent span={3}>
               <FormItem style={styles.w85}>
                 {!isEditing && cardOwner && Sex[cardOwner.sex]}
@@ -302,14 +301,14 @@ class EditCardModal extends PureComponent {
                   getFieldDecorator('cardOwner.sex', {
                     initialValue: cardOwner ? String(cardOwner.sex) : undefined,
                   })(
-                    <Select placeholder="請選擇性別" allowClear>
-                      <Option value="0">女性</Option>
-                      <Option value="1">男性</Option>
+                    <Select placeholder={t('all:select')} allowClear>
+                      <Option value="0">{t('all:Female')}</Option>
+                      <Option value="1">{t('all:Male')}</Option>
                     </Select>,
                   )}
               </FormItem>
             </ColContent>
-            <ColLabel span={3}>出生日期</ColLabel>
+            <ColLabel span={3}>{t('all:Birthday')}</ColLabel>
             <ColContent span={4}>
               <FormItem>
                 {!isEditing && cardOwner && cardOwner.birthday}
@@ -328,7 +327,7 @@ class EditCardModal extends PureComponent {
                   )}
               </FormItem>
             </ColContent>
-            <ColLabel span={3}>身分證字號</ColLabel>
+            <ColLabel span={3}>{t('all:ID')}</ColLabel>
             <ColContent span={3}>
               <FormItem>
                 {!isEditing && cardOwner && cardOwner.identityId}
@@ -336,12 +335,12 @@ class EditCardModal extends PureComponent {
                   getFieldDecorator('cardOwner.identityId', {
                     rules: [{ validator: validateIdentityId }],
                     initialValue: cardOwner && cardOwner.identityId,
-                  })(<Input style={styles.w85} placeholder="身分證字號" />)}
+                  })(<Input style={styles.w85} placeholder={t('all:ID')} />)}
               </FormItem>
             </ColContent>
           </RowM>
           <RowM>
-            <ColLabel span={3}>聯絡電話</ColLabel>
+            <ColLabel span={3}>{t('all:Phone number')}</ColLabel>
             <ColContent span={21}>
               <FormItem>
                 {!isEditing && cardOwner && cardOwner.contactMobile}
@@ -349,48 +348,77 @@ class EditCardModal extends PureComponent {
                   getFieldDecorator('cardOwner.contactMobile', {
                     rules: [{ validator: validateMobile }],
                     initialValue: cardOwner && cardOwner.contactMobile,
-                  })(<Input style={{ width: 300 }} placeholder="聯絡電話" />)}
+                  })(
+                    <Input
+                      style={{ width: 300 }}
+                      placeholder={t('all:Phone number')}
+                    />,
+                  )}
               </FormItem>
             </ColContent>
           </RowM>
           <RowM>
-            <ColLabel span={3}>主管理帳號</ColLabel>
+            <ColLabel span={3}>{t('all:Main monitor account')}</ColLabel>
             <ColContent span={21}>
               <FormItem>
-                {!isEditing && card.memberId}
-                {isEditing &&
+                {!isEditing ? (
+                  <React.Fragment>
+                    {card.memberId}
+                    <span style={{ marginLeft: 30 }}>
+                      Address：
+                      {card.county ||
+                      card.district ||
+                      card.village ||
+                      card.address ? (
+                        <React.Fragment>
+                          {card.district}
+                          {card.village}
+                          {card.address}
+                        </React.Fragment>
+                      ) : (
+                        'None'
+                      )}
+                    </span>
+                  </React.Fragment>
+                ) : (
                   getFieldDecorator('memberId', {
                     initialValue: card.memberId,
-                  })(<Input style={{ width: 300 }} placeholder="主管理帳號" />)}
+                  })(
+                    <Input
+                      style={{ width: 300 }}
+                      placeholder={t('all:Main monitor account')}
+                    />,
+                  )
+                )}
               </FormItem>
             </ColContent>
           </RowM>
 
           <RowM>
-            <ColLabel span={3}>副管理帳號</ColLabel>
+            <ColLabel span={3}>{t('all:Assisted monitor account')}</ColLabel>
             <ColContent span={21}>
               <FormItem>
                 {compose(
                   join(', '),
                   map(pathOr('', ['memberInfo', 'memberId'])),
-                  filter(x => x.type === 2),
+                  filter((x) => x.type === 2),
                   pathOr([], ['cardAuthorities']),
                 )(cardInfo)}
               </FormItem>
             </ColContent>
           </RowM>
           <RowM>
-            <ColLabel span={3}>聯絡人 1 (選填)</ColLabel>
+            <ColLabel span={3}>{t('all:Contact1(option)')}</ColLabel>
             <ColContent span={3}>
               <FormItem>
                 {!isEditing && contact1 && contact1.name}
                 {isEditing &&
                   getFieldDecorator('contact1.name', {
                     initialValue: contact1 && contact1.name,
-                  })(<Input style={styles.w85} placeholder="姓名" />)}
+                  })(<Input style={styles.w85} placeholder={t('all:Name')} />)}
               </FormItem>
             </ColContent>
-            <ColLabel span={2}>性別</ColLabel>
+            <ColLabel span={2}>{t('all:Sex')}</ColLabel>
             <ColContent span={3}>
               <FormItem style={styles.w85}>
                 {!isEditing && contact1 && Sex[contact1.sex]}
@@ -398,24 +426,29 @@ class EditCardModal extends PureComponent {
                   getFieldDecorator('contact1.sex', {
                     initialValue: contact1 ? String(contact1.sex) : undefined,
                   })(
-                    <Select placeholder="請選擇性別" allowClear>
-                      <Option value="0">女性</Option>
-                      <Option value="1">男性</Option>
+                    <Select placeholder={t('all:select')} allowClear>
+                      <Option value="0">{t('all:Female')}</Option>
+                      <Option value="1">{t('all:Male')}</Option>
                     </Select>,
                   )}
               </FormItem>
             </ColContent>
-            <ColLabel span={3}>關係</ColLabel>
+            <ColLabel span={3}>{t('all:Relationship')}</ColLabel>
             <ColContent span={4}>
               <FormItem>
                 {!isEditing && contact1 && contact1.relationship}
                 {isEditing &&
                   getFieldDecorator('contact1.relationship', {
                     initialValue: contact1 && contact1.relationship,
-                  })(<Input style={styles.w85} placeholder="關係" />)}
+                  })(
+                    <Input
+                      style={styles.w85}
+                      placeholder={t('all:Relationship')}
+                    />,
+                  )}
               </FormItem>
             </ColContent>
-            <ColLabel span={3}>聯絡電話</ColLabel>
+            <ColLabel span={3}>{t('all:Phone number')}</ColLabel>
             <ColContent span={3}>
               <FormItem>
                 {!isEditing && contact1 && contact1.contactMobile}
@@ -423,22 +456,27 @@ class EditCardModal extends PureComponent {
                   getFieldDecorator('contact1.contactMobile', {
                     rules: [{ validator: validateMobile }],
                     initialValue: contact1 && contact1.contactMobile,
-                  })(<Input style={styles.w85} placeholder="聯絡電話" />)}
+                  })(
+                    <Input
+                      style={styles.w85}
+                      placeholder={t('all:Phone number')}
+                    />,
+                  )}
               </FormItem>
             </ColContent>
           </RowM>
           <RowM>
-            <ColLabel span={3}>聯絡人 2 (選填)</ColLabel>
+            <ColLabel span={3}>{t('all:Contact2(option)')}</ColLabel>
             <ColContent span={3}>
               <FormItem>
                 {!isEditing && contact2 && contact2.name}
                 {isEditing &&
                   getFieldDecorator('contact2.name', {
                     initialValue: contact2 && contact2.name,
-                  })(<Input style={styles.w85} placeholder="姓名" />)}
+                  })(<Input style={styles.w85} placeholder={t('all:Name')} />)}
               </FormItem>
             </ColContent>
-            <ColLabel span={2}>性別</ColLabel>
+            <ColLabel span={2}>{t('all:Sex')}</ColLabel>
             <ColContent span={3}>
               <FormItem style={styles.w85}>
                 {!isEditing && contact2 && Sex[contact2.sex]}
@@ -446,25 +484,30 @@ class EditCardModal extends PureComponent {
                   getFieldDecorator('contact2.sex', {
                     initialValue: contact2 ? String(contact2.sex) : undefined,
                   })(
-                    <Select placeholder="請選擇性別" allowClear>
+                    <Select placeholder={t('all:select')} allowClear>
                       <Option value="-1"></Option>
-                      <Option value="0">女性</Option>
-                      <Option value="1">男性</Option>
+                      <Option value="0">{t('all:Female')}</Option>
+                      <Option value="1">{t('all:Male')}</Option>
                     </Select>,
                   )}
               </FormItem>
             </ColContent>
-            <ColLabel span={3}>關係</ColLabel>
+            <ColLabel span={3}>{t('all:Relationship')}</ColLabel>
             <ColContent span={4}>
               <FormItem>
                 {!isEditing && contact2 && contact2.relationship}
                 {isEditing &&
                   getFieldDecorator('contact2.relationship', {
                     initialValue: contact2 && contact2.relationship,
-                  })(<Input style={styles.w85} placeholder="關係" />)}
+                  })(
+                    <Input
+                      style={styles.w85}
+                      placeholder={t('all:Relationship')}
+                    />,
+                  )}
               </FormItem>
             </ColContent>
-            <ColLabel span={3}>聯絡電話</ColLabel>
+            <ColLabel span={3}>{t('all:Phone number')}</ColLabel>
             <ColContent span={3}>
               <FormItem>
                 {!isEditing && contact2 && contact2.contactMobile}
@@ -472,25 +515,34 @@ class EditCardModal extends PureComponent {
                   getFieldDecorator('contact2.contactMobile', {
                     rules: [{ validator: validateMobile }],
                     initialValue: contact2 && contact2.contactMobile,
-                  })(<Input style={styles.w85} placeholder="聯絡電話" />)}
+                  })(
+                    <Input
+                      style={styles.w85}
+                      placeholder={t('all:Phone number')}
+                    />,
+                  )}
               </FormItem>
             </ColContent>
           </RowM>
           <RowM>
-            <ColLabel span={3}>位置</ColLabel>
+            <ColLabel span={3}>{t('all:Trace')}</ColLabel>
             <ColContent span={21}>
-              <Button onClick={this.handleMapModalVisible}>動態搜尋</Button>
+              <Button onClick={this.handleMapModalVisible}>
+                {t('all:Search trace')}
+              </Button>
             </ColContent>
           </RowM>
 
           <RowM>
-            <ColLabel span={3}>歷史紀錄</ColLabel>
+            <ColLabel span={3}>{t('all:Trace')}</ColLabel>
             <ColContent span={21}>
-              <Button onClick={this.handleMapModalVisible}>查看紀錄</Button>
+              <Button onClick={this.handleMapModalVisible}>
+                {t('all:Search trace')}
+              </Button>
             </ColContent>
           </RowM>
           <RowM>
-            <ColLabel span={3}>備註</ColLabel>
+            <ColLabel span={3}>{t('all:Memo')}</ColLabel>
             <ColContent span={21}>
               <FormItem>
                 {!isEditing && remark}
@@ -511,4 +563,4 @@ class EditCardModal extends PureComponent {
   }
 }
 
-export default EditCardModal;
+export default withI18next(['all'])(EditCardModal);

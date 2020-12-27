@@ -15,4 +15,4 @@
 
 7. `cd ~/dplus_malaysiaDemo`
 8. `sudo -s`
-9. `source run_admin.sh`
+9. `source run_admin_malaysia.sh`

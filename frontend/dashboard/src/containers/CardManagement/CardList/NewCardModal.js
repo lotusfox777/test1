@@ -9,6 +9,7 @@ import { addCards } from 'reducers/cards';
 import DatePicker from './DatePicker';
 import { validateMobile, validateIdentityId } from './validation';
 import { RequiredMark } from './style';
+import { withI18next } from 'locales/withI18next';
 
 const Option = Select.Option;
 
@@ -78,6 +79,7 @@ class NewCardModal extends Component {
 
   render() {
     const {
+      t,
       regions,
       form: { getFieldDecorator },
       onClose,
@@ -88,15 +90,15 @@ class NewCardModal extends Component {
       <Modal
         width={800}
         bodyStyle={{ paddingLeft: 48, paddingRight: 48 }}
-        title="新增卡片"
+        title={t('all:Add')}
         visible={true}
         onOk={this.handleSave}
         confirmLoading={loading}
         onCancel={onClose}
         maskClosable={false}
         keyboard={false}
-        okText="確認"
-        cancelText="取消">
+        okText={t('all:Ok')}
+        cancelText={t('all:Cancel')}>
         <Form>
           <H3>卡片資料</H3>
           <Row gutter={[16, 0]}>
@@ -110,7 +112,7 @@ class NewCardModal extends Component {
                 label="ID"
                 colon={false}>
                 {getFieldDecorator('uuid', {
-                  rules: [{ required: true, message: '此欄位必填' }],
+                  rules: [{ required: true, message: t('all:Required') }],
                 })(<Input placeholder="請輸入卡號" style={styles.w100} />)}
               </FormItem>
             </Col>
@@ -124,7 +126,7 @@ class NewCardModal extends Component {
                 label="Major"
                 colon={false}>
                 {getFieldDecorator('major', {
-                  rules: [{ required: true, message: '此欄位必填' }],
+                  rules: [{ required: true, message: t('all:Required') }],
                 })(<Input />)}
               </FormItem>
             </Col>
@@ -138,7 +140,7 @@ class NewCardModal extends Component {
                 label="Minor"
                 colon={false}>
                 {getFieldDecorator('minor', {
-                  rules: [{ required: true, message: '此欄位必填' }],
+                  rules: [{ required: true, message: t('all:Required') }],
                 })(<Input />)}
               </FormItem>
             </Col>
@@ -151,7 +153,7 @@ class NewCardModal extends Component {
                   labelCol: { span: 7 },
                   wrapperCol: { span: 16 },
                 }}
-                label="使用期限"
+                label={t('all:Expiration date')}
                 colon={false}
                 style={{ marginBottom: '10px' }}>
                 {getFieldDecorator('enableTime', {
@@ -166,7 +168,7 @@ class NewCardModal extends Component {
               </FormItem>
             </Col>
             <Col span={1} offset={1}>
-              <span style={{ marginRight: 5 }}>至</span>
+              <span style={{ marginRight: 5 }}>{t('all:To')}</span>
               <RequiredMark />
             </Col>
             <Col xs={24} sm={7}>
@@ -190,13 +192,13 @@ class NewCardModal extends Component {
             </Col>
             <Col span={6}>
               <FormItem
-                label="區域"
+                label={t('all:Region')}
                 colon={false}
                 labelCol={{ span: 5 }}
                 wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('regionInfoId')(
                   <Select style={{ width: 110 }}>
-                    {regions.map(i => {
+                    {regions.map((i) => {
                       return (
                         <Option key={i.id} value={i.id}>
                           {i.name}
@@ -218,10 +220,10 @@ class NewCardModal extends Component {
                   labelCol: { span: 4 },
                   wrapperCol: { span: 18 },
                 }}
-                label="姓名"
+                label={t('all:Name')}
                 colon={false}>
                 {getFieldDecorator('cardOwner.name')(
-                  <Input placeholder="請輸入姓名" style={styles.w100} />,
+                  <Input placeholder={t('all:Name')} style={styles.w100} />,
                 )}
               </FormItem>
             </Col>
@@ -232,12 +234,12 @@ class NewCardModal extends Component {
                   labelCol: { span: 6 },
                   wrapperCol: { span: 16 },
                 }}
-                label="性別"
+                label={t('all:Sex')}
                 colon={false}>
                 {getFieldDecorator('cardOwner.sex')(
-                  <Select placeholder="請選擇性別" allowClear>
-                    <Option value="0">女性</Option>
-                    <Option value="1">男性</Option>
+                  <Select placeholder={t('all:select')} allowClear>
+                    <Option value="0">{t('all:Female')}</Option>
+                    <Option value="1">{t('all:Male')}</Option>
                   </Select>,
                 )}
               </FormItem>
@@ -249,7 +251,7 @@ class NewCardModal extends Component {
                   labelCol: { span: 5 },
                   wrapperCol: { span: 18 },
                 }}
-                label="生日"
+                label={t('all:Birthday')}
                 colon={false}>
                 {getFieldDecorator('cardOwner.birthdayTime')(
                   <DatePicker
@@ -269,12 +271,12 @@ class NewCardModal extends Component {
                   labelCol: { span: 7 },
                   wrapperCol: { span: 14 },
                 }}
-                label="身分證字號"
+                label={t('all:ID')}
                 colon={false}
                 style={{ marginBottom: '10px' }}>
                 {getFieldDecorator('cardOwner.identityId', {
                   rules: [{ validator: validateIdentityId }],
-                })(<Input placeholder="請輸入身分證字號" />)}
+                })(<Input placeholder={t('all:ID')} />)}
               </FormItem>
             </Col>
             <Col span={10} offset={3}>
@@ -284,21 +286,21 @@ class NewCardModal extends Component {
                   labelCol: { span: 6 },
                   wrapperCol: { span: 16 },
                 }}
-                label="聯絡電話"
+                label={t('all:Phone number')}
                 colon={false}>
                 {getFieldDecorator('cardOwner.contactMobile', {
                   rules: [{ validator: validateMobile }],
-                })(<Input placeholder="請輸入聯絡電話" />)}
+                })(<Input placeholder={t('all:Phone number')} />)}
               </FormItem>
             </Col>
           </Row>
           <HR />
           <H3>
             <Col span={8} style={{ marginBottom: '1.5em' }}>
-              <span>聯絡人1(選填)</span>
+              <span>{t('all:Contact1(option)')}</span>
             </Col>
             <Col span={8} offset={5} style={{ marginBottom: '1.5em' }}>
-              <span>聯絡人2(選填)</span>
+              <span>{t('all:Contact2(option)')}</span>
             </Col>
           </H3>
           <Row>
@@ -306,10 +308,10 @@ class NewCardModal extends Component {
               <FormItem
                 {...formItemLayout}
                 wrapperCol={{ span: 14 }}
-                label="姓名"
+                label={t('all:Name')}
                 colon={false}>
                 {getFieldDecorator('cardContact1.name')(
-                  <Input placeholder="請輸入姓名" />,
+                  <Input placeholder={t('all:Name')} />,
                 )}
               </FormItem>
             </Col>
@@ -317,31 +319,31 @@ class NewCardModal extends Component {
               <FormItem
                 {...formItemLayout}
                 wrapperCol={{ span: 14 }}
-                label="姓名"
+                label={t('all:Name')}
                 colon={false}>
                 {getFieldDecorator('cardContact2.name')(
-                  <Input placeholder="請輸入姓名" />,
+                  <Input placeholder={t('all:Name')} />,
                 )}
               </FormItem>
             </Col>
           </Row>
           <Row>
             <Col span={13}>
-              <FormItem {...formItemLayout} label="性別" colon={false}>
+              <FormItem {...formItemLayout} label={t('all:Sex')} colon={false}>
                 {getFieldDecorator('cardContact1.sex')(
-                  <Select placeholder="請選擇性別" allowClear>
-                    <Option value="0">女性</Option>
-                    <Option value="1">男性</Option>
+                  <Select placeholder={t('all:select')} allowClear>
+                    <Option value="0">{t('all:Female')}</Option>
+                    <Option value="1">{t('all:Male')}</Option>
                   </Select>,
                 )}
               </FormItem>
             </Col>
             <Col span={11}>
-              <FormItem {...formItemLayout} label="性別" colon={false}>
+              <FormItem {...formItemLayout} label={t('all:Sex')} colon={false}>
                 {getFieldDecorator('cardContact2.sex')(
-                  <Select placeholder="請選擇性別" allowClear>
-                    <Option value="0">女性</Option>
-                    <Option value="1">男性</Option>
+                  <Select placeholder={t('all:select')} allowClear>
+                    <Option value="0">{t('all:Female')}</Option>
+                    <Option value="1">{t('all:Male')}</Option>
                   </Select>,
                 )}
               </FormItem>
@@ -349,16 +351,22 @@ class NewCardModal extends Component {
           </Row>
           <Row>
             <Col span={13}>
-              <FormItem {...formItemLayout} label="關係" colon={false}>
+              <FormItem
+                {...formItemLayout}
+                label={t('all:Relationship')}
+                colon={false}>
                 {getFieldDecorator('cardContact1.relationship')(
-                  <Input placeholder="請輸入關係" />,
+                  <Input placeholder={t('all:Relationship')} />,
                 )}
               </FormItem>
             </Col>
             <Col span={11}>
-              <FormItem {...formItemLayout} label="關係" colon={false}>
+              <FormItem
+                {...formItemLayout}
+                label={t('all:Relationship')}
+                colon={false}>
                 {getFieldDecorator('cardContact2.relationship')(
-                  <Input placeholder="請輸入關係" />,
+                  <Input placeholder={t('all:Relationship')} />,
                 )}
               </FormItem>
             </Col>
@@ -368,10 +376,10 @@ class NewCardModal extends Component {
               <FormItem
                 {...formItemLayout}
                 wrapperCol={{ span: 14 }}
-                label="聯絡電話"
+                label={t('all:Phone number')}
                 colon={false}>
                 {getFieldDecorator('cardContact1.contactMobile')(
-                  <Input placeholder="請輸入聯絡電話" />,
+                  <Input placeholder={t('all:Phone number')} />,
                 )}
               </FormItem>
             </Col>
@@ -380,10 +388,10 @@ class NewCardModal extends Component {
                 {...formItemLayout}
                 labelCol={{ span: 6 }}
                 wrapperCol={{ span: 14 }}
-                label="聯絡電話"
+                label={t('all:Phone number')}
                 colon={false}>
                 {getFieldDecorator('cardContact2.contactMobile')(
-                  <Input placeholder="請輸入聯絡電話" />,
+                  <Input placeholder={t('all:Phone number')} />,
                 )}
               </FormItem>
             </Col>
@@ -394,7 +402,7 @@ class NewCardModal extends Component {
   }
 }
 
-const mapStateToProps = state => ({ loading: state.cards.isLoading });
+const mapStateToProps = (state) => ({ loading: state.cards.isLoading });
 
 const mapDispatchToProps = {
   addCards,
@@ -402,8 +410,6 @@ const mapDispatchToProps = {
 
 export default compose(
   Form.create(),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
+  withI18next(),
 )(NewCardModal);

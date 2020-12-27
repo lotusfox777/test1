@@ -7,6 +7,7 @@ import { addCards } from 'reducers/cards';
 import DatePicker from './DatePicker';
 import { validateMobile, validateIdentityId } from './validation';
 import { RequiredMark } from './style';
+import { withI18next } from 'locales/withI18next';
 
 const Option = Select.Option;
 const confirm = Modal.confirm;
@@ -44,18 +45,18 @@ const getCardValue = ({ idx, fieldName, fields = [], values }) => {
       relationship: pathOr(
         undefined,
         ['cards', idx, fieldName, 'relationship'],
-        values
+        values,
       ),
       contactMobile: pathOr(
         undefined,
         ['cards', idx, fieldName, 'contactMobile'],
-        values
+        values,
       ),
       ...Object.assign(
         {},
-        ...fields.map(field => ({
+        ...fields.map((field) => ({
           [field]: pathOr(undefined, ['cards', idx, fieldName, field], values),
-        }))
+        })),
       ),
     },
   };
@@ -137,6 +138,7 @@ class BatchCardModal extends Component {
 
   renderCards() {
     const {
+      t,
       regions,
       form: { getFieldDecorator },
     } = this.props;
@@ -158,7 +160,7 @@ class BatchCardModal extends Component {
               <FormItem>
                 <RequiredMark />
                 {getFieldDecorator(`cards[${idx}].major`, {
-                  rules: [{ required: true, message: '此欄位必填' }],
+                  rules: [{ required: true, message: t('all:Required') }],
                 })(<Input placeholder="Major" style={{ width: '90%' }} />)}
               </FormItem>
             </Col>
@@ -166,7 +168,7 @@ class BatchCardModal extends Component {
               <FormItem>
                 <RequiredMark />
                 {getFieldDecorator(`cards[${idx}].minor`, {
-                  rules: [{ required: true, message: '此欄位必填' }],
+                  rules: [{ required: true, message: t('all:Required') }],
                 })(<Input placeholder="Minor" style={{ width: '90%' }} />)}
               </FormItem>
             </Col>
@@ -181,7 +183,7 @@ class BatchCardModal extends Component {
                     showTime={{ format: 'HH:mm' }}
                     format="YYYY-MM-DD  HH:mm"
                     placeholder="使用期限起"
-                  />
+                  />,
                 )}
               </FormItem>
             </Col>
@@ -192,7 +194,7 @@ class BatchCardModal extends Component {
                   width: '100%',
                   textAlign: 'center',
                 }}>
-                至
+                {t('all:To')}
               </span>
             </Col>
             <Col span={5}>
@@ -206,7 +208,7 @@ class BatchCardModal extends Component {
                     showTime={{ format: 'HH:mm' }}
                     format="YYYY-MM-DD  HH:mm"
                     placeholder="使用期限迄"
-                  />
+                  />,
                 )}
               </FormItem>
             </Col>
@@ -218,17 +220,20 @@ class BatchCardModal extends Component {
             <Col span={4}>
               <FormItem>
                 {getFieldDecorator(`cards[${idx}].cardOwner.name`)(
-                  <Input placeholder="受管理者姓名" style={{ width: '90%' }} />
+                  <Input
+                    placeholder={t('all:Name')}
+                    style={{ width: '90%' }}
+                  />,
                 )}
               </FormItem>
             </Col>
             <Col span={3}>
               <FormItem>
                 {getFieldDecorator(`cards[${idx}].cardOwner.sex`)(
-                  <Select placeholder="性別" allowClear>
-                    <Option value="0">女性</Option>
-                    <Option value="1">男性</Option>
-                  </Select>
+                  <Select placeholder={t('all:select')} allowClear>
+                    <Option value="0">{t('all:Female')}</Option>
+                    <Option value="1">{t('all:Male')}</Option>
+                  </Select>,
                 )}
               </FormItem>
             </Col>
@@ -238,23 +243,23 @@ class BatchCardModal extends Component {
                   <DatePicker
                     taiwanCalendar
                     format="tYY-MM-DD"
-                    placeholder="生日 yyy-mm-dd"
-                  />
+                    placeholder={`${t('all:Birthday')} yyy-mm-dd`}
+                  />,
                 )}
               </FormItem>
             </Col>
             <Col span={2}>
               <FormItem>
                 {getFieldDecorator(`cards[${idx}].regionInfoId`)(
-                  <Select placeholder="區域">
-                    {regions.map(i => {
+                  <Select placeholder={t('all:Region')}>
+                    {regions.map((i) => {
                       return (
                         <Option key={i.id} value={i.id}>
                           {i.name}
                         </Option>
                       );
                     })}
-                  </Select>
+                  </Select>,
                 )}
               </FormItem>
             </Col>
@@ -262,35 +267,47 @@ class BatchCardModal extends Component {
               <FormItem>
                 {getFieldDecorator(`cards[${idx}].cardOwner.identityId`, {
                   rules: [{ validator: validateIdentityId }],
-                })(<Input placeholder="身分證字號" style={{ width: '90%' }} />)}
+                })(
+                  <Input placeholder={t('all:ID')} style={{ width: '90%' }} />,
+                )}
               </FormItem>
             </Col>
             <Col span={5}>
               <FormItem>
                 {getFieldDecorator(`cards[${idx}].cardOwner.contactMobile`, {
                   rules: [{ validator: validateMobile }],
-                })(<Input placeholder="聯絡電話" style={{ width: '90%' }} />)}
+                })(
+                  <Input
+                    placeholder={t('all:Phone number')}
+                    style={{ width: '90%' }}
+                  />,
+                )}
               </FormItem>
             </Col>
           </Row>
           <Row type="flex" align="middle" gutter={12} style={{ marginTop: 15 }}>
             <Col span={2}>
-              <H4>聯絡人1</H4>
+              <H4>{t('all:Contact1')}</H4>
             </Col>
             <Col span={4}>
               <FormItem>
                 {getFieldDecorator(`cards[${idx}].cardContact1.name`, {
                   initialValue: '',
-                })(<Input placeholder="聯絡人姓名" style={{ width: '90%' }} />)}
+                })(
+                  <Input
+                    placeholder={t('all:Name')}
+                    style={{ width: '90%' }}
+                  />,
+                )}
               </FormItem>
             </Col>
             <Col span={3}>
               <FormItem>
                 {getFieldDecorator(`cards[${idx}].cardContact1.sex`)(
-                  <Select placeholder="性別" allowClear>
-                    <Option value="0">女性</Option>
-                    <Option value="1">男性</Option>
-                  </Select>
+                  <Select placeholder={t('all:select')} allowClear>
+                    <Option value="0">{t('all:Female')}</Option>
+                    <Option value="1">{t('all:Male')}</Option>
+                  </Select>,
                 )}
               </FormItem>
             </Col>
@@ -298,7 +315,12 @@ class BatchCardModal extends Component {
               <FormItem>
                 {getFieldDecorator(`cards[${idx}].cardContact1.relationship`, {
                   initialValue: '',
-                })(<Input placeholder="關係" style={{ width: '90%' }} />)}
+                })(
+                  <Input
+                    placeholder={t('all:Relationship')}
+                    style={{ width: '90%' }}
+                  />,
+                )}
               </FormItem>
             </Col>
             <Col span={5}>
@@ -306,38 +328,49 @@ class BatchCardModal extends Component {
                 {getFieldDecorator(`cards[${idx}].cardContact1.contactMobile`, {
                   initialValue: '',
                   rules: [{ validator: validateMobile }],
-                })(<Input placeholder="聯絡電話" style={{ width: '90%' }} />)}
+                })(
+                  <Input
+                    placeholder={t('all:Phone number')}
+                    style={{ width: '90%' }}
+                  />,
+                )}
               </FormItem>
             </Col>
             <Col span={2} style={{ marginLeft: -15 }}>
-              <H4>選填</H4>
+              <H4>{t('all:Optional')}</H4>
             </Col>
           </Row>
           <Row type="flex" align="middle" gutter={12} style={{ marginTop: 15 }}>
             <Col span={2}>
-              <H4>聯絡人2</H4>
+              <H4>{t('all:Contact2')}</H4>
             </Col>
             <Col span={4}>
               <FormItem>
                 {getFieldDecorator(`cards[${idx}].cardContact2.name`)(
-                  <Input placeholder="聯絡人姓名" style={{ width: '90%' }} />
+                  <Input
+                    placeholder={t('all:Name')}
+                    style={{ width: '90%' }}
+                  />,
                 )}
               </FormItem>
             </Col>
             <Col span={3}>
               <FormItem>
                 {getFieldDecorator(`cards[${idx}].cardContact2.sex`)(
-                  <Select placeholder="性別" allowClear>
-                    <Option value="0">女性</Option>
-                    <Option value="1">男性</Option>
-                  </Select>
+                  <Select placeholder={t('all:select')} allowClear>
+                    <Option value="0">{t('all:Female')}</Option>
+                    <Option value="1">{t('all:Male')}</Option>
+                  </Select>,
                 )}
               </FormItem>
             </Col>
             <Col span={4}>
               <FormItem>
                 {getFieldDecorator(`cards[${idx}].cardContact2.relationship`)(
-                  <Input placeholder="關係" style={{ width: '90%' }} />
+                  <Input
+                    placeholder={t('all:Relationship')}
+                    style={{ width: '90%' }}
+                  />,
                 )}
               </FormItem>
             </Col>
@@ -345,11 +378,16 @@ class BatchCardModal extends Component {
               <FormItem>
                 {getFieldDecorator(`cards[${idx}].cardContact2.contactMobile`, {
                   rules: [{ validator: validateMobile }],
-                })(<Input placeholder="聯絡電話" style={{ width: '90%' }} />)}
+                })(
+                  <Input
+                    placeholder={t('all:Phone number')}
+                    style={{ width: '90%' }}
+                  />,
+                )}
               </FormItem>
             </Col>
             <Col span={2} style={{ marginLeft: -15 }}>
-              <H4>選填</H4>
+              <H4>{t('all:Optional')}</H4>
             </Col>
           </Row>
         </Block>
@@ -358,21 +396,21 @@ class BatchCardModal extends Component {
   }
 
   render() {
-    const { onClose, loading } = this.props;
+    const { t, onClose, loading } = this.props;
 
     return (
       <Modal
         width="70%"
         style={{ minWidth: 954 }}
-        title="新增卡片"
+        title={t('all:Add')}
         visible={true}
         confirmLoading={loading}
         onOk={this.handleSave}
         onCancel={onClose}
         maskClosable={false}
         keyboard={false}
-        okText="確認"
-        cancelText="取消">
+        okText={t('all:Ok')}
+        cancelText={t('all:Cancel')}>
         <Form>
           {this.renderCards()}
           <Row style={{ marginTop: 15 }}>
@@ -384,7 +422,7 @@ class BatchCardModal extends Component {
   }
 }
 
-const mapStateToProps = state => ({ loading: state.cards.isLoading });
+const mapStateToProps = (state) => ({ loading: state.cards.isLoading });
 
 const mapDispatchToProps = {
   addCards,
@@ -392,8 +430,6 @@ const mapDispatchToProps = {
 
 export default compose(
   Form.create(),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps, mapDispatchToProps),
+  withI18next(),
 )(BatchCardModal);

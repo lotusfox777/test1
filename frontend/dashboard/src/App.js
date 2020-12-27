@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import { withTranslation } from 'react-i18next';
+import { I18nextProvider } from 'react-i18next';
+import initialI18nInstance from 'locales/i18n';
 import PropTypes from 'prop-types';
 import styled, { createGlobalStyle } from 'styled-components';
 import { connect } from 'react-redux';
@@ -119,49 +120,54 @@ class App extends PureComponent {
   };
 
   render() {
+    const { pageProps } = this.props;
+    const { i18n } = pageProps || {};
+
     return (
-      <MarkerProvider>
-        <Layout>
-          <GlobalStyles />
-          <Sider style={fixedSiderStyle}>
-            <SideMenu />
-          </Sider>
-          <StyledRightLayout style={{ overflow: 'auto' }}>
-            <AppHeader />
-            <StyledContent>
-              <Switch>
-                <Route exact path="/" component={Home} />
-                <Route
-                  path={`/${CARD_MANAGEMENT}/:subPath`}
-                  component={CardManagement}
-                />
-                <Route
-                  path={`/${MEMBER_MANAGEMENT}/:subPath`}
-                  component={UserManagement}
-                />
-                <Route
-                  path={`/${DEVICE_MANAGEMENT}/:subPath`}
-                  component={DeviceManagement}
-                />
-                <Route
-                  path={`/${SYSTEM_MANAGEMENT}/:subPath`}
-                  component={SystemManagement}
-                />
-                <Route
-                  path={`/${ASSIST_FINDING_MANAGEMENT}/:subPath`}
-                  component={MissingManagement}
-                />
-                <Route component={NotFound} />
-              </Switch>
-            </StyledContent>
-            <Footer>
-              <p />
-            </Footer>
-          </StyledRightLayout>
-        </Layout>
-      </MarkerProvider>
+      <I18nextProvider i18n={i18n || initialI18nInstance}>
+        <MarkerProvider>
+          <Layout>
+            <GlobalStyles />
+            <Sider style={fixedSiderStyle}>
+              <SideMenu />
+            </Sider>
+            <StyledRightLayout style={{ overflow: 'auto' }}>
+              <AppHeader />
+              <StyledContent>
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  <Route
+                    path={`/${CARD_MANAGEMENT}/:subPath`}
+                    component={CardManagement}
+                  />
+                  <Route
+                    path={`/${MEMBER_MANAGEMENT}/:subPath`}
+                    component={UserManagement}
+                  />
+                  <Route
+                    path={`/${DEVICE_MANAGEMENT}/:subPath`}
+                    component={DeviceManagement}
+                  />
+                  <Route
+                    path={`/${SYSTEM_MANAGEMENT}/:subPath`}
+                    component={SystemManagement}
+                  />
+                  <Route
+                    path={`/${ASSIST_FINDING_MANAGEMENT}/:subPath`}
+                    component={MissingManagement}
+                  />
+                  <Route component={NotFound} />
+                </Switch>
+              </StyledContent>
+              <Footer>
+                <p />
+              </Footer>
+            </StyledRightLayout>
+          </Layout>
+        </MarkerProvider>
+      </I18nextProvider>
     );
   }
 }
 
-export default withTranslation()(App);
+export default App;
