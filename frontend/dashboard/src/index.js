@@ -10,10 +10,11 @@ import zh_TW from 'antd/lib/locale-provider/zh_TW';
 import { unregister } from './registerServiceWorker';
 import configureStore, { history } from './store';
 
+import './locales/i18n';
+
 const store = configureStore();
 
 store.dispatch(loginInit());
-
 
 ReactDOM.render(
   <Provider store={store}>
@@ -25,7 +26,7 @@ ReactDOM.render(
       </ConfigProvider>
     </StoreContext.Provider>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 unregister();

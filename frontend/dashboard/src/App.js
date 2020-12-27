@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import styled, { createGlobalStyle } from 'styled-components';
 import { connect } from 'react-redux';
@@ -55,7 +56,7 @@ const StyledContent = styled(Content)`
   padding-left: 16px;
 `;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isServerError: state.views.isServerError,
   error: state.views.error,
 });
@@ -65,10 +66,7 @@ const mapDispatchToProps = {
 };
 
 @CheckAuth
-@connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)
+@connect(mapStateToProps, mapDispatchToProps)
 class App extends PureComponent {
   static propTypes = {
     isServerError: PropTypes.bool.isRequired,
@@ -79,7 +77,7 @@ class App extends PureComponent {
     document.title = APP_TITLE;
   }
 
-  handleApiRequestError = prevProps => {
+  handleApiRequestError = (prevProps) => {
     const {
       logout,
       error: {
@@ -88,6 +86,7 @@ class App extends PureComponent {
       },
     } = prevProps;
     const {
+      t,
       error: {
         timestamp: currOccurTime,
         status: currStatusCode,
@@ -98,7 +97,7 @@ class App extends PureComponent {
     if (currErrMsg === 'Unauthorized') {
       if (currErrMsg !== prevErrMsg) {
         Modal.error({
-          content: '您的登入已過期，請重新登入',
+          content: t('common:您的登入已過期，請重新登入'),
           zIndex: 1100,
         });
       }
@@ -109,7 +108,7 @@ class App extends PureComponent {
         (currErrMsg === prevErrMsg && currOccurTime - prevOccurTime > 1500))
     ) {
       Modal.error({
-        title: '伺服器錯誤',
+        title: t('common:伺服器錯誤'),
         content: currErrMsg,
       });
     }
@@ -165,4 +164,4 @@ class App extends PureComponent {
   }
 }
 
-export default App;
+export default withTranslation()(App);
