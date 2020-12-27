@@ -1,0 +1,119 @@
+{
+  "timestamp": 1534767244362,
+  "size": 10,
+  "page": 0,
+  "totalPages": 640,
+  "total": 6393,
+  "content": [
+    {
+      "id": 19211,
+      "cardSeq": 14,
+      "cardName": "oo",
+      "guardareaSeq": 13,
+      "guardareaName": "測試守護區域 1",
+      "createTime": 1534766497000,
+      "ufoSeq": 10,
+      "ufoId": "fried chicken",
+      "obsolete": false
+    },
+    {
+      "id": 19209,
+      "cardSeq": 15,
+      "cardName": "oo",
+      "guardareaSeq": 13,
+      "guardareaName": "測試守護區域 2",
+      "createTime": 1534766434000,
+      "ufoSeq": 16,
+      "ufoId": "UFO 00001",
+      "obsolete": false
+    },
+    {
+      "id": 19207,
+      "cardSeq": 16,
+      "cardName": "oo",
+      "guardareaSeq": 13,
+      "guardareaName": "測試守護區域 3",
+      "createTime": 1534766371000,
+      "ufoSeq": 20,
+      "ufoId": "test1",
+      "obsolete": false
+    },
+    {
+      "id": 19204,
+      "cardSeq": 14,
+      "cardName": "oo",
+      "guardareaSeq": 13,
+      "guardareaName": "測試守護區域 1",
+      "createTime": 1534766311000,
+      "ufoSeq": 19,
+      "ufoId": "UFFFFFF",
+      "obsolete": false
+    },
+    {
+      "id": 19201,
+      "cardSeq": 14,
+      "cardName": "oo",
+      "guardareaSeq": 13,
+      "guardareaName": "測試守護區域 1",
+      "createTime": 1534766250000,
+      "ufoSeq": 10,
+      "ufoId": "fried chicken",
+      "obsolete": false
+    },
+    {
+      "id": 19199,
+      "cardSeq": 14,
+      "cardName": "oo",
+      "guardareaSeq": 13,
+      "guardareaName": "測試守護區域 1",
+      "createTime": 1534766187000,
+      "ufoSeq": 12,
+      "ufoId": "KFC",
+      "obsolete": false
+    },
+    {
+      "id": 19196,
+      "cardSeq": 14,
+      "cardName": "oo",
+      "guardareaSeq": 13,
+      "guardareaName": "測試守護區域 1",
+      "createTime": 1534766127000,
+      "ufoSeq": 5,
+      "ufoId": "yoyo ufo 5",
+      "obsolete": false
+    },
+    {
+      "id": 19193,
+      "cardSeq": 14,
+      "cardName": "oo",
+      "guardareaSeq": 13,
+      "guardareaName": "測試守護區域 1",
+      "createTime": 1534766064000,
+      "ufoSeq": 18,
+      "ufoId": "UFFO",
+      "obsolete": false
+    },
+    {
+      "id": 19190,
+      "cardSeq": 14,
+      "cardName": "oo",
+      "guardareaSeq": 13,
+      "guardareaName": "測試守護區域 1",
+      "createTime": 1534766004000,
+      "ufoSeq": 5,
+      "ufoId": "yoyo ufo 5",
+      "obsolete": false
+    },
+    {
+      "id": 19187,
+      "cardSeq": 14,
+      "cardName": "oo",
+      "guardareaSeq": 13,
+      "guardareaName": "測試守護區域 1",
+      "createTime": 1534765941000,
+      "ufoSeq": 20,
+      "ufoId": "test1",
+      "obsolete": false
+    }
+  ]
+}

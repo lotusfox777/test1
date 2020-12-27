@@ -1,0 +1,8 @@
+{
+  "presets": ["react-app"],
+  "plugins": [
+    "transform-decorators-legacy",
+    ["import", { "libraryName": "antd", "style": "css" }],
+    ["styled-components", { "pure": true }]
+  ]
+}

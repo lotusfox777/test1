@@ -1,0 +1,16 @@
+{
+    "timestamp": 1534307316865,
+    "data": {
+        "id": 1,
+        "ufoId": "yoyo ufo 1",
+        "rfPower": null,
+        "position": null,
+        "status": 1,
+        "longitude": 45.1234,
+        "latitude": 44.1234,
+        "createTime": 1532620384000,
+        "updateTime": 1532620384000,
+        "remark": "string"
+    },
+    "errorMsg": null
+}

@@ -1,0 +1,29 @@
+{
+    "timestamp": 1534305332822,
+    "data": {
+        "id": 14,
+        "cardId": "1542",
+        "cardName": "oo",
+        "colorCode": "#f5b243",
+        "avatar": "~/data/dplus/card/99/bb/99bb0389d2aabb5371df1de25edf1b17.jpeg",
+        "status": 1,
+        "createTime": 1532312322000,
+        "updateTime": 1532312322000,
+        "enableTime": 1532230350000,
+        "expireTime": 1563766660000,
+        "cardAuthorities": [{
+            "id": 61,
+            "type": 2,
+            "status": 0,
+            "memberInfo": {
+                "id": 16,
+                "memberId": "chloehuang@gmail.com",
+                "profileImg": null,
+                "email": "chloehuang@gmail.com",
+                "name": "chloehuang@gmail.com"
+            }
+        }],
+        "guardareaList": []
+    },
+    "errorMsg": null
+}

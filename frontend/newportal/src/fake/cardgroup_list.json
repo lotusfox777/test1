@@ -1,0 +1,22 @@
+{
+  "timestamp": 1534306712445,
+  "size": 10,
+  "page": 0,
+  "totalPages": 1,
+  "total": 3,
+  "content": [
+    {
+      "id": 1,
+      "groupName": "群組 01"
+    },
+    {
+      "id": 2,
+      "groupName": "群組 02"
+    },
+    {
+      "id": 3,
+      "groupName": "群組 03"
+    }
+  ],
+  "errorMsg": null
+}
