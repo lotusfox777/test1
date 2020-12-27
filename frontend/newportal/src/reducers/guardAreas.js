@@ -17,6 +17,7 @@ import {
   deleteGuardAreaUFOsAPI,
   getGuardAreaAPI,
   listNotifyAPI,
+  unreadNotifyAPI
 } from '../apis';
 
 /**
@@ -37,6 +38,7 @@ const GET_GUARD_AREA = createRequestTypes('GET_GUARD_AREA');
 const LIST_NOTIFY = createRequestTypes('LIST_NOTIFY');
 const CLEAR_NOTIFY = createRequestTypes('CLEAR_NOTIFY');
 const CLEAR_UFOS = createRequestTypes('CLEAR_UFOS');
+const UNREAD_NOTIFY = createRequestTypes('UNREAD_NOTIFY');
 
 /**
  * Action Creator
@@ -55,6 +57,7 @@ export const getGuardArea = createAction(GET_GUARD_AREA.REQUEST);
 export const listNotify = createAction(LIST_NOTIFY.REQUEST);
 export const clearNotify = createAction(CLEAR_NOTIFY.REQUEST);
 export const clearUfos = createAction(CLEAR_UFOS.REQUEST);
+export const unreadNotify = createAction(UNREAD_NOTIFY.REQUEST);
 
 /**
  * Epics
@@ -203,6 +206,16 @@ export const getGuardAreaEpic = pipe(
   ),
 );
 
+export const unreadNotifyEpic = pipe(
+  ofType(UNREAD_NOTIFY.REQUEST),
+  switchMap(({ payload = {} }) =>
+    unreadNotifyAPI(payload).pipe(
+      map(response => createAction(UNREAD_NOTIFY.SUCCESS)({ ...response, ...payload })),
+      catchRequestError(createAction(UNREAD_NOTIFY.FAILURE)),
+    ),
+  ),
+);
+
 export const listNotifyEpic = pipe(
   ofType(LIST_NOTIFY.REQUEST),
   switchMap(({ payload = {} }) =>
@@ -237,6 +250,14 @@ const initalState = {
     hasMore: false,
     content: [],
   },
+  unreadNotifyHistory: {
+    page: 0,
+    totalPages: 0,
+    size: 10,
+    hasMore: false,
+    content: [],
+    lastUpdatetime: null
+  }
 };
 
 export default handleActions(
@@ -425,6 +446,23 @@ export default handleActions(
     [GET_GUARD_AREA.FAILURE]: state => ({
       ...state,
       isLoadingGuardArea: false,
+    }),
+    [UNREAD_NOTIFY.REQUEST]: (state, action) => ({
+      ...state,
+      isLoading: true,
+    }),
+    [UNREAD_NOTIFY.SUCCESS]: (state, action) => ({
+      ...state,
+      unreadNotifyHistory: {
+        ...action.payload,
+        content: concat(state.notifyHistory.content, action.payload.data),
+        lastUpdatetime: new Date().getTime()
+      },
+      isLoading: false,
+    }),
+    [UNREAD_NOTIFY.FAILURE]: (state, action) => ({
+      ...state,
+      isLoading: false,
     }),
     [LIST_NOTIFY.REQUEST]: (state, action) => ({
       ...state,

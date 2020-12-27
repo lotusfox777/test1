@@ -44,6 +44,7 @@ import {
   listEnabledGuardAreasEpic,
   getGuardAreaEpic,
   listNotifyEpic,
+  unreadNotifyEpic
 } from './guardAreas';
 
 import {
@@ -110,6 +111,7 @@ const guardAreasEpics = [
   listEnabledGuardAreasEpic,
   getGuardAreaEpic,
   listNotifyEpic,
+  unreadNotifyEpic,
 ];
 
 const usersEpics = [

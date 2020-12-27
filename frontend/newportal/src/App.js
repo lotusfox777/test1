@@ -60,7 +60,6 @@ class App extends React.Component {
       },
     } = prevProps;
     const {
-      t,
       error: {
         timestamp: currOccurTime,
         status: currStatusCode,
@@ -69,11 +68,11 @@ class App extends React.Component {
     } = this.props;
 
     if (currErrMsg === 'Unauthorized') {
-      if (currErrMsg !== prevErrMsg) {
-        Modal.error({
-          content: t('common:請重新登入'),
-        });
-      }
+      // if (currErrMsg !== prevErrMsg) {
+      //   Modal.error({
+      //     content: t('common:請重新登入'),
+      //   });
+      // }
       logout();
     } else if (
       shouldDisplayError(currStatusCode) &&
@@ -81,7 +80,7 @@ class App extends React.Component {
         (currErrMsg === prevErrMsg && currOccurTime - prevOccurTime > 1500))
     ) {
       Modal.error({
-        title: t('common:伺服器錯誤'),
+        title: 'Server Error',
         content: currErrMsg,
       });
     }

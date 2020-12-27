@@ -8,7 +8,7 @@ import { Layout, Icon, Menu, Col, Avatar, Popover } from 'antd';
 import { rem } from 'polished';
 import Image from 'components/Image';
 import AccountModal from 'containers/AccountManagement/index';
-import { listNotify, clearNotify } from 'reducers/guardAreas';
+import { listNotify, clearNotify, unreadNotify } from 'reducers/guardAreas';
 import { getCurrentUser } from 'reducers/users';
 import { logout } from 'reducers/auth';
 import { HOME, ACTIVITY_MAP, CARD_LIST } from 'constants/routes';
@@ -149,7 +149,7 @@ class AppHeader extends PureComponent {
 
   handleOpenNotifyHistoryModal = () => {
     this.setState({ notifyHistoryModalVisible: true });
-    this.props.listNotify();
+    // this.props.listNotify();
   };
 
   handleCloseNotifyHistoryModal = () => {
@@ -180,6 +180,18 @@ class AppHeader extends PureComponent {
     );
   };
 
+  componentDidMount() {
+    const { unreadNotify } = this.props
+    unreadNotify()
+    setInterval(() => unreadNotify(), 10000)
+  }
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps.unreadNotifyHistory !== this.props.unreadNotifyHistory) {
+      this.handleOpenNotifyHistoryModal()
+    }
+  };
+
   render() {
     const {
       listNotify,
@@ -190,6 +202,7 @@ class AppHeader extends PureComponent {
       history,
       accountModalVisible,
       t,
+      unreadNotifyHistory
     } = this.props;
     const { notifyHistoryModalVisible, currentTab } = this.state;
 
@@ -257,10 +270,10 @@ class AppHeader extends PureComponent {
         </div>
         {notifyHistoryModalVisible && (
           <CurrentGuardAreas
-            loadMore={listNotify}
-            notifyHistory={notifyHistory}
+            // loadMore={listNotify}
+            notifyHistory={unreadNotifyHistory}
             pushState={history.push}
-            isLoading={isLoading}
+            // isLoading={isLoading}
             onClose={this.handleCloseNotifyHistoryModal}
           />
         )}
@@ -283,6 +296,7 @@ const mapStateToProps = (state) => ({
   currentUser: state.users.currentUser,
   isLoading: state.guardAreas.isLoading || state.users.isLoading,
   isUpdatingEmail: state.users.isUpdatingEmail,
+  unreadNotifyHistory: state.guardAreas.unreadNotifyHistory,
 });
 
 const mapDispatchToProps = {
@@ -290,6 +304,7 @@ const mapDispatchToProps = {
   clearNotify,
   listNotify,
   getCurrentUser,
+  unreadNotify
 };
 
 export default compose(
