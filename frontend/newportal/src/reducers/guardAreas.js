@@ -18,7 +18,7 @@ import {
   getGuardAreaAPI,
   listNotifyAPI,
   unreadNotifyAPI,
-  readNotifyAPI
+  readNotifyAPI,
 } from '../apis';
 
 /**
@@ -88,7 +88,7 @@ export const addGuardAreaEpic = pipe(
         }
       }),
       map(createAction(ADD_GUARD_AREA.SUCCESS)),
-      catchRequestError(e => {
+      catchRequestError((e) => {
         message.error(`新增守護區域失敗 (${e.message})`);
         return createAction(ADD_GUARD_AREA.FAILURE)();
       }),
@@ -109,7 +109,7 @@ export const updateGuardAreaEpic = pipe(
         createAction(UPDATE_GUARD_AREA.SUCCESS)(payload),
         // getGuardArea(payload.id)
       ]),
-      catchRequestError(e => {
+      catchRequestError((e) => {
         message.error(`修改守護區域失敗 (${e.message})`);
         return createAction(UPDATE_GUARD_AREA.FAILURE)();
       }),
@@ -123,7 +123,7 @@ export const updateGuardAreaUFOsEpic = pipe(
     updateGuardAreaUFOsAPI(payload).pipe(
       tap(() => message.success('修改守護區域成功')),
       mapTo(createAction(UPDATE_GUARD_AREA_UFOS.SUCCESS)(payload)),
-      catchRequestError(e => {
+      catchRequestError((e) => {
         message.error(`修改守護區域失敗 (${e.message})`);
         return createAction(UPDATE_GUARD_AREA_UFOS.FAILURE)();
       }),
@@ -137,7 +137,7 @@ export const deleteGuardAreaEpic = pipe(
     deleteGuardAreaAPI(payload).pipe(
       tap(() => message.success('刪除守護區域成功')),
       mapTo(listEnabledGuardAreas()),
-      catchRequestError(e => {
+      catchRequestError((e) => {
         message.error(`刪除守護區域失敗 (${e.message})`);
         return createAction(DELETE_GUARD_AREA.FAILURE)();
       }),
@@ -181,7 +181,7 @@ export const deleteGuardAreaUFOsEpic = pipe(
     deleteGuardAreaUFOsAPI(payload).pipe(
       tap(() => message.success('刪除守護區域UFO成功')),
       mapTo(listGuardAreaUFOs({ body: { id: payload.id } })),
-      catchRequestError(e => {
+      catchRequestError((e) => {
         message.error(`刪除守護區域UFO失敗 (${e.message})`);
         return createAction(DELETE_GUARD_AREA_UFOS.FAILURE)();
       }),
@@ -213,7 +213,7 @@ export const unreadNotifyEpic = pipe(
   ofType(UNREAD_NOTIFY.REQUEST),
   switchMap(({ payload = {} }) =>
     unreadNotifyAPI(payload).pipe(
-      map(response => createAction(UNREAD_NOTIFY.SUCCESS)({ ...response, ...payload })),
+      map((response) => createAction(UNREAD_NOTIFY.SUCCESS)({ ...response, ...payload })),
       catchRequestError(createAction(UNREAD_NOTIFY.FAILURE)),
     ),
   ),
@@ -223,7 +223,7 @@ export const readNotifyEpic = pipe(
   ofType(READ_NOTIFY.REQUEST),
   switchMap(({ payload = {} }) =>
     readNotifyAPI(payload).pipe(
-      map(response => createAction(READ_NOTIFY.SUCCESS)({ ...response, ...payload })),
+      map((response) => createAction(READ_NOTIFY.SUCCESS)({ ...response, ...payload })),
       catchRequestError(createAction(READ_NOTIFY.FAILURE)()),
     ),
   ),
@@ -233,7 +233,7 @@ export const listNotifyEpic = pipe(
   ofType(LIST_NOTIFY.REQUEST),
   switchMap(({ payload = {} }) =>
     listNotifyAPI(payload).pipe(
-      map(response => createAction(LIST_NOTIFY.SUCCESS)({ ...response, ...payload })),
+      map((response) => createAction(LIST_NOTIFY.SUCCESS)({ ...response, ...payload })),
       catchRequestError(createAction(LIST_NOTIFY.FAILURE)),
     ),
   ),
@@ -269,7 +269,7 @@ const initalState = {
     size: 10,
     hasMore: false,
     content: [],
-  }
+  },
 };
 
 export default handleActions(
@@ -280,10 +280,10 @@ export default handleActions(
     }),
     [LIST_GUARD_AREAS.SUCCESS]: (state, action) => {
       //hide guardareaEnable: false
-      let data = action.payload.data.filter(area => area.guardareaEnable);
+      let data = action.payload.data.filter((area) => area.guardareaEnable);
 
       let ufosInRange = [];
-      data.forEach(area => {
+      data.forEach((area) => {
         if (area.ufoInfos) {
           ufosInRange = ufosInRange.concat(area.ufoInfos);
         }
@@ -411,27 +411,27 @@ export default handleActions(
     }),
     [LIST_ENABLED_GUARD_AREAS.SUCCESS]: (state, { payload }) => ({
       ...state,
-      content: payload.data.map(x => ({
+      content: payload.data.map((x) => ({
         ...x,
         cards: x.cards || [],
         cardGroups: x.cardGroups || [],
       })),
       sysGuardArea: payload.data
-        .filter(x => x.isSystemArea)
-        .map(x => ({
+        .filter((x) => x.isSystemArea)
+        .map((x) => ({
           ...x,
           cards: x.cards || [],
           cardGroups: x.cardGroups || [],
         })),
       customGuardArea: payload.data
-        .filter(x => !x.isSystemArea)
-        .map(x => ({
+        .filter((x) => !x.isSystemArea)
+        .map((x) => ({
           ...x,
           cards: x.cards || [],
           cardGroups: x.cardGroups || [],
         })),
-      sysGuardAreaCount: payload.data.filter(x => x.isSystemArea).length,
-      customGuardAreaCount: payload.data.filter(x => !x.isSystemArea).length,
+      sysGuardAreaCount: payload.data.filter((x) => x.isSystemArea).length,
+      customGuardAreaCount: payload.data.filter((x) => !x.isSystemArea).length,
       totalPages: payload.totalPages,
       isLoading: false,
     }),
@@ -439,7 +439,7 @@ export default handleActions(
       ...state,
       isLoading: false,
     }),
-    [GET_GUARD_AREA.REQUEST]: state => ({
+    [GET_GUARD_AREA.REQUEST]: (state) => ({
       ...state,
       isLoadingGuardArea: true,
     }),
@@ -455,7 +455,7 @@ export default handleActions(
       },
       isLoadingGuardArea: false,
     }),
-    [GET_GUARD_AREA.FAILURE]: state => ({
+    [GET_GUARD_AREA.FAILURE]: (state) => ({
       ...state,
       isLoadingGuardArea: false,
     }),
@@ -475,7 +475,10 @@ export default handleActions(
       ...state,
       unreadNotifyHistory: {
         ...action.payload,
-        content: concat(state.notifyHistory.content, action.payload.data),
+        content: concat(
+          state.notifyHistory.content,
+          action.payload.data ? action.payload.data : [],
+        ),
       },
       isLoading: false,
     }),
@@ -492,7 +495,10 @@ export default handleActions(
       notifyHistory: {
         ...action.payload,
         hasMore: action.payload.page < action.payload.totalPages,
-        content: concat(state.notifyHistory.content, action.payload.data),
+        content: concat(
+          state.notifyHistory.content,
+          action.payload.data ? action.payload.data : [],
+        ),
       },
       isLoading: false,
     }),
