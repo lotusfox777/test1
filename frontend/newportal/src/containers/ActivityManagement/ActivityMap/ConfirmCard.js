@@ -32,7 +32,7 @@ const mapDispatchToProps = {
   getCardDetail,
   clearCardDetail,
   readNotify,
-  unreadNotify
+  unreadNotify,
 };
 
 @connect(

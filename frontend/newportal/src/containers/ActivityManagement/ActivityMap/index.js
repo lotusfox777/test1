@@ -509,7 +509,7 @@ class ActivityMap extends PureComponent {
                       search={search}
                     />
                   )
-                ) : <ConfirmCard/>
+                ) : <ConfirmCard goToDetailSearch={this.handleCardDetail}/>
               }
               {cardActivitiesVisible &&
                 activities.content.map(act => (
