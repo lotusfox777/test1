@@ -116,8 +116,9 @@ class ConfirmCard extends Component {
             </Col>
             <Col span={12}>
               <Button
-                type="primary"
-                style={{ float: 'right', width: '90%', backgroundColor: '#79abe5' }}>
+                type="default"
+                style={{ float: 'right', width: '90%' }}
+                onClick={() => this.handleMarkerClick(null)}>
                 取消
               </Button>
             </Col>
