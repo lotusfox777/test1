@@ -198,7 +198,7 @@ export const updateCardGroupAPI = ({ id, cardInfos }) =>
 export const deleteCardGroupAPI = id => request(`/v1/cardGroup/${id}`, 'DELETE')();
 export const getCardGroupAPI = id => request(`/v1/cardGroup/${id}`, 'GET')();
 
-export const unreadNotifyAPI = ({ page = 0, size = 99999 }) =>
+export const unreadNotifyAPI = ({ page = 0, size = 1000 }) =>
   request(`/v1/notify/list/${page}/${size}?readTag=false`, 'GET')();
 export const readNotifyAPI = ({ id }) => request(`/v1/notify/read/${id}`, 'PUT')();
 

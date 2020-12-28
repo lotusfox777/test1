@@ -27,11 +27,15 @@ import { withI18next } from 'locales/withI18next'
 import { readNotify } from 'reducers/guardAreas';
 
 window.infoWindows = []
+window.markerById = []
 window.readNotify = function(number) {
 	alert(number)
 }
 window.closeInfoWindow = function() {
-  forEach(x => x.infoWindow.close(), window.infoWindows)
+  window.infoWindows.map(x => x.infoWindow.close())
+}
+window.clearMarkers = function() {
+  window.markerById.map(x => x.setMap(null))
 }
 
 const { Content } = Layout;
@@ -173,6 +177,7 @@ class ActivityMap extends PureComponent {
           position: { lat: x.latitude, lng: x.longitude },
           map: this.map,
         })
+        window.markerById[x.id] = marker
         marker.addListener('click', (evt) => {
           window.closeInfoWindow()
           const infoWindow = new window.google.maps.InfoWindow({
@@ -200,6 +205,7 @@ class ActivityMap extends PureComponent {
       cards: {
         activities: { content },
       },
+      location,
     } = this.props;
     const {
       focusingCardMarkerId,
@@ -235,13 +241,22 @@ class ActivityMap extends PureComponent {
       });
     }
 
+    const params = new URLSearchParams(location.search);
+    const hasCardId = !isNil(params.get('card_id'));
+
     if (!prevState.mapLoaded && mapLoaded) {
-      this.handleMarkers()
+      if (!search && !hasCardId) {
+        this.handleMarkers()
+      }
       this.setState({inited: true})
     }
 
+    if (search || hasCardId) {
+      window.clearMarkers()
+    }
+
     if (inited && prevProps.unreadNotifyHistory.content !== this.props.unreadNotifyHistory.content) {
-      if (!search) {
+      if (!search && !hasCardId) {
         this.handleMarkers()
       }
     }
