@@ -9,9 +9,9 @@
 1. 以 ssh 連入主機
 2. `cd dplus_malaysiaDemo`
 3. `git pull` (記得先切到要拉 code 的 branch)
-4. `screen -r 1212.desktop_malaysia]`
+4. `screen -r 1212.desktop_malaysia`
 5. `cd ~/dplus_malaysiaDemo`
-6. `source build_web_app.sh dashboard`
+6. `source build_web_app.sh newportal`
 
 7. `cd ~/dplus_malaysiaDemo`
 8. `sudo -s`
