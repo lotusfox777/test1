@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { renderToString } from 'react-dom/server'
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Layout, Row, Col, Button, Select, Input, Menu, Dropdown, notification } from 'antd';
@@ -19,24 +18,13 @@ import { withDrawer } from 'drawer-context';
 import cardGroupService from 'services/cardGroupService';
 import GuardAreaModal from './GuardAreaModal';
 import CardMarkers from './CardMarkers';
+import ConfirmCard from './ConfirmCard';
 import GeneralSearchDrawer from './GeneralSearchDrawer';
 import DetailSearchDrawer from './DetailSearchDrawer';
 import CardActivities from './CardActivities';
 import GuardAreas from './GuardAreas';
 import { withI18next } from 'locales/withI18next'
 import { readNotify } from 'reducers/guardAreas';
-
-window.infoWindows = []
-window.markerById = []
-window.readNotify = function(number) {
-	alert(number)
-}
-window.closeInfoWindow = function() {
-  window.infoWindows.map(x => x.infoWindow.close())
-}
-window.clearMarkers = function() {
-  window.markerById.map(x => x.setMap(null))
-}
 
 const { Content } = Layout;
 const { Search } = Input;
@@ -52,50 +40,6 @@ const mapStateToProps = state => ({
   cards: state.cards,
   unreadNotifyHistory: state.guardAreas.unreadNotifyHistory,
 });
-
-const Info = (data) => (
-  <div style={{ width: 310 }}>
-    <div style={{display: 'flex', alignItems: 'center', marginBottom: '15px'}}>
-      <div style={{
-        width: '60px',
-        height: '60px',
-        overflow: 'hidden',
-        borderRadius: '50%',
-        marginRight: '10px'
-      }}>
-        <img width="100%" src="/img/avatar-pic.png"/>
-      </div>
-      <div>193號</div>
-    </div>
-    <div style={{marginBottom: '15px'}}>
-      <button>顯示動態</button>
-    </div>
-    <div style={{marginBottom: '15px'}}>
-      <a style={{
-        border: '1px solid transparent',
-        padding: '.375rem .75rem',
-        fontSize: '1rem',
-        borderRadius: '.25rem',
-        color: '#fff',
-        backgroundColor: '#0d6efd',
-        borderColor: '#0d6efd',
-        marginRight: '10px'
-      }} href={`javascript:window.readNotify(${data.data.id})`}>確定</a>
-      <a style={{
-        border: '1px solid transparent',
-        padding: '.375rem .75rem',
-        fontSize: '1rem',
-        borderRadius: '.25rem',
-        color: '#fff',
-        backgroundColor: '#6c757d',
-        borderColor: '#6c757d'
-      }} href="javascript:window.closeInfoWindow()">取消</a>
-    </div>
-    <div style={{marginBottom: '15px'}}>
-      <textarea defaultValue="吳興街199號"/>
-    </div>
-  </div>
-)
 
 const mapDispatchToProps = {
   listUFOsInRoundRange,
@@ -161,6 +105,8 @@ class ActivityMap extends PureComponent {
     if (focusingCardMarkerId) {
       getCardDetail(focusingCardMarkerId);
     }
+
+    window.handleReadNotify = this.props.readNotify
   };
 
   handleMarkers = () => {
@@ -173,24 +119,6 @@ class ActivityMap extends PureComponent {
             lng: x.longitude,
           }),
         )
-        const marker = new window.google.maps.Marker({
-          position: { lat: x.latitude, lng: x.longitude },
-          map: this.map,
-        })
-        window.markerById[x.id] = marker
-        marker.addListener('click', (evt) => {
-          window.closeInfoWindow()
-          const infoWindow = new window.google.maps.InfoWindow({
-            position: { lat: x.latitude, lng: x.longitude },
-            content: `<div>${renderToString(
-              <div style={{ width: 310 }}>
-                <Info data={x}/>
-              </div>
-            )}</div>`,
-          })
-          window.infoWindows.push({ infoWindow })
-          infoWindow.open(this.map)
-        })
       },
       this.props.unreadNotifyHistory.content,
     );
@@ -249,10 +177,6 @@ class ActivityMap extends PureComponent {
         this.handleMarkers()
       }
       this.setState({inited: true})
-    }
-
-    if (search || hasCardId) {
-      window.clearMarkers()
     }
 
     if (inited && prevProps.unreadNotifyHistory.content !== this.props.unreadNotifyHistory.content) {
@@ -512,6 +436,7 @@ class ActivityMap extends PureComponent {
       generalDrawerVisible,
       detailDrawerVisible,
       cardActivitiesVisible,
+      location,
     } = this.props;
     const {
       guardAreaModalVisible,
@@ -532,6 +457,8 @@ class ActivityMap extends PureComponent {
     } = this.state;
 
     const showRealtimeInfo = !guardAreaModalVisible && !cardActivitiesVisible;
+    const params = new URLSearchParams(location.search);
+    const hasCardId = !isNil(params.get('card_id'));
 
     return (
       <Layout>
@@ -572,29 +499,33 @@ class ActivityMap extends PureComponent {
             searchUFOInRoundRange={this.searchUFOs}
             onCircleAdd={this.handleAddGuardArea}
             onCircleCancel={this.handleCancel}>
-            {showRealtimeInfo && (
-              <CardMarkers
-                goToDetailSearch={this.handleCardDetail}
-                onMapChange={this.handleMapChange}
-                focusingCardMarkerId={focusingCardMarkerId}
-                search={search}
-              />
-            )}
-            {cardActivitiesVisible &&
-              activities.content.map(act => (
-                <CardActivities
-                  key={act.id}
-                  cardId={act.id}
-                  positions={act.cardPositions}
-                  getCardDetail={this.handleCardDetail}
-                  focusedMarker={focusedMarker}
-                  isDetailMode={detailDrawerVisible}
-                  onFocusMarker={this.handleFocusMarker}
-                />
-              ))}
-            {showGuardAreas && (
-              <GuardAreas guardAreaType={guardAreaType} onEdit={this.handleEditGuardArea} />
-            )}
+              {
+                hasCardId || search ? (
+                  showRealtimeInfo && (
+                    <CardMarkers
+                      goToDetailSearch={this.handleCardDetail}
+                      onMapChange={this.handleMapChange}
+                      focusingCardMarkerId={focusingCardMarkerId}
+                      search={search}
+                    />
+                  )
+                ) : <ConfirmCard/>
+              }
+              {cardActivitiesVisible &&
+                activities.content.map(act => (
+                  <CardActivities
+                    key={act.id}
+                    cardId={act.id}
+                    positions={act.cardPositions}
+                    getCardDetail={this.handleCardDetail}
+                    focusedMarker={focusedMarker}
+                    isDetailMode={detailDrawerVisible}
+                    onFocusMarker={this.handleFocusMarker}
+                  />
+                ))}
+              {showGuardAreas && (
+                <GuardAreas guardAreaType={guardAreaType} onEdit={this.handleEditGuardArea} />
+              )}
           </GoogleMapComponent>
           {guardAreaModalVisible && (
             <GuardAreaModal
