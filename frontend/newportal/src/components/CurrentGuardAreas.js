@@ -117,7 +117,15 @@ class CurrentGuardAreas extends React.PureComponent {
                     <Col>
                       <div className="area-row" onClick={this.handleViewCardLoaction(area)}>
                         {
-                          area.sos ? (
+                          area.notifyTypeValue === 1 ? (
+                            <span dangerouslySetInnerHTML={{
+                              __html: t('alart-left', {
+                                name: area.cardName,
+                                position: area.guardareaName,
+                                time: moment(area.createTime).format('YYYY.MM.DD HH:mm:ss')
+                              })
+                            }}/>
+                          ) : area.notifyTypeValue === 2 ? (
                             <span dangerouslySetInnerHTML={{
                               __html: t('alart-sos', {
                                 name: area.cardName,
@@ -126,9 +134,8 @@ class CurrentGuardAreas extends React.PureComponent {
                             }}/>
                           ) : (
                             <span dangerouslySetInnerHTML={{
-                              __html: t('alart-left', {
+                              __html: t('alart-notconnected', {
                                 name: area.cardName,
-                                position: area.guardareaName,
                                 time: moment(area.createTime).format('YYYY.MM.DD HH:mm:ss')
                               })
                             }}/>

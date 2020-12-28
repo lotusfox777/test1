@@ -181,6 +181,7 @@ class CardMarkers extends Component {
 
   render() {
     const { cards, focusingCardMarkerId } = this.props;
+    console.log(cards)
 
     return (
       <Fragment>
