@@ -17,7 +17,8 @@ import {
   deleteGuardAreaUFOsAPI,
   getGuardAreaAPI,
   listNotifyAPI,
-  unreadNotifyAPI
+  unreadNotifyAPI,
+  readNotifyAPI
 } from '../apis';
 
 /**
@@ -221,15 +222,9 @@ export const unreadNotifyEpic = pipe(
 export const readNotifyEpic = pipe(
   ofType(READ_NOTIFY.REQUEST),
   switchMap(({ payload = {} }) =>
-    unreadNotifyAPI(payload).pipe(
-      map(response => {
-        createAction(READ_NOTIFY.SUCCESS)({ ...response, ...payload })
-        unreadNotify()
-      }),
-      catchRequestError(e => {
-        // message.error(`刪除守護區域UFO失敗 (${e.message})`);
-        return createAction(READ_NOTIFY.FAILURE)();
-      }),
+    readNotifyAPI(payload).pipe(
+      map(response => createAction(READ_NOTIFY.SUCCESS)({ ...response, ...payload })),
+      catchRequestError(createAction(READ_NOTIFY.FAILURE)()),
     ),
   ),
 );

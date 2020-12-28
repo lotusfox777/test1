@@ -110,20 +110,27 @@ class ActivityMap extends PureComponent {
   };
 
   handleMarkers = () => {
-    const bounds = new window.google.maps.LatLngBounds();
-    forEach(
-      (x) => {
-        bounds.extend(
-          new window.google.maps.LatLng({
-            lat: x.latitude,
-            lng: x.longitude,
-          }),
-        )
-      },
-      this.props.unreadNotifyHistory.content,
-    );
-    this.map.fitBounds(bounds);
-    this.setState({ mapCenter: bounds.getCenter() });
+    const { search } = this.state;
+    const { location } = this.props;
+    const params = new URLSearchParams(location.search);
+    const hasCardId = !isNil(params.get('card_id'));
+
+    if (!search && !hasCardId) {
+      const bounds = new window.google.maps.LatLngBounds();
+      forEach(
+        (x) => {
+          bounds.extend(
+            new window.google.maps.LatLng({
+              lat: x.latitude,
+              lng: x.longitude,
+            }),
+          )
+        },
+        this.props.unreadNotifyHistory.content,
+      );
+      this.map.fitBounds(bounds);
+      this.setState({ mapCenter: bounds.getCenter() });
+    }
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -133,7 +140,6 @@ class ActivityMap extends PureComponent {
       cards: {
         activities: { content },
       },
-      location,
     } = this.props;
     const {
       focusingCardMarkerId,
@@ -141,7 +147,6 @@ class ActivityMap extends PureComponent {
       guardAreaType,
       needUpdateMapCenter,
       mapLoaded,
-      search,
       inited
     } = this.state;
 
@@ -169,20 +174,13 @@ class ActivityMap extends PureComponent {
       });
     }
 
-    const params = new URLSearchParams(location.search);
-    const hasCardId = !isNil(params.get('card_id'));
-
     if (!prevState.mapLoaded && mapLoaded) {
-      if (!search && !hasCardId) {
-        this.handleMarkers()
-      }
+      this.handleMarkers()
       this.setState({inited: true})
     }
 
-    if (inited && prevProps.unreadNotifyHistory.content !== this.props.unreadNotifyHistory.content) {
-      if (!search && !hasCardId) {
-        this.handleMarkers()
-      }
+    if (inited && JSON.stringify(prevProps.unreadNotifyHistory.content) !== JSON.stringify(this.props.unreadNotifyHistory.content)) {
+      this.handleMarkers()
     }
   };
 
