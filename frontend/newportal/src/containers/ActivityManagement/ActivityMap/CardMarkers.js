@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { Row, Button, List } from 'antd';
+import { Row, Button, List, Col } from 'antd';
 import { find, propEq } from 'ramda';
 import { Marker, InfoWindow } from 'react-google-maps';
 import * as fa from 'fontawesome-markers';
@@ -12,7 +12,7 @@ import {
   getCardDetail,
   clearCardDetail
 } from 'reducers/cards';
-import { getGuardArea } from 'reducers/guardAreas';
+import { getGuardArea, readNotify } from 'reducers/guardAreas';
 
 import { API_ROOT, REFRESH_INTERVAL } from 'constants/endpoint';
 import { SAVEAREA_LIST, CARD_LIST } from 'constants/routes';
@@ -26,14 +26,16 @@ const ListItem = styled(List.Item)`
 
 const mapStateToProps = state => ({
   cards: state.cards,
-  guardAreas: state.guardAreas
+  guardAreas: state.guardAreas,
+  unreadNotifyHistory: state.guardAreas.unreadNotifyHistory,
 });
 
 const mapDispatchToProps = {
   listCardsCurrentInfo,
   getCardDetail,
   clearCardDetail,
-  getGuardArea
+  getGuardArea,
+  readNotify,
 };
 
 @connect(
@@ -123,6 +125,11 @@ class CardMarkers extends Component {
     clearInterval(this.interval);
   }
 
+  handleReadNotify = id => {
+    this.props.readNotify({ id })
+    this.handleMarkerClick(null)
+  }
+
   renderInfoWindow(currentCardId) {
     const {
       cards: { currentCard },
@@ -161,6 +168,24 @@ class CardMarkers extends Component {
               顯示動態
             </Button>
           </Row>
+          <Row style={{ marginTop: 24 }}>
+            <Col span={12}>
+              <Button
+                type="primary"
+                style={{ width: '90%', backgroundColor: '#79abe5' }}
+                onClick={() => this.handleReadNotify(currentCard.id)}>
+                確定
+              </Button>
+            </Col>
+            <Col span={12}>
+              <Button
+                type="default"
+                style={{ float: 'right', width: '90%' }}
+                onClick={() => this.handleMarkerClick(null)}>
+                取消
+              </Button>
+            </Col>
+          </Row>
           <Row style={{ marginTop: 18 }}>
             <div style={{ marginBottom: 6 }}>守護區域</div>
             <List
@@ -180,12 +205,11 @@ class CardMarkers extends Component {
   }
 
   render() {
-    const { cards, focusingCardMarkerId } = this.props;
-    console.log(cards)
+    const { cards, focusingCardMarkerId, unreadNotifyHistory } = this.props;
 
     return (
       <Fragment>
-        {cards.content.map((card, idx) => {
+        {unreadNotifyHistory.content.map((card, idx) => {
           if (!card.current) {
             return null;
           }

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Row, Button, List, Col } from 'antd';
 import { Marker, InfoWindow } from 'react-google-maps';
 import * as fa from 'fontawesome-markers';
+import { isNil } from 'ramda';
 
 import {
   getCardDetail,
@@ -13,7 +14,7 @@ import {
 
 import { API_ROOT } from 'constants/endpoint';
 import { CARD_LIST } from 'constants/routes';
-import { readNotify, unreadNotify } from 'reducers/guardAreas';
+import { readNotify } from 'reducers/guardAreas';
 
 const ListItem = styled(List.Item)`
   &:hover {
@@ -32,7 +33,6 @@ const mapDispatchToProps = {
   getCardDetail,
   clearCardDetail,
   readNotify,
-  unreadNotify,
 };
 
 @connect(
@@ -66,7 +66,6 @@ class ConfirmCard extends Component {
 
   handleReadNotify = id => {
     this.props.readNotify({ id })
-    this.props.unreadNotify()
     this.handleMarkerClick(null)
   }
 

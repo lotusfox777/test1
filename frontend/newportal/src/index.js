@@ -17,7 +17,7 @@ import configureStore, { history } from './store';
 
 import './locales/i18n';
 
-const isMobile = mobileAndTabletCheck();
+const isMobile = false;
 const shouldRedirect = isMobile && isProd;
 
 if (shouldRedirect) {

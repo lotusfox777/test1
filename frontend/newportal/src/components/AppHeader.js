@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { indexOf, pathOr, compose } from 'ramda';
+import { indexOf, pathOr, compose, type } from 'ramda';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Layout, Icon, Menu, Col, Avatar, Popover } from 'antd';
@@ -15,7 +15,7 @@ import { HOME, ACTIVITY_MAP, CARD_LIST } from 'constants/routes';
 import CurrentGuardAreas from './CurrentGuardAreas';
 import DropdownMenu from './DropdownMenu';
 import { withDrawer } from '../drawer-context';
-import { withI18next } from 'locales/withI18next'
+import { withI18next } from 'locales/withI18next';
 
 const StyledMenu = styled(Col)`
   margin-left: 48px;
@@ -101,7 +101,6 @@ class AppHeader extends PureComponent {
       currentTab: indexOf(pathname, [ACTIVITY_MAP, HOME]) > -1 ? 'activity' : 'card',
       pathname,
     };
-
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -167,7 +166,7 @@ class AppHeader extends PureComponent {
   };
 
   renderPopover = () => {
-    const { t } = this.props
+    const { t } = this.props;
     return (
       <div className="test">
         <div>
@@ -181,14 +180,19 @@ class AppHeader extends PureComponent {
   };
 
   componentDidMount() {
-    const { unreadNotify } = this.props
-    unreadNotify()
-    setInterval(() => unreadNotify(), 10000)
+    const { unreadNotify } = this.props;
+    unreadNotify();
+    setInterval(() => unreadNotify(), 10000);
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-    if (JSON.stringify(prevProps.unreadNotifyHistory.content) !== JSON.stringify(this.props.unreadNotifyHistory.content)) {
-      this.handleOpenNotifyHistoryModal()
+    if (
+      type(prevProps.unreadNotifyHistory.content) === 'Array' &&
+      type(this.props.unreadNotifyHistory.content) === 'Array' &&
+      JSON.stringify(prevProps.unreadNotifyHistory.content[0]) !==
+      JSON.stringify(this.props.unreadNotifyHistory.content[0])
+    ) {
+      this.handleOpenNotifyHistoryModal();
     }
   };
 
@@ -200,18 +204,18 @@ class AppHeader extends PureComponent {
       history,
       accountModalVisible,
       t,
-      unreadNotifyHistory
+      unreadNotifyHistory,
     } = this.props;
     const { notifyHistoryModalVisible, currentTab } = this.state;
 
     return (
       <StyledHeader>
-        <img
+        {/* <img
           onClick={this.handleToActivityMap}
           srcSet="/img/logo-lg-white@2x.png"
           alt=""
           style={{ height: 38, width: 110, cursor: 'pointer' }}
-        />
+        /> */}
         <StyledMenu>
           <Menu style={{ marginTop: '3px' }} mode="horizontal" selectedKeys={[currentTab]}>
             <Menu.Item key="activity">
@@ -302,7 +306,7 @@ const mapDispatchToProps = {
   clearNotify,
   listNotify,
   getCurrentUser,
-  unreadNotify
+  unreadNotify,
 };
 
 export default compose(
