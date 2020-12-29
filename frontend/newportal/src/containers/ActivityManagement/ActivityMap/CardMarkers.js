@@ -110,11 +110,11 @@ class CardMarkers extends Component {
     if (currentCardId !== prevCardId) {
       const card = find(propEq('id', currentCardId))(content);
 
-      if (card && card.current) {
+      if (card) {
         onMapChange({
           mapCenter: {
-            lat: card.current.latitude,
-            lng: card.current.longitude
+            lat: card.latitude,
+            lng: card.longitude
           }
         });
       }
@@ -210,13 +210,9 @@ class CardMarkers extends Component {
     return (
       <Fragment>
         {unreadNotifyHistory.content.map((card, idx) => {
-          // if (!card.current) {
-          //   return null;
-          // }
-
           const highlight = focusingCardMarkerId === card.id;
-          const lat = card.current.latitude;
-          const lng = card.current.longitude;
+          const lat = card.latitude;
+          const lng = card.longitude;
 
           return (
             <Marker
