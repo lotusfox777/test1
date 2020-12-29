@@ -500,16 +500,26 @@ class ActivityMap extends PureComponent {
             onCircleAdd={this.handleAddGuardArea}
             onCircleCancel={this.handleCancel}>
               {
-                hasCardId || search ? (
-                  showRealtimeInfo && (
-                    <CardMarkers
-                      goToDetailSearch={this.handleCardDetail}
-                      onMapChange={this.handleMapChange}
-                      focusingCardMarkerId={focusingCardMarkerId}
-                      search={search}
-                    />
-                  )
-                ) : <ConfirmCard goToDetailSearch={this.handleCardDetail}/>
+                showRealtimeInfo && (
+                  <CardMarkers
+                    goToDetailSearch={this.handleCardDetail}
+                    onMapChange={this.handleMapChange}
+                    focusingCardMarkerId={focusingCardMarkerId}
+                    search={search}
+                  />
+                )
+              }
+              {
+                // hasCardId || search ? (
+                //   showRealtimeInfo && (
+                //     <CardMarkers
+                //       goToDetailSearch={this.handleCardDetail}
+                //       onMapChange={this.handleMapChange}
+                //       focusingCardMarkerId={focusingCardMarkerId}
+                //       search={search}
+                //     />
+                //   )
+                // ) : <ConfirmCard goToDetailSearch={this.handleCardDetail}/>
               }
               {cardActivitiesVisible &&
                 activities.content.map(act => (
