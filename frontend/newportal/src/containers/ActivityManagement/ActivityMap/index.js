@@ -105,15 +105,15 @@ class ActivityMap extends PureComponent {
     const {
       getCardDetail,
       guardAreas: { isLoading },
-      cards: {
-        activities: { content },
-      },
+      // cards: {
+      //   activities: { content },
+      // },
     } = this.props;
     const {
       focusingCardMarkerId,
       needReloadGuardAreas,
       guardAreaType,
-      needUpdateMapCenter,
+      // needUpdateMapCenter,
     } = this.state;
 
     if (!isLoading && needReloadGuardAreas) {
@@ -125,20 +125,20 @@ class ActivityMap extends PureComponent {
       getCardDetail(focusingCardMarkerId);
     }
 
-    if (
-      !this.props.cards.isLoading &&
-      needUpdateMapCenter &&
-      content.length > 0 &&
-      content[0].cardPositions.length > 0
-    ) {
-      this.setState({
-        mapCenter: {
-          lat: content[0].cardPositions[0].latitude,
-          lng: content[0].cardPositions[0].longitude,
-        },
-        needUpdateMapCenter: false,
-      });
-    }
+    // if (
+    //   !this.props.cards.isLoading &&
+    //   needUpdateMapCenter &&
+    //   content.length > 0 &&
+    //   content[0].cardPositions.length > 0
+    // ) {
+    //   this.setState({
+    //     mapCenter: {
+    //       lat: content[0].cardPositions[0].latitude,
+    //       lng: content[0].cardPositions[0].longitude,
+    //     },
+    //     needUpdateMapCenter: false,
+    //   });
+    // }
   };
 
   searchUFOs = (bounds, options) => {

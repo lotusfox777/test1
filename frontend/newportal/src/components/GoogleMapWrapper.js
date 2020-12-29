@@ -471,7 +471,6 @@ class GoogleMapComponent extends Component {
             onRef(map.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED);
           }
         }}
-        onLoad={() => console.log(123)}
         defaultZoom={defaultZoom}
         center={mapCenter}
         options={mapOptions}
