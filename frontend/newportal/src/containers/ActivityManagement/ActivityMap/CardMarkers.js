@@ -194,7 +194,7 @@ class CardMarkers extends Component {
               </Button>
             </Col>
           </Row>
-          <Row style={{ marginTop: 24 }}>
+          <Row style={{ marginTop: 12 }}>
             <Col span={12}>
               <Button
                 type="primary"
@@ -205,7 +205,7 @@ class CardMarkers extends Component {
             </Col>
             <Col span={12}>
               <Button
-                type="default"
+                type="primary"
                 style={{ float: 'right', width: '90%', backgroundColor: '#79abe5' }}
                 onClick={clearCardDetail}>
                 {t('cancel')}
