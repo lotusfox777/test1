@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { Row, Button, List } from 'antd';
+import { Row, Button, List, Col } from 'antd';
 import { find, propEq } from 'ramda';
 import { Marker, InfoWindow } from 'react-google-maps';
 import * as fa from 'fontawesome-markers';
