@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { indexOf, pathOr, compose, type } from 'ramda';
+import { indexOf, pathOr, compose } from 'ramda';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Layout, Icon, Menu, Col, Avatar, Popover } from 'antd';
@@ -183,18 +183,8 @@ class AppHeader extends PureComponent {
     const { unreadNotify } = this.props;
     unreadNotify();
     setInterval(() => unreadNotify(), 10000);
+    this.handleOpenNotifyHistoryModal();
   }
-
-  componentDidUpdate = (prevProps, prevState) => {
-    if (
-      type(prevProps.unreadNotifyHistory.content) === 'Array' &&
-      type(this.props.unreadNotifyHistory.content) === 'Array' &&
-      JSON.stringify(prevProps.unreadNotifyHistory.content[0]) !==
-      JSON.stringify(this.props.unreadNotifyHistory.content[0])
-    ) {
-      this.handleOpenNotifyHistoryModal();
-    }
-  };
 
   render() {
     const {

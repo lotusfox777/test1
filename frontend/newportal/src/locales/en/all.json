@@ -3,7 +3,7 @@
   "logout": "Logout",
   "alart-left": "<span class='lightblue-font'>{{name}}</span> left fence <span class='lightblue-font'>{{position}}</span> at {{time}}",
   "alart-sos": "<span class='lightblue-font'>{{name}}</span> activated SOS at {{time}}",
-  "alart-notconnected": "<span class='lightblue-font'>{{name}}</span> no device connected at {{time}}",
+  "alart-notconnected": "<span class='lightblue-font'>{{name}}</span> removed bracelet at {{time}}",
   "violation alerts": "Violation alerts",
   "left fence": "left fence",
   "activated SOS": "activated SOS",
@@ -64,5 +64,9 @@
   "LINE connection": "LINE connection",
   "disconnect": "disconnect",
   "connect": "connect",
-  "change password": "Change password"
+  "change password": "Change password",
+  "view trace": "View trace",
+  "confirm": "Confirm",
+  "pending": "Pending",
+  "cancel": "Cancel"
 }

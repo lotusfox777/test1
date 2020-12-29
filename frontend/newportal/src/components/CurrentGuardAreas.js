@@ -87,7 +87,7 @@ class CurrentGuardAreas extends React.PureComponent {
 
   handleViewCardLoaction = notify => () => {
     const { pushState } = this.props;
-    pushState(`${ACTIVITY_MAP}?card_id=${notify.cardSeq}`);
+    pushState(`${ACTIVITY_MAP}?id=${notify.id}&card_id=${notify.cardSeq}`);
     this.props.onClose()
   };
 

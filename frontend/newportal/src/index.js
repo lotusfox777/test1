@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import { ConfigProvider } from 'antd';
 import { loginInit } from './reducers/auth';
 import zh_TW from 'antd/lib/locale-provider/zh_TW';
-import { queryString, mobileAndTabletCheck } from './utils/webHelper';
+import { queryString } from './utils/webHelper';
 import { isProd, mobileAppUrl } from 'constants/endpoint';
 import theme from './theme';
 import { DrawerProvider } from './drawer-context';

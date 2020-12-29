@@ -87,7 +87,7 @@ export default class CardManagement extends React.Component {
   render() {
     return (
       <Layout style={styleLayout}>
-        <StyleSider>
+        <StyleSider width="360">
           <SideMenu />
         </StyleSider>
         <StyleContent>

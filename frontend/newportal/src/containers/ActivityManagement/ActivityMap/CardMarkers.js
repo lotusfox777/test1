@@ -2,20 +2,22 @@ import React, { Component, Fragment } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { Row, Button, List } from 'antd';
+import { Row, Button, List, Col } from 'antd';
 import { find, propEq } from 'ramda';
 import { Marker, InfoWindow } from 'react-google-maps';
 import * as fa from 'fontawesome-markers';
+import { isNil } from 'ramda';
+import { withI18next } from 'locales/withI18next';
 
 import {
   listCardsCurrentInfo,
   getCardDetail,
   clearCardDetail
 } from 'reducers/cards';
-import { getGuardArea } from 'reducers/guardAreas';
+import { getGuardArea, readNotify } from 'reducers/guardAreas';
 
 import { API_ROOT, REFRESH_INTERVAL } from 'constants/endpoint';
-import { SAVEAREA_LIST, CARD_LIST } from 'constants/routes';
+import { SAVEAREA_LIST, CARD_LIST, ACTIVITY_MAP } from 'constants/routes';
 
 const ListItem = styled(List.Item)`
   &:hover {
@@ -33,7 +35,8 @@ const mapDispatchToProps = {
   listCardsCurrentInfo,
   getCardDetail,
   clearCardDetail,
-  getGuardArea
+  getGuardArea,
+  readNotify
 };
 
 @connect(
@@ -123,10 +126,22 @@ class CardMarkers extends Component {
     clearInterval(this.interval);
   }
 
+  handleReadNotify = () => {
+    const { location, history } = this.props;
+    const params = new URLSearchParams(location.search);
+    const hasId = !isNil(params.get('id'));
+    if (hasId) {
+      this.props.readNotify({ id: params.get('id') })
+      history.push(ACTIVITY_MAP);
+    }
+    this.props.clearCardDetail()
+  }
+
   renderInfoWindow(currentCardId) {
     const {
       cards: { currentCard },
-      clearCardDetail
+      clearCardDetail,
+      t
     } = this.props;
 
     if (!currentCard || currentCard.id !== currentCardId) {
@@ -158,8 +173,44 @@ class CardMarkers extends Component {
               type="primary"
               style={{ width: '100%', backgroundColor: '#79abe5' }}
               onClick={() => this.handleActivities(currentCardId)}>
-              顯示動態
+              {t('view trace')}
             </Button>
+          </Row>
+          <Row style={{ marginTop: 24 }}>
+            <Col span={12}>
+              <Button
+                type="primary"
+                style={{ width: '90%', backgroundColor: '#79abe5' }}
+                onClick={() => this.handleReadNotify()}>
+                {t('confirm')}
+              </Button>
+            </Col>
+            <Col span={12}>
+              <Button
+                type="primary"
+                style={{ float: 'right', width: '90%', backgroundColor: '#79abe5' }}
+                onClick={clearCardDetail}>
+                {t('pending')}
+              </Button>
+            </Col>
+          </Row>
+          <Row style={{ marginTop: 24 }}>
+            <Col span={12}>
+              <Button
+                type="primary"
+                style={{ width: '90%', backgroundColor: '#79abe5' }}
+                onClick={() => this.handleReadNotify()}>
+                911
+              </Button>
+            </Col>
+            <Col span={12}>
+              <Button
+                type="default"
+                style={{ float: 'right', width: '90%', backgroundColor: '#79abe5' }}
+                onClick={clearCardDetail}>
+                {t('cancel')}
+              </Button>
+            </Col>
           </Row>
           <Row style={{ marginTop: 18 }}>
             <div style={{ marginBottom: 6 }}>守護區域</div>
@@ -181,7 +232,6 @@ class CardMarkers extends Component {
 
   render() {
     const { cards, focusingCardMarkerId } = this.props;
-    console.log(cards)
 
     return (
       <Fragment>
@@ -216,4 +266,4 @@ class CardMarkers extends Component {
   }
 }
 
-export default withRouter(CardMarkers);
+export default withI18next(['all'])(withRouter(CardMarkers));
