@@ -256,7 +256,7 @@ class GeneralSearchDrawer extends Component {
 
     return (
       <DrawerWithoutMask
-        width="400"
+        width="360"
         title={t('search trace')}
         placement="left"
         mask={false}
@@ -275,8 +275,8 @@ class GeneralSearchDrawer extends Component {
           })(<DatePicker style={{ width: 210 }} showTime format="YYYY-MM-DD HH:mm:ss" />)}
         </FormItem>
         <Row type="flex" align="middle" gutter={8}>
-          <Col span={2}>{t('datetime-per')}</Col>
-          <Col span={9}>
+          <Col span={4}>{t('datetime-per')}</Col>
+          <Col span={7}>
             <FormItem style={{ marginBottom: 0 }}>
               {getFieldDecorator('intervalMin', {
                 initialValue: '1',

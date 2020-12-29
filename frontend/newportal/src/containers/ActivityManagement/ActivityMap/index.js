@@ -119,12 +119,14 @@ class ActivityMap extends PureComponent {
       const bounds = new window.google.maps.LatLngBounds();
       forEach(
         (x) => {
-          bounds.extend(
-            new window.google.maps.LatLng({
-              lat: x.latitude,
-              lng: x.longitude,
-            }),
-          )
+          if (x.latitude && x.longitude) {
+            bounds.extend(
+              new window.google.maps.LatLng({
+                lat: x.latitude,
+                lng: x.longitude,
+              }),
+            )
+          }
         },
         this.props.unreadNotifyHistory.content,
       );
