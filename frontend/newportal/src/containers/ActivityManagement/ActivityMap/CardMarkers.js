@@ -210,9 +210,9 @@ class CardMarkers extends Component {
     return (
       <Fragment>
         {unreadNotifyHistory.content.map((card, idx) => {
-          if (!card.current) {
-            return null;
-          }
+          // if (!card.current) {
+          //   return null;
+          // }
 
           const highlight = focusingCardMarkerId === card.id;
           const lat = card.current.latitude;
