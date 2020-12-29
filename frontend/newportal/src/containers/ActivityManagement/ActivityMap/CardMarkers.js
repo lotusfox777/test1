@@ -16,7 +16,7 @@ import {
 import { getGuardArea, readNotify } from 'reducers/guardAreas';
 
 import { API_ROOT, REFRESH_INTERVAL } from 'constants/endpoint';
-import { SAVEAREA_LIST, CARD_LIST } from 'constants/routes';
+import { SAVEAREA_LIST, CARD_LIST, ACTIVITY_MAP } from 'constants/routes';
 
 const ListItem = styled(List.Item)`
   &:hover {
