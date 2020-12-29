@@ -165,6 +165,11 @@ class AppHeader extends PureComponent {
     this.props.onAccountModalVisible(false);
   };
 
+  handleItemClick = (notify) => {
+    const { history } = this.props;
+    history.push(`${ACTIVITY_MAP}?id=${notify.id}`);
+  }
+
   renderPopover = () => {
     const { t } = this.props;
     return (
@@ -276,6 +281,7 @@ class AppHeader extends PureComponent {
             notifyHistory={unreadNotifyHistory}
             pushState={history.push}
             // isLoading={isLoading}
+            onClick={this.handleItemClick}
             onClose={this.handleCloseNotifyHistoryModal}
           />
         )}

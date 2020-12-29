@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Row, Button, List, Col } from 'antd';
 import { Marker, InfoWindow } from 'react-google-maps';
 import * as fa from 'fontawesome-markers';
+import { isNil } from 'ramda';
 
 import {
   getCardDetail,
@@ -45,6 +46,15 @@ class ConfirmCard extends Component {
     this.state = {
       navigateToGuardAreaList: false,
       currentCardId: null
+    }
+  }
+
+  componentDidUpdate = (prevProps, prevState) => {
+    const { location } = this.props;
+    if (prevProps.location.search !== location.search) {
+      const params = new URLSearchParams(location.search);
+      const currentId = Number(params.get('id'));
+      this.setState({ currentCardId: currentId })
     }
   }
 
