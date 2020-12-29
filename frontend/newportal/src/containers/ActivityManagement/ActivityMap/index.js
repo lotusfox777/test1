@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Layout, Row, Col, Button, Select, Input, Menu, Dropdown, notification } from 'antd';
-import { isNil, forEach } from 'ramda';
+import { isNil } from 'ramda';
 import {
   listUFOsInRoundRange,
   addGuardArea,
@@ -24,7 +24,6 @@ import DetailSearchDrawer from './DetailSearchDrawer';
 import CardActivities from './CardActivities';
 import GuardAreas from './GuardAreas';
 import { withI18next } from 'locales/withI18next';
-import { readNotify } from 'reducers/guardAreas';
 
 const { Content } = Layout;
 const { Search } = Input;
@@ -38,7 +37,6 @@ const DropdownWithBigFont = styled(Dropdown)`
 const mapStateToProps = (state) => ({
   guardAreas: state.guardAreas,
   cards: state.cards,
-  unreadNotifyHistory: state.guardAreas.unreadNotifyHistory,
 });
 
 const mapDispatchToProps = {
@@ -49,7 +47,6 @@ const mapDispatchToProps = {
   getCardDetail,
   clearUfos,
   listGuardAreas,
-  readNotify,
 };
 
 @withDrawer
@@ -102,33 +99,6 @@ class ActivityMap extends PureComponent {
     if (focusingCardMarkerId) {
       getCardDetail(focusingCardMarkerId);
     }
-
-    window.handleReadNotify = this.props.readNotify;
-  };
-
-  handleMarkers = () => {
-    const { search } = this.state;
-    const { location } = this.props;
-    const params = new URLSearchParams(location.search);
-    const hasCardId = !isNil(params.get('card_id'));
-
-    if (!search && !hasCardId) {
-      const bounds = new window.google.maps.LatLngBounds();
-      forEach((x) => {
-        if (!x.latitude || !x.longitude) {
-          return;
-        }
-
-        bounds.extend(
-          new window.google.maps.LatLng({
-            lat: x.latitude,
-            lng: x.longitude,
-          }),
-        );
-      }, this.props.unreadNotifyHistory.content);
-      this.map.fitBounds(bounds);
-      this.setState({ mapCenter: bounds.getCenter() });
-    }
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -144,8 +114,6 @@ class ActivityMap extends PureComponent {
       needReloadGuardAreas,
       guardAreaType,
       needUpdateMapCenter,
-      mapLoaded,
-      inited,
     } = this.state;
 
     if (!isLoading && needReloadGuardAreas) {
@@ -171,19 +139,6 @@ class ActivityMap extends PureComponent {
         needUpdateMapCenter: false,
       });
     }
-
-    // if (!prevState.mapLoaded && mapLoaded) {
-    //   this.handleMarkers();
-    //   this.setState({ inited: true });
-    // }
-
-    // if (
-    //   inited &&
-    //   JSON.stringify(prevProps.unreadNotifyHistory.content) !==
-    //     JSON.stringify(this.props.unreadNotifyHistory.content)
-    // ) {
-    //   this.handleMarkers();
-    // }
   };
 
   searchUFOs = (bounds, options) => {
@@ -509,7 +464,10 @@ class ActivityMap extends PureComponent {
                     search={search}
                   />
                 )
-              ) : <ConfirmCard goToDetailSearch={this.handleCardDetail}/>
+              ) : <ConfirmCard
+                    goToDetailSearch={this.handleCardDetail}
+                    onMapChange={this.handleMapChange}
+                  />
             }
             {cardActivitiesVisible &&
               activities.content.map((act) => (

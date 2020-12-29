@@ -1,27 +1,16 @@
 import React, { Component, Fragment } from 'react';
-import { withRouter, Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Row, Button, List, Col } from 'antd';
-import { Marker, InfoWindow } from 'react-google-maps';
+import { Marker } from 'react-google-maps';
 import * as fa from 'fontawesome-markers';
-import { isNil } from 'ramda';
+// import { forEach } from 'ramda';
 
 import {
   getCardDetail,
   clearCardDetail
 } from 'reducers/cards';
 
-import { API_ROOT } from 'constants/endpoint';
-import { CARD_LIST, ACTIVITY_MAP } from 'constants/routes';
-import { readNotify } from 'reducers/guardAreas';
-
-const ListItem = styled(List.Item)`
-  &:hover {
-    background-color: #f0f5fa;
-    cursor: pointer;
-  }
-`;
+import { ACTIVITY_MAP } from 'constants/routes';
 
 const mapStateToProps = state => ({
   cards: state.cards,
@@ -32,7 +21,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   getCardDetail,
   clearCardDetail,
-  readNotify,
 };
 
 @connect(
@@ -48,6 +36,28 @@ class ConfirmCard extends Component {
       currentCardId: null
     }
   }
+
+  // componentDidUpdate = prevProps => {
+  //   if (
+  //     JSON.stringify(prevProps.unreadNotifyHistory.content) !==
+  //     JSON.stringify(this.props.unreadNotifyHistory.content)
+  //   ) {
+  //     const { onMapChange } = this.props;
+  //     const bounds = new window.google.maps.LatLngBounds();
+  //     forEach((x) => {
+  //       if (!x.latitude || !x.longitude) {
+  //         return;
+  //       }
+  //       bounds.extend(
+  //         new window.google.maps.LatLng({
+  //           lat: x.latitude,
+  //           lng: x.longitude,
+  //         }),
+  //       );
+  //     }, this.props.unreadNotifyHistory.content);
+  //     onMapChange({ mapCenter: bounds.getCenter() })
+  //   }
+  // };
 
   handleMarkerClick = card => {
     const { history } = this.props;

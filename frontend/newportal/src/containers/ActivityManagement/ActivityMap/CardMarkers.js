@@ -139,7 +139,8 @@ class CardMarkers extends Component {
   renderInfoWindow(currentCardId) {
     const {
       cards: { currentCard },
-      clearCardDetail
+      clearCardDetail,
+      t
     } = this.props;
 
     if (!currentCard || currentCard.id !== currentCardId) {
@@ -171,24 +172,40 @@ class CardMarkers extends Component {
               type="primary"
               style={{ width: '100%', backgroundColor: '#79abe5' }}
               onClick={() => this.handleActivities(currentCardId)}>
-              顯示動態
+              {t('view trace')}
             </Button>
           </Row>
           <Row style={{ marginTop: 24 }}>
-            <Col span={12}>
+            <Col span={6}>
               <Button
                 type="primary"
                 style={{ width: '90%', backgroundColor: '#79abe5' }}
                 onClick={() => this.handleReadNotify()}>
-                確定
+                {t('confirm')}
               </Button>
             </Col>
-            <Col span={12}>
+            <Col span={6}>
+              <Button
+                type="primary"
+                style={{ width: '90%', backgroundColor: '#79abe5' }}
+                onClick={clearCardDetail}>
+                {t('pending')}
+              </Button>
+            </Col>
+            <Col span={6}>
+              <Button
+                type="primary"
+                style={{ width: '90%', backgroundColor: '#79abe5' }}
+                onClick={() => this.handleReadNotify()}>
+                911
+              </Button>
+            </Col>
+            <Col span={6}>
               <Button
                 type="default"
                 style={{ float: 'right', width: '90%' }}
                 onClick={clearCardDetail}>
-                取消
+                {t('cancel')}
               </Button>
             </Col>
           </Row>
