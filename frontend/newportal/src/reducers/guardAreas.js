@@ -223,7 +223,7 @@ export const readNotifyEpic = pipe(
   ofType(READ_NOTIFY.REQUEST),
   switchMap(({ payload = {} }) =>
     readNotifyAPI(payload).pipe(
-      map((response) => createAction(READ_NOTIFY.SUCCESS)({ ...response, ...payload })),
+      mapTo(unreadNotify()),
       catchRequestError(createAction(READ_NOTIFY.FAILURE)()),
     ),
   ),

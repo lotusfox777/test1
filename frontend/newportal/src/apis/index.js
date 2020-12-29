@@ -199,7 +199,7 @@ export const deleteCardGroupAPI = id => request(`/v1/cardGroup/${id}`, 'DELETE')
 export const getCardGroupAPI = id => request(`/v1/cardGroup/${id}`, 'GET')();
 
 export const unreadNotifyAPI = ({ page = 0, size = 500 }) =>
-  request(`/v1/notify/list/${page}/${size}?readTag=false`, 'GET')();
+  request(`/v1/notify/list/${page}/${size}?readedTag=false`, 'GET')();
 export const readNotifyAPI = ({ id }) => request(`/v1/notify/read/${id}`, 'PUT')();
 
 export const listNotifyAPI = ({ page = 0, size = 10 }) =>
