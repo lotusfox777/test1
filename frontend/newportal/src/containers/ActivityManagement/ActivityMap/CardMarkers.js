@@ -124,9 +124,14 @@ class CardMarkers extends Component {
     clearInterval(this.interval);
   }
 
-  handleReadNotify = id => {
-    this.props.readNotify({ id })
-    this.handleMarkerClick(null)
+  handleReadNotify = () => {
+    const { location } = this.props;
+    const params = new URLSearchParams(location.search);
+    const hasId = !isNil(params.get('id'));
+    if (hasId) {
+      this.props.readNotify({ id: params.get('id') })
+    }
+    this.props.clearCardDetail()
   }
 
   renderInfoWindow(currentCardId) {
@@ -172,7 +177,7 @@ class CardMarkers extends Component {
               <Button
                 type="primary"
                 style={{ width: '90%', backgroundColor: '#79abe5' }}
-                onClick={() => this.handleReadNotify(currentCard.id)}>
+                onClick={() => this.handleReadNotify()}>
                 確定
               </Button>
             </Col>
@@ -180,7 +185,7 @@ class CardMarkers extends Component {
               <Button
                 type="default"
                 style={{ float: 'right', width: '90%' }}
-                onClick={() => this.handleMarkerClick(null)}>
+                onClick={clearCardDetail}>
                 取消
               </Button>
             </Col>
