@@ -23,7 +23,7 @@ import GeneralSearchDrawer from './GeneralSearchDrawer';
 import DetailSearchDrawer from './DetailSearchDrawer';
 import CardActivities from './CardActivities';
 import GuardAreas from './GuardAreas';
-import { withI18next } from 'locales/withI18next'
+import { withI18next } from 'locales/withI18next';
 import { readNotify } from 'reducers/guardAreas';
 
 const { Content } = Layout;
@@ -35,7 +35,7 @@ const DropdownWithBigFont = styled(Dropdown)`
   }
 `;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   guardAreas: state.guardAreas,
   cards: state.cards,
   unreadNotifyHistory: state.guardAreas.unreadNotifyHistory,
@@ -49,14 +49,11 @@ const mapDispatchToProps = {
   getCardDetail,
   clearUfos,
   listGuardAreas,
-  readNotify
+  readNotify,
 };
 
 @withDrawer
-@connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)
+@connect(mapStateToProps, mapDispatchToProps)
 class ActivityMap extends PureComponent {
   constructor(props) {
     super(props);
@@ -80,7 +77,7 @@ class ActivityMap extends PureComponent {
       currentTimeInterval: undefined,
       loadingCardGrpInfo: false,
       mapLoaded: false,
-      inited: false
+      inited: false,
     };
 
     this.map = null;
@@ -106,7 +103,7 @@ class ActivityMap extends PureComponent {
       getCardDetail(focusingCardMarkerId);
     }
 
-    window.handleReadNotify = this.props.readNotify
+    window.handleReadNotify = this.props.readNotify;
   };
 
   handleMarkers = () => {
@@ -117,21 +114,22 @@ class ActivityMap extends PureComponent {
 
     if (!search && !hasCardId) {
       const bounds = new window.google.maps.LatLngBounds();
-      forEach(
-        (x) => {
-          bounds.extend(
-            new window.google.maps.LatLng({
-              lat: x.latitude,
-              lng: x.longitude,
-            }),
-          )
-        },
-        this.props.unreadNotifyHistory.content,
-      );
+      forEach((x) => {
+        if (!x.latitude || !x.longitude) {
+          return;
+        }
+
+        bounds.extend(
+          new window.google.maps.LatLng({
+            lat: x.latitude,
+            lng: x.longitude,
+          }),
+        );
+      }, this.props.unreadNotifyHistory.content);
       this.map.fitBounds(bounds);
       this.setState({ mapCenter: bounds.getCenter() });
     }
-  }
+  };
 
   componentDidUpdate = (prevProps, prevState) => {
     const {
@@ -147,7 +145,7 @@ class ActivityMap extends PureComponent {
       guardAreaType,
       needUpdateMapCenter,
       mapLoaded,
-      inited
+      inited,
     } = this.state;
 
     if (!isLoading && needReloadGuardAreas) {
@@ -175,12 +173,16 @@ class ActivityMap extends PureComponent {
     }
 
     if (!prevState.mapLoaded && mapLoaded) {
-      this.handleMarkers()
-      this.setState({inited: true})
+      this.handleMarkers();
+      this.setState({ inited: true });
     }
 
-    if (inited && JSON.stringify(prevProps.unreadNotifyHistory.content) !== JSON.stringify(this.props.unreadNotifyHistory.content)) {
-      this.handleMarkers()
+    if (
+      inited &&
+      JSON.stringify(prevProps.unreadNotifyHistory.content) !==
+        JSON.stringify(this.props.unreadNotifyHistory.content)
+    ) {
+      this.handleMarkers();
     }
   };
 
@@ -206,7 +208,7 @@ class ActivityMap extends PureComponent {
     });
   };
 
-  handleMapChange = mapOptions => {
+  handleMapChange = (mapOptions) => {
     this.setState({ ...mapOptions });
   };
 
@@ -223,7 +225,7 @@ class ActivityMap extends PureComponent {
     });
   };
 
-  handleSaveInfo = currentGuardArea => {
+  handleSaveInfo = (currentGuardArea) => {
     if (currentGuardArea.id) {
       this.props.updateGuardArea(currentGuardArea);
       this.setState({
@@ -240,7 +242,7 @@ class ActivityMap extends PureComponent {
     }
   };
 
-  handleAddGuardArea = async options => {
+  handleAddGuardArea = async (options) => {
     this.setState({ loadingCardGrpInfo: true });
 
     const { currentGuardArea } = this.state;
@@ -252,8 +254,8 @@ class ActivityMap extends PureComponent {
 
     const hasUFO = ufosInRange.length > 0;
     const hasCard = !!(
-      cards.some(card => card.deviceType === DEVICE_TYPE.Card) ||
-      cardGroups.some(card => card.deviceType === DEVICE_TYPE.Card)
+      cards.some((card) => card.deviceType === DEVICE_TYPE.Card) ||
+      cardGroups.some((card) => card.deviceType === DEVICE_TYPE.Card)
     );
 
     if (!hasUFO && hasCard) {
@@ -270,7 +272,7 @@ class ActivityMap extends PureComponent {
         positionLatitude: options.center.lat,
         positionLongitude: options.center.lng,
         radius: options.radius,
-        ufoSeqs: ufosInRange.map(ufo => ufo.id),
+        ufoSeqs: ufosInRange.map((ufo) => ufo.id),
         onCompleted: () => {
           // clear the ufos we get during creation to avoid duplicate
           this.props.clearUfos();
@@ -282,14 +284,14 @@ class ActivityMap extends PureComponent {
     this.setState({ loadingCardGrpInfo: false });
   };
 
-  handleEditGuardArea = currentGuardArea => {
+  handleEditGuardArea = (currentGuardArea) => {
     this.setState({
       currentGuardArea,
       guardAreaModalVisible: true,
     });
   };
 
-  handleCardDetail = currentCardId => {
+  handleCardDetail = (currentCardId) => {
     this.setState(
       {
         currentCardId,
@@ -328,7 +330,7 @@ class ActivityMap extends PureComponent {
     });
   };
 
-  handleFitBounds = bounds => {
+  handleFitBounds = (bounds) => {
     this.map.fitBounds(bounds);
     this.setState({ mapCenter: bounds.getCenter() });
   };
@@ -345,18 +347,18 @@ class ActivityMap extends PureComponent {
     });
   };
 
-  handleGuardAreaType = e => {
+  handleGuardAreaType = (e) => {
     this.setState({
       showGuardAreas: true,
       guardAreaType: e.key,
     });
   };
 
-  handleCardMarkerFocus = focusingCardMarkerId => {
+  handleCardMarkerFocus = (focusingCardMarkerId) => {
     this.setState({ focusingCardMarkerId });
   };
 
-  handleSearch = keywordStr => {
+  handleSearch = (keywordStr) => {
     if (keywordStr && keywordStr.trim()) {
       const { history, listCardsCurrentInfo } = this.props;
       const search = keywordStr.toLowerCase();
@@ -485,9 +487,9 @@ class ActivityMap extends PureComponent {
             />
           )}
           <GoogleMapComponent
-            onRef={map => {
-              this.map = map
-              this.setState({'mapLoaded': true})
+            onRef={(map) => {
+              this.map = map;
+              this.setState({ mapLoaded: true });
             }}
             center={mapCenter}
             dynamicCircle={selectingGuardCenter}
@@ -497,33 +499,33 @@ class ActivityMap extends PureComponent {
             searchUFOInRoundRange={this.searchUFOs}
             onCircleAdd={this.handleAddGuardArea}
             onCircleCancel={this.handleCancel}>
-              {
-                hasCardId || search ? (
-                  showRealtimeInfo && (
-                    <CardMarkers
-                      goToDetailSearch={this.handleCardDetail}
-                      onMapChange={this.handleMapChange}
-                      focusingCardMarkerId={focusingCardMarkerId}
-                      search={search}
-                    />
-                  )
-                ) : <ConfirmCard goToDetailSearch={this.handleCardDetail}/>
-              }
-              {cardActivitiesVisible &&
-                activities.content.map(act => (
-                  <CardActivities
-                    key={act.id}
-                    cardId={act.id}
-                    positions={act.cardPositions}
-                    getCardDetail={this.handleCardDetail}
-                    focusedMarker={focusedMarker}
-                    isDetailMode={detailDrawerVisible}
-                    onFocusMarker={this.handleFocusMarker}
-                  />
-                ))}
-              {showGuardAreas && (
-                <GuardAreas guardAreaType={guardAreaType} onEdit={this.handleEditGuardArea} />
-              )}
+            {hasCardId || search ? (
+              showRealtimeInfo && (
+                <CardMarkers
+                  goToDetailSearch={this.handleCardDetail}
+                  onMapChange={this.handleMapChange}
+                  focusingCardMarkerId={focusingCardMarkerId}
+                  search={search}
+                />
+              )
+            ) : (
+              <ConfirmCard goToDetailSearch={this.handleCardDetail} />
+            )}
+            {cardActivitiesVisible &&
+              activities.content.map((act) => (
+                <CardActivities
+                  key={act.id}
+                  cardId={act.id}
+                  positions={act.cardPositions}
+                  getCardDetail={this.handleCardDetail}
+                  focusedMarker={focusedMarker}
+                  isDetailMode={detailDrawerVisible}
+                  onFocusMarker={this.handleFocusMarker}
+                />
+              ))}
+            {showGuardAreas && (
+              <GuardAreas guardAreaType={guardAreaType} onEdit={this.handleEditGuardArea} />
+            )}
           </GoogleMapComponent>
           {guardAreaModalVisible && (
             <GuardAreaModal

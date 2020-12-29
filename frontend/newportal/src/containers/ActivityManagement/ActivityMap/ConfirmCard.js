@@ -150,6 +150,10 @@ class ConfirmCard extends Component {
           const lat = card.latitude;
           const lng = card.longitude;
 
+          if (!lat || !lng) {
+            return null
+          }
+
           return (
             <Marker
               key={idx}
