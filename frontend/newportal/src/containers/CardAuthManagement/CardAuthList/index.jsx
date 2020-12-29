@@ -227,7 +227,7 @@ class CardAuthorityList extends React.PureComponent {
         <StyleListContent>
           <Col>
             <Row className="list-title">
-              <Col span={14}>裝置資訊</Col>
+              <Col span={14}>{t('bracelet information')}</Col>
               <Col span={6} style={{ textAlign: 'right' }}>
                 {t('number of assisted monitor person')}
               </Col>

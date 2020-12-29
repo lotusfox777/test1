@@ -371,7 +371,7 @@ class CardList extends React.Component {
                         <Col span={8}>
                           <Search
                             defaultValue={search}
-                            placeholder="搜尋ID或名稱"
+                            placeholder={t('id or name')}
                             onSearch={this.handleSearch}
                           />
                         </Col>

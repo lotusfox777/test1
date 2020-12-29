@@ -224,7 +224,7 @@ class GuardAreaList extends React.PureComponent {
         </StyleDescWrap>
         <Row>
           <Col span={9}>
-            <Search placeholder="搜尋ID或名稱" onSearch={this.handleSearch} />
+            <Search placeholder={t('id or name')} onSearch={this.handleSearch} />
           </Col>
         </Row>
         <StyleCollapseHeader>

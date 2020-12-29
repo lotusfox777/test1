@@ -7,7 +7,8 @@ import App from './App';
 import { Provider } from 'react-redux';
 import { ConfigProvider } from 'antd';
 import { loginInit } from './reducers/auth';
-import zh_TW from 'antd/lib/locale-provider/zh_TW';
+// import zh_TW from 'antd/lib/locale-provider/zh_TW';
+import en_US from 'antd/lib/locale-provider/en_US';
 import { queryString } from './utils/webHelper';
 import { isProd, mobileAppUrl } from 'constants/endpoint';
 import theme from './theme';
@@ -44,7 +45,7 @@ if (!shouldRedirect) {
   ReactDOM.render(
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <ConfigProvider locale={zh_TW}>
+        <ConfigProvider locale={en_US}>
           <ConnectedRouter history={history}>
             <DrawerProvider accountModalVisible={userModalVisible}>
               <App />

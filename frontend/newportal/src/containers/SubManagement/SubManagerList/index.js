@@ -242,7 +242,7 @@ class SubManagerList extends React.PureComponent {
         </StyleDescWrap>
         <Row>
           <Col span={8}>
-            <Search placeholder="搜尋ID或名稱" onSearch={this.handleSearch} />
+            <Search placeholder={t('id or name')} onSearch={this.handleSearch} />
           </Col>
         </Row>
         <StyleListContent>

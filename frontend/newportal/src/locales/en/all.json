@@ -68,5 +68,7 @@
   "view trace": "View trace",
   "confirm": "Confirm",
   "pending": "Pending",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "bracelet information": "Bracelet information",
+  "id or name": "ID or Name"
 }

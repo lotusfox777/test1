@@ -99,9 +99,9 @@ class DeviceManagement extends PureComponent {
     case SAVEAREA_HISTORY:
       return (
         <div className="breadcrumb">
-            {t('geo-fence management')}
+          {t('geo-fence management')}
           <span>/</span>
-            守護區域記錄
+          {t('violation logs')}
         </div>
       );
     default:
@@ -111,7 +111,7 @@ class DeviceManagement extends PureComponent {
   render() {
     return (
       <Layout>
-        <StyleSider>
+        <StyleSider width="360">
           <SideMenu />
         </StyleSider>
         <StyleContent>

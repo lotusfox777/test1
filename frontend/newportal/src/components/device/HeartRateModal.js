@@ -7,6 +7,7 @@ import { Flex } from 'components/common/Flex';
 import { listHeartRate } from 'reducers/device';
 import moment from 'moment';
 import { StyledModal } from './style';
+import { withI18next } from 'locales/withI18next';
 
 const { RangePicker } = DatePicker;
 
@@ -52,16 +53,16 @@ const HeartRateModal = ({ device, onCancel, content, isLoading, total, listHeart
 
   const columns = [
     {
-      title: '時間',
+      title: this.props.t('time'),
       dataIndex: 'dataAt',
       render: v => moment(v).format('YYYY.MM.DD HH:mm:ss'),
     },
     {
-      title: '血氧(%)',
+      title: this.props.t('blood oxygen'),
       dataIndex: 'spo2',
     },
     {
-      title: '心率(次/分)',
+      title: this.props.t('heart rate'),
       dataIndex: 'heartbeat',
     },
   ];
@@ -90,7 +91,7 @@ const HeartRateModal = ({ device, onCancel, content, isLoading, total, listHeart
           <Col sm={12} xs={24}>
             <Flex>
               <RangePicker onChange={onChange} format="YYYY-MM-DD" />
-              <Button className="ml-8 mr-20" text="搜尋" onClick={handleSearch} />
+              <Button className="ml-8 mr-20" text={this.props.t('search')} onClick={handleSearch} />
             </Flex>
           </Col>
         </Row>
@@ -107,7 +108,7 @@ const HeartRateModal = ({ device, onCancel, content, isLoading, total, listHeart
         pagination={pagination}
         loading={isLoading}
         onChange={handlePagination}
-        locale={{ emptyText: '沒有資料' }}
+        locale={{ emptyText: 'no data' }}
       />
     </StyledModal>
   );
@@ -123,4 +124,4 @@ const mapDispatchToProps = {
   listHeartRate,
 };
 
-export default pipe(connect(mapStateToProps, mapDispatchToProps), Form.create())(HeartRateModal);
+export default withI18next(['all'])(pipe(connect(mapStateToProps, mapDispatchToProps), Form.create())(HeartRateModal));
