@@ -130,18 +130,15 @@ class CardMarkers extends Component {
     this.handleMarkerClick(null)
   }
 
-  renderInfoWindow(currentCardId) {
-    const {
-      cards: { currentCard },
-      clearCardDetail
-    } = this.props;
+  renderInfoWindow(currentCard) {
+    const { currentCardId } = this.state;
 
-    if (!currentCard || currentCard.id !== currentCardId) {
+    if (currentCard.id !== currentCardId) {
       return null;
     }
 
     return (
-      <InfoWindow onCloseClick={clearCardDetail}>
+      <InfoWindow onCloseClick={() => this.handleMarkerClick(null)}>
         <div style={{ width: 244 }}>
           <Row type="flex" align="middle" style={{ marginTop: 12 }}>
             <img
@@ -224,10 +221,10 @@ class CardMarkers extends Component {
                 scale: 0.5,
                 strokeWeight: 0,
                 fillOpacity: 1,
-                fillColor: highlight ? '#fe2e2e' : card.colorCode
+                fillColor: '#fe2e2e'
               }}
             >
-              {this.renderInfoWindow(card.id)}
+              {this.renderInfoWindow(card)}
             </Marker>
           );
         })}
