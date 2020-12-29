@@ -167,7 +167,7 @@ class AppHeader extends PureComponent {
 
   handleItemClick = (notify) => {
     const { history } = this.props;
-    history.push(`${ACTIVITY_MAP}?id=${notify.id}`);
+    history.push(`${ACTIVITY_MAP}?card_id=${notify.cardSeq}&id=${notify.id}`);
   }
 
   renderPopover = () => {
