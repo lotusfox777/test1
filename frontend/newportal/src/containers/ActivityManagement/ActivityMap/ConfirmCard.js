@@ -94,13 +94,13 @@ class ConfirmCard extends Component {
                 marginRight: 12
               }}
             />
-            <h3><Link to={`${CARD_LIST}/${currentCardId}`}>{currentCard.cardName}</Link></h3>
+            <h3><Link to={`${CARD_LIST}/${currentCard.cardSeq}`}>{currentCard.cardName}</Link></h3>
           </Row>
           <Row style={{ marginTop: 24 }}>
             <Button
               type="primary"
               style={{ width: '100%', backgroundColor: '#79abe5' }}
-              onClick={() => this.handleActivities(currentCardId)}>
+              onClick={() => this.handleActivities(currentCard.cardSeq)}>
               顯示動態
             </Button>
           </Row>

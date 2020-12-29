@@ -172,18 +172,18 @@ class ActivityMap extends PureComponent {
       });
     }
 
-    if (!prevState.mapLoaded && mapLoaded) {
-      this.handleMarkers();
-      this.setState({ inited: true });
-    }
+    // if (!prevState.mapLoaded && mapLoaded) {
+    //   this.handleMarkers();
+    //   this.setState({ inited: true });
+    // }
 
-    if (
-      inited &&
-      JSON.stringify(prevProps.unreadNotifyHistory.content) !==
-        JSON.stringify(this.props.unreadNotifyHistory.content)
-    ) {
-      this.handleMarkers();
-    }
+    // if (
+    //   inited &&
+    //   JSON.stringify(prevProps.unreadNotifyHistory.content) !==
+    //     JSON.stringify(this.props.unreadNotifyHistory.content)
+    // ) {
+    //   this.handleMarkers();
+    // }
   };
 
   searchUFOs = (bounds, options) => {
