@@ -126,11 +126,12 @@ class CardMarkers extends Component {
   }
 
   handleReadNotify = () => {
-    const { location } = this.props;
+    const { location, history } = this.props;
     const params = new URLSearchParams(location.search);
     const hasId = !isNil(params.get('id'));
     if (hasId) {
       this.props.readNotify({ id: params.get('id') })
+      history.push(ACTIVITY_MAP);
     }
     this.props.clearCardDetail()
   }

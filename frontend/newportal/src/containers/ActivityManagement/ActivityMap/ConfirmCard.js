@@ -54,93 +54,6 @@ class ConfirmCard extends Component {
     history.push(`${ACTIVITY_MAP}?id=${card.id}&card_id=${card.cardSeq}`);
   };
 
-  handleGuardAreaClick = id => {
-    this.props.getGuardArea(id);
-    this.setState({
-      navigateToGuardAreaList: true
-    });
-  };
-
-  handleActivities = id => {
-    this.props.goToDetailSearch(id);
-  };
-
-  // handleReadNotify = id => {
-  //   this.props.readNotify({ id })
-  //   this.handleMarkerClick(null)
-  // }
-
-  // renderInfoWindow(currentCard) {
-  //   const { currentCardId } = this.state;
-
-  //   if (currentCard.id !== currentCardId) {
-  //     return null;
-  //   }
-
-  //   return (
-  //     <InfoWindow onCloseClick={() => this.handleMarkerClick(null)}>
-  //       <div style={{ width: 244 }}>
-  //         <Row type="flex" align="middle" style={{ marginTop: 12 }}>
-  //           <img
-  //             alt="無照片"
-  //             src={
-  //               currentCard.avatar
-  //                 ? `${API_ROOT}/v1/file/${currentCard.avatar}`
-  //                 : '/img/avatar-pic.png'
-  //             }
-  //             style={{
-  //               width: 67,
-  //               height: 67,
-  //               borderRadius: 40,
-  //               marginRight: 12
-  //             }}
-  //           />
-  //           <h3><Link to={`${CARD_LIST}/${currentCard.cardSeq}`}>{currentCard.cardName}</Link></h3>
-  //         </Row>
-  //         <Row style={{ marginTop: 24 }}>
-  //           <Button
-  //             type="primary"
-  //             style={{ width: '100%', backgroundColor: '#79abe5' }}
-  //             onClick={() => this.handleActivities(currentCard.cardSeq)}>
-  //             顯示動態
-  //           </Button>
-  //         </Row>
-  //         <Row style={{ marginTop: 24 }}>
-  //           <Col span={12}>
-  //             <Button
-  //               type="primary"
-  //               style={{ width: '90%', backgroundColor: '#79abe5' }}
-  //               onClick={() => this.handleReadNotify(currentCard.id)}>
-  //               確定
-  //             </Button>
-  //           </Col>
-  //           <Col span={12}>
-  //             <Button
-  //               type="default"
-  //               style={{ float: 'right', width: '90%' }}
-  //               onClick={() => this.handleMarkerClick(null)}>
-  //               取消
-  //             </Button>
-  //           </Col>
-  //         </Row>
-  //         <Row style={{ marginTop: 18 }}>
-  //           <div style={{ marginBottom: 6 }}>守護區域</div>
-  //           <List
-  //             style={{ maxHeight: 200, overflowY: 'scroll' }}
-  //             bordered
-  //             dataSource={currentCard.guardareaList}
-  //             renderItem={item => (
-  //               <ListItem onClick={() => this.handleGuardAreaClick(item.id)}>
-  //                 {item.name}
-  //               </ListItem>
-  //             )}
-  //           />
-  //         </Row>
-  //       </div>
-  //     </InfoWindow>
-  //   );
-  // }
-
   render() {
     const { unreadNotifyHistory } = this.props;
 
@@ -166,9 +79,7 @@ class ConfirmCard extends Component {
                 fillOpacity: 1,
                 fillColor: '#fe2e2e'
               }}
-            >
-              {/* {this.renderInfoWindow(card)} */}
-            </Marker>
+            />
           );
         })}
       </Fragment>
