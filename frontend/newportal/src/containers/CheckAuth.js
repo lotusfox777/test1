@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getCurrentUser } from 'reducers/users';
-import { REGISTER_ACTIVE, RESETPASS, AGREEMENT } from 'constants/routes';
+import { REGISTER_ACTIVE, RESETPASS, AGREEMENT, QRCODE } from 'constants/routes';
 import { TAIPEI_HOST, APP_TITLE } from 'constants/endpoint';
 import AuthPage from 'containers/Auth/index';
 import Agreement from './Agreement';
+import QRcode from './QRcode';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   auth: state.auth,
   isLoading: state.auth.isLoading,
   isLoginFailed: state.auth.isLoginFailed,
@@ -17,12 +18,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = { getCurrentUser };
 
-export default WrappedComponent => {
+export default (WrappedComponent) => {
   @withRouter
-  @connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )
+  @connect(mapStateToProps, mapDispatchToProps)
   class CheckAuth extends React.Component {
     static propTypes = {
       isLoading: PropTypes.bool.isRequired,
@@ -37,11 +35,14 @@ export default WrappedComponent => {
 
       const isAgreement = window.location.pathname.startsWith(AGREEMENT);
 
+      const isQRcode = window.location.pathname.startsWith(QRCODE);
+
       this.state = {
         isRegisterActive,
         isAuthenticated: props.auth.isAuthenticated,
         isResetPass,
         isAgreement,
+        isQRcode,
       };
     }
 
@@ -58,6 +59,9 @@ export default WrappedComponent => {
       }
       if (pathname.startsWith(AGREEMENT) && !prevState.isAgreement) {
         return { isAgreement: true };
+      }
+      if (pathname.startsWith(QRCODE) && !prevState.isQRcode) {
+        return { isQRcode: true };
       }
       if (!pathname.startsWith(RESETPASS) && !pathname.startsWith(REGISTER_ACTIVE)) {
         return {
@@ -89,7 +93,7 @@ export default WrappedComponent => {
         history,
         match,
       } = this.props;
-      const { isRegisterActive, isResetPass, isAgreement } = this.state;
+      const { isRegisterActive, isResetPass, isAgreement, isQRcode } = this.state;
 
       const taipeiUrl = window.location.hostname.indexOf(TAIPEI_HOST);
 
@@ -99,6 +103,10 @@ export default WrappedComponent => {
 
       if (isAgreement && taipeiUrl > -1) {
         return <Agreement />;
+      }
+
+      if (isQRcode) {
+        return <QRcode />;
       }
 
       if (!isAuthenticated && !isRegisterActive && !isResetPass) {

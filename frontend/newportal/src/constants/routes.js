@@ -9,7 +9,8 @@ export const FORGET_PASSWORD = '/forgetpass';
 export const REGISTER_ACTIVE = '/register-active';
 export const RESETPASS = '/resetpass';
 export const AGREEMENT = '/agreement';
-export const EMAIL_REPLACE = '/emailReplace'
+export const EMAIL_REPLACE = '/emailReplace';
+export const QRCODE = '/qrcode';
 
 /**
  * ActivityManagement
