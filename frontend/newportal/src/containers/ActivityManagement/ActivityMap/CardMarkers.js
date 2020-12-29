@@ -177,7 +177,7 @@ class CardMarkers extends Component {
             </Button>
           </Row>
           <Row style={{ marginTop: 24 }}>
-            <Col span={6}>
+            <Col span={12}>
               <Button
                 type="primary"
                 style={{ width: '90%', backgroundColor: '#79abe5' }}
@@ -185,15 +185,17 @@ class CardMarkers extends Component {
                 {t('confirm')}
               </Button>
             </Col>
-            <Col span={6}>
+            <Col span={12}>
               <Button
                 type="primary"
-                style={{ width: '90%', backgroundColor: '#79abe5' }}
+                style={{ float: 'right', width: '90%', backgroundColor: '#79abe5' }}
                 onClick={clearCardDetail}>
                 {t('pending')}
               </Button>
             </Col>
-            <Col span={6}>
+          </Row>
+          <Row style={{ marginTop: 24 }}>
+            <Col span={12}>
               <Button
                 type="primary"
                 style={{ width: '90%', backgroundColor: '#79abe5' }}
@@ -201,10 +203,10 @@ class CardMarkers extends Component {
                 911
               </Button>
             </Col>
-            <Col span={6}>
+            <Col span={12}>
               <Button
                 type="default"
-                style={{ float: 'right', width: '90%' }}
+                style={{ float: 'right', width: '90%', backgroundColor: '#79abe5' }}
                 onClick={clearCardDetail}>
                 {t('cancel')}
               </Button>
