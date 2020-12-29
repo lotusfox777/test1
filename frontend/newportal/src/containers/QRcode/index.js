@@ -46,7 +46,7 @@ function QRcode({ form }) {
     <Flex>
       {QRcodeValue ? (
         <div style={flex}>
-          <QRCode value={encodeURIComponent(JSON.stringify(QRcodeValue))} />
+          <QRCode value={JSON.stringify(QRcodeValue)} />
         </div>
       ) : (
         <Form layout="vertical" hideRequiredMark>
