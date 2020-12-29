@@ -49,15 +49,6 @@ class ConfirmCard extends Component {
     }
   }
 
-  componentDidUpdate = (prevProps, prevState) => {
-    const { location } = this.props;
-    if (prevProps.location.search !== location.search) {
-      const params = new URLSearchParams(location.search);
-      const currentId = Number(params.get('id'));
-      this.setState({ currentCardId: currentId })
-    }
-  }
-
   handleMarkerClick = id => {
     this.setState({ currentCardId: id })
   };
