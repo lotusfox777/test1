@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import { isNil } from 'ramda';
 import { Drawer, Row, Col, Button, Select, DatePicker, Form } from 'antd';
-
+import { withI18next } from 'locales/withI18next';
 import { listCardActivities, clearCardActivities } from 'reducers/cards';
 
 const formItemLayout = {
@@ -177,21 +177,22 @@ class DetailSearchDrawer extends Component {
       onClose,
       cards: { activities },
       form: { getFieldDecorator },
-      focusedMarker
+      focusedMarker,
+      t
     } = this.props;
     const { intervalMin, startTime, endTime } = this.state;
 
     return (
       <DrawerWithoutMask
         width="350"
-        title="動態搜尋"
+        title={t('search trace')}
         placement="right"
         mask={false}
         visible={true}
         onClose={onClose}>
-        <h4>設定查詢區間</h4>
-        <p>搜尋區間最多一日</p>
-        <FormItem label="自" {...formItemLayout}>
+        {/* <h4>設定查詢區間</h4> */}
+        {/* <p>搜尋區間最多一日</p> */}
+        <FormItem label={t('datetime-from')} {...formItemLayout}>
           {getFieldDecorator('startTime', {
             initialValue: moment(startTime),
             rules: [{ required: true, message: '此欄位必填' }]
@@ -203,7 +204,7 @@ class DetailSearchDrawer extends Component {
             />
           )}
         </FormItem>
-        <FormItem label="至" {...formItemLayout}>
+        <FormItem label={t('datetime-to')} {...formItemLayout}>
           {getFieldDecorator('endTime', {
             initialValue: moment(endTime),
             rules: [{ required: true, message: '此欄位必填' }]
@@ -216,7 +217,7 @@ class DetailSearchDrawer extends Component {
           )}
         </FormItem>
         <Row type="flex" align="middle" gutter={8}>
-          <Col span={2}>每</Col>
+          <Col span={2}>{t('datetime-per')}</Col>
           <Col span={9}>
             <FormItem style={{ marginBottom: 0 }}>
               {getFieldDecorator('intervalMin', {
@@ -230,14 +231,14 @@ class DetailSearchDrawer extends Component {
               )}
             </FormItem>
           </Col>
-          <Col span={9}>顯示一筆資料</Col>
+          <Col span={9}>{t('show the data')}</Col>
         </Row>
 
         <Button
           style={{ width: '100%', marginTop: 12 }}
           type="primary"
           onClick={this.handleSearch}>
-          開始搜尋
+          {t('start')}
         </Button>
 
         <Row style={{ marginTop: 36, borderBottom: '1px solid #1e3954' }}>
@@ -268,4 +269,4 @@ class DetailSearchDrawer extends Component {
   }
 }
 
-export default DetailSearchDrawer;
+export default withI18next(['all'])(DetailSearchDrawer);
