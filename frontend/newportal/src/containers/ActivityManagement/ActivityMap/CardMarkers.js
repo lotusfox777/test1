@@ -7,6 +7,7 @@ import { find, propEq } from 'ramda';
 import { Marker, InfoWindow } from 'react-google-maps';
 import * as fa from 'fontawesome-markers';
 import { isNil } from 'ramda';
+import { withI18next } from 'locales/withI18next';
 
 import {
   listCardsCurrentInfo,
@@ -263,4 +264,4 @@ class CardMarkers extends Component {
   }
 }
 
-export default withRouter(CardMarkers);
+export default withI18next(['all'])(withRouter(CardMarkers));
