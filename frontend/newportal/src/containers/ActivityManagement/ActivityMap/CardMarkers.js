@@ -26,7 +26,8 @@ const ListItem = styled(List.Item)`
 
 const mapStateToProps = state => ({
   cards: state.cards,
-  guardAreas: state.guardAreas
+  guardAreas: state.guardAreas,
+  unreadNotifyHistory: state.guardAreas.unreadNotifyHistory,
 });
 
 const mapDispatchToProps = {
@@ -124,6 +125,11 @@ class CardMarkers extends Component {
     clearInterval(this.interval);
   }
 
+  handleReadNotify = id => {
+    this.props.readNotify({ id })
+    this.handleMarkerClick(null)
+  }
+
   renderInfoWindow(currentCardId) {
     const {
       cards: { currentCard },
@@ -199,11 +205,11 @@ class CardMarkers extends Component {
   }
 
   render() {
-    const { cards, focusingCardMarkerId } = this.props;
+    const { cards, focusingCardMarkerId, unreadNotifyHistory } = this.props;
 
     return (
       <Fragment>
-        {cards.content.map((card, idx) => {
+        {unreadNotifyHistory.content.map((card, idx) => {
           if (!card.current) {
             return null;
           }
