@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { Row, Button, List, Col } from 'antd';
+import { Row, Button, List } from 'antd';
 import { find, propEq } from 'ramda';
 import { Marker, InfoWindow } from 'react-google-maps';
 import * as fa from 'fontawesome-markers';
@@ -26,8 +26,7 @@ const ListItem = styled(List.Item)`
 
 const mapStateToProps = state => ({
   cards: state.cards,
-  guardAreas: state.guardAreas,
-  unreadNotifyHistory: state.guardAreas.unreadNotifyHistory,
+  guardAreas: state.guardAreas
 });
 
 const mapDispatchToProps = {
@@ -35,7 +34,7 @@ const mapDispatchToProps = {
   getCardDetail,
   clearCardDetail,
   getGuardArea,
-  readNotify,
+  readNotify
 };
 
 @connect(
@@ -110,11 +109,11 @@ class CardMarkers extends Component {
     if (currentCardId !== prevCardId) {
       const card = find(propEq('id', currentCardId))(content);
 
-      if (card) {
+      if (card && card.current) {
         onMapChange({
           mapCenter: {
-            lat: card.latitude,
-            lng: card.longitude
+            lat: card.current.latitude,
+            lng: card.current.longitude
           }
         });
       }
@@ -130,15 +129,18 @@ class CardMarkers extends Component {
     this.handleMarkerClick(null)
   }
 
-  renderInfoWindow(currentCard) {
-    const { currentCardId } = this.state;
+  renderInfoWindow(currentCardId) {
+    const {
+      cards: { currentCard },
+      clearCardDetail
+    } = this.props;
 
-    if (currentCard.id !== currentCardId) {
+    if (!currentCard || currentCard.id !== currentCardId) {
       return null;
     }
 
     return (
-      <InfoWindow onCloseClick={() => this.handleMarkerClick(null)}>
+      <InfoWindow onCloseClick={clearCardDetail}>
         <div style={{ width: 244 }}>
           <Row type="flex" align="middle" style={{ marginTop: 12 }}>
             <img
@@ -202,14 +204,18 @@ class CardMarkers extends Component {
   }
 
   render() {
-    const { cards, focusingCardMarkerId, unreadNotifyHistory } = this.props;
+    const { cards, focusingCardMarkerId } = this.props;
 
     return (
       <Fragment>
-        {unreadNotifyHistory.content.map((card, idx) => {
+        {cards.content.map((card, idx) => {
+          if (!card.current) {
+            return null;
+          }
+
           const highlight = focusingCardMarkerId === card.id;
-          const lat = card.latitude;
-          const lng = card.longitude;
+          const lat = card.current.latitude;
+          const lng = card.current.longitude;
 
           return (
             <Marker
@@ -221,10 +227,10 @@ class CardMarkers extends Component {
                 scale: 0.5,
                 strokeWeight: 0,
                 fillOpacity: 1,
-                fillColor: '#fe2e2e'
+                fillColor: highlight ? '#fe2e2e' : card.colorCode
               }}
             >
-              {this.renderInfoWindow(card)}
+              {this.renderInfoWindow(card.id)}
             </Marker>
           );
         })}

@@ -499,25 +499,17 @@ class ActivityMap extends PureComponent {
             searchUFOInRoundRange={this.searchUFOs}
             onCircleAdd={this.handleAddGuardArea}
             onCircleCancel={this.handleCancel}>
-            {showRealtimeInfo && (
-              <CardMarkers
-                goToDetailSearch={this.handleCardDetail}
-                onMapChange={this.handleMapChange}
-                focusingCardMarkerId={focusingCardMarkerId}
-                search={search}
-              />
-            )}
             {
-              // hasCardId || search ? (
-              //   showRealtimeInfo && (
-              //     <CardMarkers
-              //       goToDetailSearch={this.handleCardDetail}
-              //       onMapChange={this.handleMapChange}
-              //       focusingCardMarkerId={focusingCardMarkerId}
-              //       search={search}
-              //     />
-              //   )
-              // ) : <ConfirmCard goToDetailSearch={this.handleCardDetail}/>
+              hasCardId || search ? (
+                showRealtimeInfo && (
+                  <CardMarkers
+                    goToDetailSearch={this.handleCardDetail}
+                    onMapChange={this.handleMapChange}
+                    focusingCardMarkerId={focusingCardMarkerId}
+                    search={search}
+                  />
+                )
+              ) : <ConfirmCard goToDetailSearch={this.handleCardDetail}/>
             }
             {cardActivitiesVisible &&
               activities.content.map((act) => (
