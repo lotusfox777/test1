@@ -7,11 +7,10 @@ import { Flex } from 'components/common/Flex';
 import { listHeartRate } from 'reducers/device';
 import moment from 'moment';
 import { StyledModal } from './style';
-import { withI18next } from 'locales/withI18next';
 
 const { RangePicker } = DatePicker;
 
-const HeartRateModal = ({ device, onCancel, content, isLoading, total, listHeartRate }) => {
+const HeartRateModal = ({ device, onCancel, content, isLoading, total, listHeartRate, t }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [date, setDate] = useState([]);
 
@@ -53,16 +52,16 @@ const HeartRateModal = ({ device, onCancel, content, isLoading, total, listHeart
 
   const columns = [
     {
-      title: this.props.t('time'),
+      title: t('time'),
       dataIndex: 'dataAt',
       render: v => moment(v).format('YYYY.MM.DD HH:mm:ss'),
     },
     {
-      title: this.props.t('blood oxygen'),
+      title: t('blood oxygen'),
       dataIndex: 'spo2',
     },
     {
-      title: this.props.t('heart rate'),
+      title: t('heart rate'),
       dataIndex: 'heartbeat',
     },
   ];
@@ -91,7 +90,7 @@ const HeartRateModal = ({ device, onCancel, content, isLoading, total, listHeart
           <Col sm={12} xs={24}>
             <Flex>
               <RangePicker onChange={onChange} format="YYYY-MM-DD" />
-              <Button className="ml-8 mr-20" text={this.props.t('search')} onClick={handleSearch} />
+              <Button className="ml-8 mr-20" text={t('search')} onClick={handleSearch} />
             </Flex>
           </Col>
         </Row>
@@ -124,4 +123,4 @@ const mapDispatchToProps = {
   listHeartRate,
 };
 
-export default withI18next(['all'])(pipe(connect(mapStateToProps, mapDispatchToProps), Form.create())(HeartRateModal));
+export default pipe(connect(mapStateToProps, mapDispatchToProps), Form.create())(HeartRateModal);

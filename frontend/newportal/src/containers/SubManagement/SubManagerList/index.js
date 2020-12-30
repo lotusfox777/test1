@@ -293,7 +293,7 @@ class SubManagerList extends React.PureComponent {
         </StyleListContent>
 
         {heartRateModalVisible && (
-          <HeartRateModal device={device} onCancel={this.handleHeartRateModalVisible} />
+          <HeartRateModal device={device} onCancel={this.handleHeartRateModalVisible} t={t}/>
         )}
       </React.Fragment>
     );
