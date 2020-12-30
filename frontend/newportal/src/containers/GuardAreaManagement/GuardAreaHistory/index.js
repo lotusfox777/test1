@@ -242,7 +242,7 @@ class GuardAreaHistory extends React.PureComponent {
             <List
               header={
                 <Row className="ant-list__header">
-                  <Col span={4}>{t('bracelet')} (主/副管理名單)</Col>
+                  <Col span={4}>{t('bracelet')}</Col>
                   <Col span={14} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     {t('qty of geo-fence')}
                   </Col>

@@ -221,7 +221,7 @@ export const unreadNotifyEpic = pipe(
 
 export const readNotifyEpic = pipe(
   ofType(READ_NOTIFY.REQUEST),
-  tap(() => message.success('已認可該警報訊息')),
+  tap(() => message.success('Case closed')),
   switchMap(({ payload = {} }) =>
     readNotifyAPI(payload).pipe(
       mapTo(unreadNotify()),
