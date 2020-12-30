@@ -12,6 +12,11 @@ const flex = {
   padding: '5em 2em',
 };
 
+const formItemLayout = {
+  labelCol: { span: 4 },
+  wrapperCol: { span: 14 },
+};
+
 function QRcode({ form }) {
   const [county, setCounty] = useState('台北市');
   const [district, setDistrict] = useState('中正區');
@@ -31,8 +36,8 @@ function QRcode({ form }) {
         name: values.name,
         ic: values.ic,
         addr: {
-          county,
-          district,
+          county: values.county,
+          district: values.district,
           village: values.village,
           address: values.address,
         },
@@ -71,36 +76,36 @@ function QRcode({ form }) {
             })(<Input placeholder="Passport Number" />)}
           </FormItem>
           <FormItem label="Address">
-            <TWzipcode
-              css={['form-control county-sel', 'form-control district-sel', 'form-control zipcode']}
-              handleChangeCounty={(v) => setCounty(v.county)}
-              handleChangeDistrict={(v) => setDistrict(v.district)}
-              handleChangeZipcode={(v) => setZipcode(v.zipcode)}
-              countyValue={county}
-              districtValue={district}
-              zipcodeValue={zipcode}
-              zipcodePlaceholder="zipcode"
-            />
+            <Row gutter={16}>
+              <Col span={12}>
+                <FormItem label="" colon={false}>
+                  {getFieldDecorator('county')(<Input placeholder="County" />)}
+                </FormItem>
+              </Col>
+              <Col span={12}>
+                <FormItem label="" colon={false}>
+                  {getFieldDecorator('district')(<Input placeholder="District" />)}
+                </FormItem>
+              </Col>
+              <Col span={6}>
+                <FormItem label="" colon={false}>
+                  {getFieldDecorator('village')(<Input placeholder="Village" />)}
+                </FormItem>
+              </Col>
+              <Col span={18}>
+                <FormItem label="" colon={false}>
+                  {getFieldDecorator('address', {
+                    rules: [
+                      {
+                        required: true,
+                        message: 'this field is required',
+                      },
+                    ],
+                  })(<Input placeholder="address" />)}
+                </FormItem>
+              </Col>
+            </Row>
           </FormItem>
-          <Row>
-            <Col span={6}>
-              <FormItem label="" colon={false}>
-                {getFieldDecorator('village')(<Input placeholder="village" />)}
-              </FormItem>
-            </Col>
-            <Col span={18}>
-              <FormItem label="" colon={false}>
-                {getFieldDecorator('address', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'this field is required',
-                    },
-                  ],
-                })(<Input placeholder="address" />)}
-              </FormItem>
-            </Col>
-          </Row>
 
           <Button type="primary" block onClick={handleSubmit}>
             Send
