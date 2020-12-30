@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import StyleButton from 'components/Button';
 import { Input, Form, Row, Col, Upload, Icon, Modal, message, Avatar } from 'antd';
 import styled from 'styled-components';
+import { withI18next } from 'locales/withI18next'
 
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -253,6 +254,7 @@ class NewCardModal extends PureComponent {
     const {
       form: { getFieldDecorator },
       visible,
+      t,
     } = this.props;
 
     const {
@@ -263,7 +265,7 @@ class NewCardModal extends PureComponent {
     return (
       <StyleWrapper>
         <StyledModal
-          title={<span style={modalTitle}>新增裝置</span>}
+          title={<span style={modalTitle}>{t('add bracelet')}</span>}
           visible={visible}
           footer={null}
           onOk={this.handleOk}
@@ -352,4 +354,4 @@ class NewCardModal extends PureComponent {
   }
 }
 
-export default NewCardModal;
+export default withI18next(['all'])(NewCardModal);

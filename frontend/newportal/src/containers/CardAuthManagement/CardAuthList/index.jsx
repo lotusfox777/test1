@@ -259,7 +259,7 @@ class CardAuthorityList extends React.PureComponent {
                       <div>{item.uuid}</div>
                     </Col>
                     <Col span={6} className="card-count">
-                      {item.authCount} 人
+                      {item.authCount}
                     </Col>
                   </Row>
                 </List.Item>

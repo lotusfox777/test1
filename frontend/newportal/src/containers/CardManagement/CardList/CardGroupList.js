@@ -15,6 +15,7 @@ import TooltipButton from 'components/TooltipButton';
 import EditCardGroup from './EditCardGroup';
 import DeleteCardGroup from './DeleteCardGroup';
 import AddCardGroup from './AddCardGroup';
+import { withI18next } from 'locales/withI18next'
 
 const Search = Input.Search;
 
@@ -120,7 +121,7 @@ class CardGroupList extends React.PureComponent {
   };
 
   render() {
-    const { allCards, cardGroups } = this.props;
+    const { allCards, cardGroups, t } = this.props;
 
     const { newModalVisible, editModelVisible, deleteModelVisible } = this.state;
 
@@ -135,7 +136,7 @@ class CardGroupList extends React.PureComponent {
       <Wrapper>
         <Row>
           <Col span={12}>
-            <H3>群組名單 ({cardGroups.total})</H3>
+            <H3>{t('group list')} ({cardGroups.total})</H3>
           </Col>
         </Row>
         <Row>
@@ -143,7 +144,7 @@ class CardGroupList extends React.PureComponent {
             <Search placeholder="搜尋群組名單" onSearch={this.handleSearch} />
           </Col>
           <Col span={16} className="text-right">
-            <StyleButton text="新增群組" onClick={this.handleNewModalVisible} />
+            <StyleButton text={t('create group')} onClick={this.handleNewModalVisible} />
           </Col>
         </Row>
         <div className="style-grouplist">
@@ -195,4 +196,4 @@ class CardGroupList extends React.PureComponent {
   }
 }
 
-export default CardGroupList;
+export default withI18next(['all'])(CardGroupList);

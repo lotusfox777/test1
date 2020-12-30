@@ -169,7 +169,7 @@ class EditCardAuthModal extends PureComponent {
       <StyleButton
         type="lightblue"
         key="save"
-        text="確認"
+        text={t('confirm')}
         onClick={this.handleClose}
       />
     ];
@@ -228,7 +228,7 @@ class EditCardAuthModal extends PureComponent {
                 rules: [{ type: 'email', message: 'E-mail格式不合' }]
               })(
                 <StyleSendEmail
-                  placeholder="請輸入副管理者 email"
+                  placeholder={t('please type email of assisted monitor')}
                   enterButton={
                     <Button
                       type="primary"

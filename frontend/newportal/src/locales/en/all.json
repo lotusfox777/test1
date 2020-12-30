@@ -70,5 +70,11 @@
   "pending": "Pending",
   "cancel": "Cancel",
   "bracelet information": "Bracelet information",
-  "id or name": "ID or Name"
+  "id or name": "ID or Name",
+  "sent": "Sent",
+  "create": "Create",
+  "group name": "Group name",
+  "list": "List",
+  "create group": "Create Group",
+  "edit group": "Edit Group"
 }

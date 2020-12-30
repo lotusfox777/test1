@@ -4,6 +4,7 @@ import { Row, Input, Form, Select } from 'antd';
 import { find, propEq } from 'ramda';
 import StyleButton from 'components/Button';
 import BasicModal from 'components/BasicModal';
+import { withI18next } from 'locales/withI18next'
 
 const FormItem = styled(Form.Item)`
   .ant-form-item-required:before {
@@ -59,25 +60,26 @@ class AddCardGroup extends React.PureComponent {
     const {
       onClose,
       allCards,
-      form: { getFieldDecorator }
+      form: { getFieldDecorator },
+      t
     } = this.props;
 
     return (
       <BasicModal
-        title="新增群組"
+        title={t('create group')}
         visible={true}
         onOk={this.handleSave}
         onCancel={onClose}>
         <Form>
           <StyledRow className="mb0">
-            <FormItem {...formItemLayout} label="群組名稱">
+            <FormItem {...formItemLayout} label={t('group name')}>
               {getFieldDecorator('groupName', {
                 rules: [{ required: true, message: '此欄位必填' }]
-              })(<Input placeholder="群組名稱" />)}
+              })(<Input placeholder={t('group name')} />)}
             </FormItem>
           </StyledRow>
           <StyledRow>
-            <FormItem {...formItemLayout} label="名單">
+            <FormItem {...formItemLayout} label={t('list')}>
               {getFieldDecorator('cardInfos', {
                 rules: [{ required: true, message: '請至少選擇一個守護名單' }],
                 initialValue: []
@@ -96,11 +98,11 @@ class AddCardGroup extends React.PureComponent {
             <StyleButton
               type="white"
               key="cancel"
-              text="取消"
+              text={t('cancel')}
               style={{ marginRight: '9px' }}
               onClick={onClose}
             />
-            <StyleButton key="save" text="新增" onClick={this.handleSave} />
+            <StyleButton key="save" text={t('create')} onClick={this.handleSave} />
           </div>
         </Form>
       </BasicModal>
@@ -108,4 +110,4 @@ class AddCardGroup extends React.PureComponent {
   }
 }
 
-export default AddCardGroup;
+export default withI18next(['all'])(AddCardGroup);

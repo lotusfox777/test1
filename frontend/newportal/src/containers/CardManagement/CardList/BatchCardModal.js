@@ -5,6 +5,7 @@ import TooltipButton from 'components/TooltipButton';
 import Papa from 'papaparse';
 import styled from 'styled-components';
 import { padStart } from 'utils/webHelper';
+import { withI18next } from 'locales/withI18next'
 
 const FormItem = Form.Item;
 
@@ -163,6 +164,7 @@ class BatchCardModal extends React.PureComponent {
   render() {
     const {
       form: { getFieldDecorator, getFieldValue },
+      t,
     } = this.props;
 
     getFieldDecorator('keys', { initialValue: [] });
@@ -260,14 +262,14 @@ class BatchCardModal extends React.PureComponent {
       <StyledModal
         title={
           <div>
-            <span style={{ fontSize: '16px' }}>批次新增裝置</span>
+            <span style={{ fontSize: '16px' }}>{t('batch bracelet')}</span>
             <span
               style={{
                 color: '#999',
                 fontSize: '12px',
                 fontWeight: 'normal',
               }}>
-              「頭像照片」及「標示顏色」請至個人裝置中編輯
+              {/* 「頭像照片」及「標示顏色」請至個人裝置中編輯 */}
             </span>
           </div>
         }
@@ -306,4 +308,4 @@ class BatchCardModal extends React.PureComponent {
     );
   }
 }
-export default BatchCardModal;
+export default withI18next(['all'])(BatchCardModal);

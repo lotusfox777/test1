@@ -4,6 +4,7 @@ import { Row, Col, Input, Form, Select } from 'antd';
 import { find, propEq } from 'ramda';
 import StyleButton from 'components/Button';
 import BasicModal from 'components/BasicModal';
+import { withI18next } from 'locales/withI18next'
 
 const FormItem = styled(Form.Item)`
   .ant-form-item-required:before {
@@ -73,21 +74,22 @@ class EditCardGroup extends React.PureComponent {
       onDelete,
       allCards,
       cardgroup,
-      form: { getFieldDecorator }
+      form: { getFieldDecorator },
+      t
     } = this.props;
     return (
-      <BasicModal title="編輯群組" onOk={this.handleSave} onCancel={onClose}>
+      <BasicModal title={t('edit group')} onOk={this.handleSave} onCancel={onClose}>
         <Form>
           <StyledRow className="mb0">
-            <FormItem {...formItemLayout} label="群組名稱">
+            <FormItem {...formItemLayout} label={t('group name')}>
               {getFieldDecorator('groupName', {
                 rules: [{ required: true, message: '此欄位必填' }],
                 initialValue: cardgroup ? cardgroup.groupName : null
-              })(<Input placeholder="群組名稱" readOnly />)}
+              })(<Input placeholder={t('group name')} readOnly />)}
             </FormItem>
           </StyledRow>
           <StyledRow>
-            <FormItem {...formItemLayout} label="名單">
+            <FormItem {...formItemLayout} label={t('list')}>
               {getFieldDecorator('cardInfos', {
                 rules: [{ required: true, message: '請至少選擇一個守護名單' }],
                 initialValue: cardgroup
@@ -107,7 +109,7 @@ class EditCardGroup extends React.PureComponent {
           <StyledRow className="footer">
             <Col span={4} className="text-left">
               <a onClick={onDelete} className="delete-btn">
-                刪除群組
+                {t('delete')}
               </a>
             </Col>
             <Col span={20}>
@@ -115,10 +117,10 @@ class EditCardGroup extends React.PureComponent {
                 style={{ marginRight: '9px' }}
                 type="white"
                 key="cancel"
-                text="取消"
+                text={t('cancel')}
                 onClick={onClose}
               />
-              <StyleButton key="save" text="確認" onClick={this.handleSave} />
+              <StyleButton key="save" text={t('confirm')} onClick={this.handleSave} />
             </Col>
           </StyledRow>
         </Form>
@@ -127,4 +129,4 @@ class EditCardGroup extends React.PureComponent {
   }
 }
 
-export default EditCardGroup;
+export default withI18next(['all'])(EditCardGroup);

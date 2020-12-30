@@ -291,7 +291,8 @@ class GuardAreaHistory extends React.PureComponent {
                         alignItems: 'center',
                       }}>
                       <div className="card-savearea text-left">
-                        守護區域 {thousandSeparators(item.guardareaCount || 0)}
+                        {/* 守護區域  */}
+                        {thousandSeparators(item.guardareaCount || 0)}
                       </div>
                     </Col>
                   </Row>
