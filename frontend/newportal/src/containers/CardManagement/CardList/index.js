@@ -457,7 +457,7 @@ class CardList extends React.Component {
           <BatchCardModal onOk={this.handleAddCards} onCancel={this.handleBatchModalVisible} />
         )}
         {heartRateModalVisible && (
-          <HeartRateModal device={device} onCancel={this.handleHeartRateModalVisible} />
+          <HeartRateModal device={device} onCancel={this.handleHeartRateModalVisible} t={t}/>
         )}
         <NewCardModal
           visible={newModalVisible}
