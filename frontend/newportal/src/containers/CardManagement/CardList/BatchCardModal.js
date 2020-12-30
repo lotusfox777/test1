@@ -299,10 +299,10 @@ class BatchCardModal extends React.PureComponent {
           <StyleButton
             style={{ marginRight: '9px', fontSize: 14 }}
             type="white"
-            text="取消"
+            text={t('cancel')} 
             onClick={this.handleCancel}
           />
-          <StyleButton style={{ fontSize: 14 }} text="新增" onClick={this.handleOk} />
+          <StyleButton style={{ fontSize: 14 }} text={t('create')} onClick={this.handleOk} />
         </Row>
       </StyledModal>
     );

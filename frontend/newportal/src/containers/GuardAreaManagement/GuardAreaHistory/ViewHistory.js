@@ -261,7 +261,7 @@ class ViewHistory extends React.PureComponent {
                 onClick={this.gotoEditModal}
               />
             ) : null}
-            <StyleButton style={button_2} text={t('confirm')} onClick={onCancel} />
+            <StyleButton style={button_2} text={t('ok')} onClick={onCancel} />
           </div>
         </Modal>
       </React.Fragment>
