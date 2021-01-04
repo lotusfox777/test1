@@ -268,7 +268,7 @@ class CardList extends PureComponent {
         render: (v) => (v === 0 ? 'beacon' : 'GPS手錶'),
       },
       {
-        title: t('all:Region'),
+        title: t('all:Address'),
         dataIndex: 'regionInfoName',
       },
       {
@@ -320,7 +320,7 @@ class CardList extends PureComponent {
                 <Option value="100">100 {t('record/page')}</Option>
               </Select>
               <div style={{ ...styles.ml15, display: 'inline-block' }}>
-                {t('To')}
+                {t('Jump to')}
                 <Input
                   onPressEnter={this.handlePageChange}
                   style={{ width: '65px', margin: '0 7px' }}

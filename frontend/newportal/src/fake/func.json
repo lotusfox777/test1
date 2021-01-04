@@ -1,15 +1,15 @@
 {
   "nonce": null,
-  "token": "adfc8d9a83e111d90dee94254a1f6149",
+  "token": "6bd6a1615cb7cca724cadd606321d0b8",
   "errorCode": 0,
   "errorMessage": null,
-  "roles": [{ "id": 1, "name": "ROLE_ADMIN", "permission": 0 }],
+  "roles": [{ "id": 3, "name": "ROLE_READ_ONLY_USER_ADMIN", "permission": 0 }],
   "managerFunctions": [
     { "function": "CARD_MANAGEMENT", "readable": true, "editable": true },
-    { "function": "MEMBER_MANAGEMENT", "readable": true, "editable": true },
-    { "function": "DEVICE_MANAGEMENT", "readable": true, "editable": true },
-    { "function": "SYSTEM_MANAGEMENT", "readable": true, "editable": true },
-    { "function": "ASSIST_FINDING_MANAGEMENT", "readable": true, "editable": true }
+    { "function": "MEMBER_MANAGEMENT", "readable": false, "editable": false },
+    { "function": "DEVICE_MANAGEMENT", "readable": false, "editable": false },
+    { "function": "SYSTEM_MANAGEMENT", "readable": false, "editable": false },
+    { "function": "ASSIST_FINDING_MANAGEMENT", "readable": false, "editable": false }
   ],
-  "id": 7
+  "id": 20766
 }

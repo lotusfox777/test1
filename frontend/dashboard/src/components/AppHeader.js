@@ -52,9 +52,9 @@ class AppHeader extends PureComponent {
 
     return (
       <StyledHeader>
-        <p>DPlus</p>
+        <p>PUI</p>
         <div className="auth-identity">
-          <span className="user-name">{`Welcome, ${this.props.loginId}`}</span>
+          <span className="user-name">{`${this.props.loginId}`}</span>
           <Button ghost onClick={this.handleLogout}>
             {t('logout')}
           </Button>

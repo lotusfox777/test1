@@ -22,7 +22,7 @@ const mapDispatchToProps = {
 };
 
 const StyledModal = styled(Modal).attrs({
-  title: 'DPlus 後台登入',
+  title: 'PUI backstage management Login',
   bordered: false,
   visible: true,
   footer: false,

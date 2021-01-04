@@ -177,7 +177,7 @@ class EditCardModal extends PureComponent {
     return (
       <Modal
         width="75%"
-        title={t('all:Edit')}
+        title={t('all:Edit Title')}
         visible={true}
         onCancel={onClose}
         maskClosable={false}
@@ -200,7 +200,7 @@ class EditCardModal extends PureComponent {
           <RowM>
             <ColLabel span={3}>{t('all:Battery')}</ColLabel>
             <ColContent span={8}>{card.battery}</ColContent>
-            <ColLabel span={3}>{t('all:Status')}</ColLabel>
+            <ColLabel span={3}>{t('all:Bracelet status')}</ColLabel>
             <ColContent span={4}>
               {UsageStatus[String(card.usageStatus)]}
             </ColContent>
@@ -260,7 +260,7 @@ class EditCardModal extends PureComponent {
               </FormItem>
             </Col>
             <ColLabel span={3} offset={isEditing ? 4 : 0}>
-              {t('all:Region')}
+              {t('all:Address')}
             </ColLabel>
             <ColContent span={4}>
               <FormItem>
