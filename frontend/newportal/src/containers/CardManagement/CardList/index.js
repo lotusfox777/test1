@@ -337,21 +337,6 @@ class CardList extends React.Component {
     window.location.href = `${ACTIVITY_MAP}?card_id=${card.id}`;
   };
 
-  handleClick = () => {
-    if (Cookies.get('_dplusToken') && Cookies.get('_dplus-dashboard_Token')) {
-      window.open('http://localhost:3000/card-management/card-list/index', '_blank');
-
-      return;
-    }
-
-    Cookies.set('_dplusUserId', Cookies.get('_dplusUserId'));
-    Cookies.set('_dplus-dashboard_UserId', 'admin');
-    Cookies.set('_dplus-dashboard_Token', Cookies.get('_dplusToken'));
-    Cookies.set('_dplus-dashboard_Permissions', arrayToObject(fake.managerFunctions, 'function'));
-
-    window.open('http://localhost:3000/card-management/card-list/index', '_blank');
-  };
-
   render() {
     const { cards, allGuardAreas, history, t } = this.props;
     const {
@@ -438,19 +423,9 @@ class CardList extends React.Component {
                             <List.Item.Meta
                               avatar={
                                 item.avatar ? (
-                                  <a
-                                    style={{ cursor: 'pointer' }}
-                                    target="_blank"
-                                    href="http://localhost:3000/card-management/card-list/index">
-                                    <Image
-                                      name={item.avatar}
-                                      width="40"
-                                      height="40"
-                                      shape="circle"
-                                    />
-                                  </a>
+                                  <Image name={item.avatar} width="40" height="40" shape="circle" />
                                 ) : (
-                                  <Avatar shape="circle" icon="user" onClick={this.handleClick} />
+                                  <Avatar shape="circle" icon="user" />
                                 )
                               }
                               title={item.cardName}
