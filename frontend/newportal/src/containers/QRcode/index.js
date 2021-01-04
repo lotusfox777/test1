@@ -54,7 +54,7 @@ function QRcode({ form }) {
           <QRCode value={JSON.stringify(QRcodeValue)} />
         </div>
       ) : (
-        <Form layout="vertical" hideRequiredMark>
+        <Form layout="vertical" hideRequiredMark style={{ width: '100%' }}>
           <FormItem label="Name">
             {getFieldDecorator('name', {
               rules: [
@@ -75,36 +75,15 @@ function QRcode({ form }) {
               ],
             })(<Input placeholder="Passport Number" />)}
           </FormItem>
-          <FormItem label="Address">
-            <Row gutter={16}>
-              <Col span={12}>
-                <FormItem label="" colon={false}>
-                  {getFieldDecorator('county')(<Input placeholder="County" />)}
-                </FormItem>
-              </Col>
-              <Col span={12}>
-                <FormItem label="" colon={false}>
-                  {getFieldDecorator('district')(<Input placeholder="District" />)}
-                </FormItem>
-              </Col>
-              <Col span={6}>
-                <FormItem label="" colon={false}>
-                  {getFieldDecorator('village')(<Input placeholder="Village" />)}
-                </FormItem>
-              </Col>
-              <Col span={18}>
-                <FormItem label="" colon={false}>
-                  {getFieldDecorator('address', {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'this field is required',
-                      },
-                    ],
-                  })(<Input placeholder="address" />)}
-                </FormItem>
-              </Col>
-            </Row>
+          <FormItem label="Address" colon={false}>
+            {getFieldDecorator('address', {
+              rules: [
+                {
+                  required: true,
+                  message: 'this field is required',
+                },
+              ],
+            })(<Input placeholder="address" />)}
           </FormItem>
 
           <Button type="primary" block onClick={handleSubmit}>
