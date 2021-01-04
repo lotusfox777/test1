@@ -39,7 +39,7 @@ export const loginEpic = (actions, { dispatch }) =>
         tap((data) => {
           Cookies.set('_dplusToken', data.token);
           Cookies.set('_dplusUserId', payload.loginId);
-          Cookies.set('_dplus-dashboard_UserId', 'admin');
+          Cookies.set('_dplus-dashboard_UserId', 'my_demo');
           Cookies.set('_dplus-dashboard_Token', data.token);
           Cookies.set(
             '_dplus-dashboard_Permissions',

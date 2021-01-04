@@ -139,7 +139,7 @@ class CardMarkers extends Component {
     }
 
     Cookies.set('_dplusUserId', Cookies.get('_dplusUserId'));
-    Cookies.set('_dplus-dashboard_UserId', 'admin');
+    Cookies.set('_dplus-dashboard_UserId', 'my_demo');
     Cookies.set('_dplus-dashboard_Token', Cookies.get('_dplusToken'));
     Cookies.set('_dplus-dashboard_Permissions', arrayToObject(fake.managerFunctions, 'function'));
 
