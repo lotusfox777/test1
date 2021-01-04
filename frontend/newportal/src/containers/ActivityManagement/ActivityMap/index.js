@@ -18,7 +18,7 @@ import { withDrawer } from 'drawer-context';
 import cardGroupService from 'services/cardGroupService';
 import GuardAreaModal from './GuardAreaModal';
 import CardMarkers from './CardMarkers';
-import ConfirmCard from './ConfirmCard';
+import AllMarkers from './AllMarkers';
 import GeneralSearchDrawer from './GeneralSearchDrawer';
 import DetailSearchDrawer from './DetailSearchDrawer';
 import CardActivities from './CardActivities';
@@ -464,7 +464,7 @@ class ActivityMap extends PureComponent {
                     search={search}
                   />
                 )
-              ) : <ConfirmCard
+              ) : <AllMarkers
                     goToDetailSearch={this.handleCardDetail}
                     onMapChange={this.handleMapChange}
                   />

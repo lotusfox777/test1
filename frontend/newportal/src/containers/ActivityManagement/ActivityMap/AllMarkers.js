@@ -27,7 +27,7 @@ const mapDispatchToProps = {
   mapStateToProps,
   mapDispatchToProps
 )
-class ConfirmCard extends Component {
+class AllMarkers extends Component {
   constructor(props) {
     super(props);
 
@@ -67,6 +67,10 @@ class ConfirmCard extends Component {
   render() {
     const { unreadNotifyHistory } = this.props;
 
+    const handleMarkerColor = status => (
+      status === 4 ? '#f6b141' : status === 5 || status === 1 ? '#84be70' : status === 6 ? '#fc7f80' : '#fe2e2e'
+    )
+
     return (
       <Fragment>
         {unreadNotifyHistory.content.map((card, idx) => {
@@ -87,7 +91,7 @@ class ConfirmCard extends Component {
                 scale: 0.5,
                 strokeWeight: 0,
                 fillOpacity: 1,
-                fillColor: '#fe2e2e'
+                fillColor: handleMarkerColor(card.notifyTypeValue)
               }}
             />
           );
@@ -97,4 +101,4 @@ class ConfirmCard extends Component {
   }
 }
 
-export default withRouter(ConfirmCard);
+export default withRouter(AllMarkers);
