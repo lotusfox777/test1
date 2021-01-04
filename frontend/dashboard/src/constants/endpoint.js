@@ -26,4 +26,5 @@ export const DEFAULT_MAP_CENTER = {
     : 120.526413,
 };
 
-export const APP_TITLE = process.env.REACT_APP_TITLE || 'DPlus 後台';
+export const APP_TITLE =
+  process.env.REACT_APP_TITLE || 'PUI backstage management';
