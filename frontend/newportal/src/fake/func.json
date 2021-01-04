@@ -1,0 +1,15 @@
+{
+  "nonce": null,
+  "token": "adfc8d9a83e111d90dee94254a1f6149",
+  "errorCode": 0,
+  "errorMessage": null,
+  "roles": [{ "id": 1, "name": "ROLE_ADMIN", "permission": 0 }],
+  "managerFunctions": [
+    { "function": "CARD_MANAGEMENT", "readable": true, "editable": true },
+    { "function": "MEMBER_MANAGEMENT", "readable": true, "editable": true },
+    { "function": "DEVICE_MANAGEMENT", "readable": true, "editable": true },
+    { "function": "SYSTEM_MANAGEMENT", "readable": true, "editable": true },
+    { "function": "ASSIST_FINDING_MANAGEMENT", "readable": true, "editable": true }
+  ],
+  "id": 7
+}
