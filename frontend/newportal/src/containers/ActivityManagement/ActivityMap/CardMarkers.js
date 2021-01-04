@@ -253,9 +253,13 @@ class CardMarkers extends Component {
             return null;
           }
 
-          const highlight = focusingCardMarkerId === card.id;
+          // const highlight = focusingCardMarkerId === card.id;
           const lat = card.current.latitude;
           const lng = card.current.longitude;
+
+          const handleMarkerColor = status => (
+            status === 4 ? '#f6b141' : status === 5 || status === 1 ? '#84be70' : status === 6 ? '#fc7f80' : '#fe2e2e'
+          )
 
           return (
             <Marker
@@ -267,7 +271,8 @@ class CardMarkers extends Component {
                 scale: 0.5,
                 strokeWeight: 0,
                 fillOpacity: 1,
-                fillColor: highlight ? '#fe2e2e' : card.colorCode,
+                // fillColor: highlight ? '#fe2e2e' : card.colorCode,
+                fillColor: handleMarkerColor(card && card.notifyTypeValue ? card.notifyTypeValue : null)
               }}>
               {this.renderInfoWindow(card.id)}
             </Marker>

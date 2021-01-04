@@ -91,7 +91,7 @@ class AllMarkers extends Component {
                 scale: 0.5,
                 strokeWeight: 0,
                 fillOpacity: 1,
-                fillColor: handleMarkerColor(card.notifyTypeValue)
+                fillColor: handleMarkerColor(card && card.notifyTypeValue ? card.notifyTypeValue : null)
               }}
             />
           );
