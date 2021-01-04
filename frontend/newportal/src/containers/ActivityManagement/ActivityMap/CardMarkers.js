@@ -176,7 +176,7 @@ class CardMarkers extends Component {
                   borderRadius: 40,
                   marginRight: 12,
                 }}
-                onClick={this.handleClick}
+                onClick={() => this.handleClick()}
               />
             </Link>
             <h3>
