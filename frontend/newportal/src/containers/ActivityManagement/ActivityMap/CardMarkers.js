@@ -9,15 +9,16 @@ import * as fa from 'fontawesome-markers';
 import { isNil } from 'ramda';
 import { withI18next } from 'locales/withI18next';
 
-import {
-  listCardsCurrentInfo,
-  getCardDetail,
-  clearCardDetail
-} from 'reducers/cards';
+import { listCardsCurrentInfo, getCardDetail, clearCardDetail } from 'reducers/cards';
 import { getGuardArea, readNotify } from 'reducers/guardAreas';
 
 import { API_ROOT, REFRESH_INTERVAL } from 'constants/endpoint';
 import { SAVEAREA_LIST, CARD_LIST, ACTIVITY_MAP } from 'constants/routes';
+
+import Cookies from 'js-cookie';
+import fake from 'fake/func';
+import { arrayToObject } from 'utils/webHelper';
+import { backendURL } from 'constants/endpoint';
 
 const ListItem = styled(List.Item)`
   &:hover {
@@ -26,9 +27,9 @@ const ListItem = styled(List.Item)`
   }
 `;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   cards: state.cards,
-  guardAreas: state.guardAreas
+  guardAreas: state.guardAreas,
 });
 
 const mapDispatchToProps = {
@@ -36,54 +37,47 @@ const mapDispatchToProps = {
   getCardDetail,
   clearCardDetail,
   getGuardArea,
-  readNotify
+  readNotify,
 };
 
-@connect(
-  mapStateToProps,
-  mapDispatchToProps
-)
+@connect(mapStateToProps, mapDispatchToProps)
 class CardMarkers extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      navigateToGuardAreaList: false
+      navigateToGuardAreaList: false,
     };
 
     this.interval = null;
     this.isCardFocused = false;
   }
 
-  handleMarkerClick = id => {
+  handleMarkerClick = (id) => {
     this.props.getCardDetail(id);
   };
 
-  handleGuardAreaClick = id => {
+  handleGuardAreaClick = (id) => {
     this.props.getGuardArea(id);
     this.setState({
-      navigateToGuardAreaList: true
+      navigateToGuardAreaList: true,
     });
   };
 
-  handleActivities = id => {
+  handleActivities = (id) => {
     this.props.goToDetailSearch(id);
   };
 
   componentDidMount() {
-    const {
-      listCardsCurrentInfo,
-      focusingCardMarkerId,
-      onMapChange
-    } = this.props;
+    const { listCardsCurrentInfo, focusingCardMarkerId, onMapChange } = this.props;
 
     listCardsCurrentInfo(
       focusingCardMarkerId
         ? {
-          id: focusingCardMarkerId,
-          onMapChange
-        }
-        : {}
+            id: focusingCardMarkerId,
+            onMapChange,
+          }
+        : {},
     );
 
     this.interval = setInterval(() => {
@@ -91,7 +85,7 @@ class CardMarkers extends Component {
     }, 1000 * REFRESH_INTERVAL);
   }
 
-  componentDidUpdate = prevProps => {
+  componentDidUpdate = (prevProps) => {
     const { navigateToGuardAreaList } = this.state;
 
     const {
@@ -99,7 +93,7 @@ class CardMarkers extends Component {
       onMapChange,
       focusingCardMarkerId: currentCardId,
       cards: { content },
-      guardAreas: { isLoadingGuardArea }
+      guardAreas: { isLoadingGuardArea },
     } = this.props;
 
     const { focusingCardMarkerId: prevCardId } = prevProps;
@@ -115,8 +109,8 @@ class CardMarkers extends Component {
         onMapChange({
           mapCenter: {
             lat: card.current.latitude,
-            lng: card.current.longitude
-          }
+            lng: card.current.longitude,
+          },
         });
       }
     }
@@ -131,17 +125,32 @@ class CardMarkers extends Component {
     const params = new URLSearchParams(location.search);
     const hasId = !isNil(params.get('id'));
     if (hasId) {
-      this.props.readNotify({ id: params.get('id') })
+      this.props.readNotify({ id: params.get('id') });
       history.push(ACTIVITY_MAP);
     }
-    this.props.clearCardDetail()
-  }
+    this.props.clearCardDetail();
+  };
+
+  handleClick = () => {
+    if (Cookies.get('_dplusToken') && Cookies.get('_dplus-dashboard_Token')) {
+      window.open(`${backendURL}/card-management/card-list/index`, '_blank');
+
+      return;
+    }
+
+    Cookies.set('_dplusUserId', Cookies.get('_dplusUserId'));
+    Cookies.set('_dplus-dashboard_UserId', 'admin');
+    Cookies.set('_dplus-dashboard_Token', Cookies.get('_dplusToken'));
+    Cookies.set('_dplus-dashboard_Permissions', arrayToObject(fake.managerFunctions, 'function'));
+
+    window.open(`${backendURL}/card-management/card-list/index`, '_blank');
+  };
 
   renderInfoWindow(currentCardId) {
     const {
       cards: { currentCard },
       clearCardDetail,
-      t
+      t,
     } = this.props;
 
     if (!currentCard || currentCard.id !== currentCardId) {
@@ -152,21 +161,27 @@ class CardMarkers extends Component {
       <InfoWindow onCloseClick={clearCardDetail}>
         <div style={{ width: 244 }}>
           <Row type="flex" align="middle" style={{ marginTop: 12 }}>
-            <img
-              alt="無照片"
-              src={
-                currentCard.avatar
-                  ? `${API_ROOT}/v1/file/${currentCard.avatar}`
-                  : '/img/avatar-pic.png'
-              }
-              style={{
-                width: 67,
-                height: 67,
-                borderRadius: 40,
-                marginRight: 12
-              }}
-            />
-            <h3><Link to={`${CARD_LIST}/${currentCardId}`}>{currentCard.cardName}</Link></h3>
+            <Link target="" to={`${CARD_LIST}/${currentCardId}`}>
+              <img
+                alt="無照片"
+                style={{ cursor: 'pointer' }}
+                src={
+                  currentCard.avatar
+                    ? `${API_ROOT}/v1/file/${currentCard.avatar}`
+                    : '/img/avatar-pic.png'
+                }
+                style={{
+                  width: 67,
+                  height: 67,
+                  borderRadius: 40,
+                  marginRight: 12,
+                }}
+                onClick={this.handleClick}
+              />
+            </Link>
+            <h3>
+              <Link to={`${CARD_LIST}/${currentCardId}`}>{currentCard.cardName}</Link>
+            </h3>
           </Row>
           <Row style={{ marginTop: 24 }}>
             <Button
@@ -218,10 +233,8 @@ class CardMarkers extends Component {
               style={{ maxHeight: 200, overflowY: 'scroll' }}
               bordered
               dataSource={currentCard.guardareaList}
-              renderItem={item => (
-                <ListItem onClick={() => this.handleGuardAreaClick(item.id)}>
-                  {item.name}
-                </ListItem>
+              renderItem={(item) => (
+                <ListItem onClick={() => this.handleGuardAreaClick(item.id)}>{item.name}</ListItem>
               )}
             />
           </Row>
@@ -254,9 +267,8 @@ class CardMarkers extends Component {
                 scale: 0.5,
                 strokeWeight: 0,
                 fillOpacity: 1,
-                fillColor: highlight ? '#fe2e2e' : card.colorCode
-              }}
-            >
+                fillColor: highlight ? '#fe2e2e' : card.colorCode,
+              }}>
               {this.renderInfoWindow(card.id)}
             </Marker>
           );
