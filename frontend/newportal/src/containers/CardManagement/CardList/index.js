@@ -441,22 +441,14 @@ class CardList extends React.Component {
                             <List.Item.Meta
                               avatar={
                                 item.avatar ? (
-                                  <a
-                                    style={{ cursor: 'pointer' }}
-                                    target="_blank"
-                                    href="http://localhost:3000/card-management/card-list/index">
-                                    <Image
-                                      name={item.avatar}
-                                      width="40"
-                                      height="40"
-                                      shape="circle"
-                                    />
-                                  </a>
+                                  <Image name={item.avatar} width="40" height="40" shape="circle" />
                                 ) : (
                                   <Avatar
                                     shape="circle"
                                     icon="user"
-                                    onClick={() => this.handleClick()}
+
+                                    // style={{ cursor: 'pointer' }}
+                                    // onClick={() => this.handleClick()}
                                   />
                                 )
                               }
