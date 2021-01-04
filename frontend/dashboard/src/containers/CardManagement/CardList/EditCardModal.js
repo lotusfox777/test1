@@ -366,14 +366,16 @@ class EditCardModal extends PureComponent {
                     {card.memberId}
                     <span style={{ marginLeft: 30 }}>
                       Address：
-                      {card.county ||
-                      card.district ||
-                      card.village ||
-                      card.address ? (
+                      {cardOwner &&
+                      (cardOwner.county ||
+                        cardOwner.district ||
+                        cardOwner.village ||
+                        cardOwner.address) ? (
                         <React.Fragment>
-                          {card.district}
-                          {card.village}
-                          {card.address}
+                          {cardOwner.county}
+                          {cardOwner.district}
+                          {cardOwner.village}
+                          {cardOwner.address}
                         </React.Fragment>
                       ) : (
                         'None'
