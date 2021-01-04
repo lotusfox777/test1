@@ -194,8 +194,8 @@ class ViewHistory extends React.PureComponent {
               </div>
               <div className="guardarea-title">{t('geo-fence')}</div>
               <StyleCardWrap>
-                {guardAreas.map(c => (
-                  <div key={c.id}>{c.name}</div>
+                {guardAreas.map((c, index) => (
+                  <div key={`${c.id}-${index}`}>{c.name}</div>
                 ))}
               </StyleCardWrap>
             </Col>
@@ -217,8 +217,29 @@ class ViewHistory extends React.PureComponent {
                     <StyleList>
                       <Col>
                         <div className="area-row" onClick={this.handleViewCardLoaction(area)}>
-                          <span className="lightblue-font">{area.cardName}</span>
-                          {!isNil(area.sosMessage) ? (
+                          {
+                            area.notifyTypeValue ? (
+                              <span dangerouslySetInnerHTML={{
+                                __html: t(`violation-alert-${area.notifyTypeValue}`, {
+                                  name: area.cardName,
+                                  position: area.guardareaName ? area.guardareaName : '',
+                                  time: moment(area.createTime).format('YYYY.MM.DD HH:mm:ss')
+                                })
+                              }}/>
+                            ) : (
+                              <span dangerouslySetInnerHTML={{
+                                __html: t('alart-notconnected', {
+                                  name: area.cardName,
+                                  time: moment(area.createTime).format('YYYY.MM.DD HH:mm:ss')
+                                })
+                              }}/>
+                            )
+                          }
+                          <span>
+                            <Icon type="right" />
+                          </span>
+                          {/* <span className="lightblue-font">{area.cardName}</span> */}
+                          {/* {!isNil(area.sosMessage) ? (
                             <React.Fragment>
                               <span>{t('activated SOS')}</span>
                               <span>{t('datetime-at')}</span>
@@ -237,7 +258,7 @@ class ViewHistory extends React.PureComponent {
                                 <Icon type="right" />
                               </span>
                             </React.Fragment>
-                          )}
+                          )} */}
                         </div>
                       </Col>
                     </StyleList>

@@ -117,6 +117,24 @@ class CurrentGuardAreas extends React.PureComponent {
                     <Col>
                       <div className="area-row" onClick={this.handleViewCardLoaction(area)}>
                         {
+                          area.notifyTypeValue ? (
+                            <span dangerouslySetInnerHTML={{
+                              __html: t(`violation-alert-${area.notifyTypeValue}`, {
+                                name: area.cardName,
+                                position: area.guardareaName ? area.guardareaName : '',
+                                time: moment(area.createTime).format('YYYY.MM.DD HH:mm:ss')
+                              })
+                            }}/>
+                          ) : (
+                            <span dangerouslySetInnerHTML={{
+                              __html: t('alart-notconnected', {
+                                name: area.cardName,
+                                time: moment(area.createTime).format('YYYY.MM.DD HH:mm:ss')
+                              })
+                            }}/>
+                          )
+                        }
+                        {/* {
                           area.notifyTypeValue === 1 ? (
                             <span dangerouslySetInnerHTML={{
                               __html: t('alart-left', {
@@ -140,7 +158,7 @@ class CurrentGuardAreas extends React.PureComponent {
                               })
                             }}/>
                           )
-                        }
+                        } */}
                         <span>
                           <Icon type="right" />
                         </span>
