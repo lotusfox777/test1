@@ -20,13 +20,19 @@ import { listEnabledGuardAreas } from 'reducers/guardAreas';
 import Image from 'components/Image';
 import { DEVICE_TYPE } from 'constants/device';
 import { ACTIVITY_MAP, CARD_LIST } from 'constants/routes';
-import { withI18next } from 'locales/withI18next'
+import { withI18next } from 'locales/withI18next';
 
 import NewCardModal from './NewCardModal';
 import BatchCardModal from './BatchCardModal';
 import EditCardModal from '../EditCardModal';
 import CardGroupList from './CardGroupList';
 import { HeartRateModal } from 'components/device';
+
+import Cookies from 'js-cookie';
+import fake from 'fake/func';
+import { arrayToObject } from 'utils/webHelper';
+
+import { backendURL } from 'constants/endpoint';
 
 const TabPane = Tabs.TabPane;
 const Search = Input.Search;
@@ -333,6 +339,22 @@ class CardList extends React.Component {
     window.location.href = `${ACTIVITY_MAP}?card_id=${card.id}`;
   };
 
+  handleClick = () => {
+    console.log('[handleClick]', Cookies.get('_dplus-dashboard_Token'));
+    if (Cookies.get('_dplusToken') && Cookies.get('_dplus-dashboard_Token')) {
+      window.open(`${backendURL}/card-management/card-list/index`, '_blank');
+
+      return;
+    }
+
+    Cookies.set('_dplusUserId', Cookies.get('_dplusUserId'));
+    Cookies.set('_dplus-dashboard_UserId', 'admin');
+    Cookies.set('_dplus-dashboard_Token', Cookies.get('_dplusToken'));
+    Cookies.set('_dplus-dashboard_Permissions', arrayToObject(fake.managerFunctions, 'function'));
+
+    window.open(`${backendURL}/card-management/card-list/index`, '_blank');
+  };
+
   render() {
     const { cards, allGuardAreas, history, t } = this.props;
     const {
@@ -350,6 +372,7 @@ class CardList extends React.Component {
       pageSize: cards.size,
       onChange: this.handlePagination,
     };
+    console.log('histp', this.props);
 
     return (
       <React.Fragment>
@@ -365,7 +388,9 @@ class CardList extends React.Component {
                   {!editModelVisible ? (
                     <Col>
                       <Row className="mb5">
-                        <Col className="text-perrywinkle">{t('main monitor list')} {cards.total} {t('persons')}</Col>
+                        <Col className="text-perrywinkle">
+                          {t('main monitor list')} {cards.total} {t('persons')}
+                        </Col>
                       </Row>
                       <Row>
                         <Col span={8}>
@@ -418,7 +443,13 @@ class CardList extends React.Component {
                                 item.avatar ? (
                                   <Image name={item.avatar} width="40" height="40" shape="circle" />
                                 ) : (
-                                  <Avatar shape="circle" icon="user" />
+                                  <Avatar
+                                    shape="circle"
+                                    icon="user"
+
+                                    // style={{ cursor: 'pointer' }}
+                                    // onClick={() => this.handleClick()}
+                                  />
                                 )
                               }
                               title={item.cardName}
@@ -457,7 +488,7 @@ class CardList extends React.Component {
           <BatchCardModal onOk={this.handleAddCards} onCancel={this.handleBatchModalVisible} />
         )}
         {heartRateModalVisible && (
-          <HeartRateModal device={device} onCancel={this.handleHeartRateModalVisible} t={t}/>
+          <HeartRateModal device={device} onCancel={this.handleHeartRateModalVisible} t={t} />
         )}
         <NewCardModal
           visible={newModalVisible}

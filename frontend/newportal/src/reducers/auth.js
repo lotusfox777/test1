@@ -10,6 +10,8 @@ import { handleActions } from 'redux-actions';
 import { isNil } from 'ramda';
 import * as Types from 'actions/Types';
 
+import fake from 'fake/func';
+import { arrayToObject } from 'utils/webHelper';
 const { error } = Modal;
 
 /**
@@ -32,11 +34,17 @@ export const loginEpic = (actions, { dispatch }) =>
   actions.pipe(
     ofType(Types.AUTH_LOGIN.REQUEST),
     pluck('payload'),
-    switchMap(payload =>
+    switchMap((payload) =>
       loginAPI(payload).pipe(
-        tap(data => {
+        tap((data) => {
           Cookies.set('_dplusToken', data.token);
           Cookies.set('_dplusUserId', payload.loginId);
+          Cookies.set('_dplus-dashboard_UserId', 'admin');
+          Cookies.set('_dplus-dashboard_Token', data.token);
+          Cookies.set(
+            '_dplus-dashboard_Permissions',
+            arrayToObject(fake.managerFunctions, 'function'),
+          );
 
           if (payload.rememberMe) {
             Cookies.set('_dplusRememberUserId', payload.loginId);
@@ -53,14 +61,14 @@ export const loginEpic = (actions, { dispatch }) =>
             dispatch(push(payload.url));
           }
         }),
-        mergeMap(res => [
+        mergeMap((res) => [
           loginSuccess({
             ...res.data,
             loginId: payload.loginId,
             rememberUserId: payload.rememberMe ? payload.loginId : '',
           }),
         ]),
-        catchRequestError(err => {
+        catchRequestError((err) => {
           if (err.status === 500) {
             error({ content: err.response.message });
           }
@@ -75,6 +83,10 @@ export const logoutEpic = pipe(
   tap(() => {
     Cookies.remove('_dplusToken');
     Cookies.remove('_dplusUserId');
+    Cookies.remove('_dplus-dashboard_UserId');
+    Cookies.remove('_dplus-dashboard_Token');
+    Cookies.remove('_dplus-dashboard_Permissions');
+
     setHeader();
   }),
   mapTo({ type: Types.AUTH_LOGOUT.SUCCESS }),
@@ -98,7 +110,7 @@ export const loginInitEpic = pipe(
       });
     }
   }),
-  map(payload => {
+  map((payload) => {
     return loginInitSuccess(payload);
   }),
   catchRequestError(loginInitFailure),
