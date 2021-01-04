@@ -33,13 +33,12 @@ function QRcode({ form }) {
       }
 
       const param = {
-        name: values.name,
-        ic: values.ic,
-        addr: {
-          county: values.county,
-          district: values.district,
-          village: values.village,
-          address: values.address,
+        Registration: {
+          name: values.name,
+          ic: values.ic,
+          addr: {
+            address: values.address,
+          },
         },
       };
 
