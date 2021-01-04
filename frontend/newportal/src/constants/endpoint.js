@@ -43,6 +43,4 @@ export const TAIPEI_HOST = process.env.REACT_APP_TEST_IP
 
 export const APP_TITLE = process.env.REACT_APP_TITLE || 'DPlus';
 
-export const backendURL = isProd
-  ? 'https://taitungdplus.openlife.co:6003'
-  : 'http://localhost:3000';
+export const backendURL = 'https://taitungdplus.openlife.co:6003';
