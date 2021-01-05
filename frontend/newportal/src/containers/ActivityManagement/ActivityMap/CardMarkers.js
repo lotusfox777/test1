@@ -228,7 +228,7 @@ class CardMarkers extends Component {
             </Col>
           </Row>
           <Row style={{ marginTop: 18 }}>
-            <div style={{ marginBottom: 6 }}>守護區域</div>
+            <div style={{ marginBottom: 6 }}>{t('geo-fence')}</div>
             <List
               style={{ maxHeight: 200, overflowY: 'scroll' }}
               bordered

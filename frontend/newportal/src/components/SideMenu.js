@@ -14,6 +14,7 @@ import {
   SAVEAREA_MANAGEMENT,
   SAVEAREA_LIST,
   SAVEAREA_HISTORY,
+  STATUS_AND_COLOR,
 } from 'constants/routes';
 import { withI18next } from 'locales/withI18next'
 
@@ -47,6 +48,7 @@ const menuRouteMap = {
     SubMenus: {
       SAVEAREA_LIST,
       SAVEAREA_HISTORY,
+      STATUS_AND_COLOR,
     },
   },
 };
@@ -100,6 +102,9 @@ class SideMenu extends Component {
           </Menu.Item>
           <Menu.Item key={SAVEAREA_HISTORY}>
             <Link to={SAVEAREA_HISTORY}>{t('violation logs')}</Link>
+          </Menu.Item>
+          <Menu.Item key={STATUS_AND_COLOR}>
+            <Link to={STATUS_AND_COLOR}>{t('status and color')}</Link>
           </Menu.Item>
         </SubMenu>
         {/*any(role => role === 'ROLE_ADMIN', roles) && <div />*/}

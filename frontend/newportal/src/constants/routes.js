@@ -55,6 +55,7 @@ export const CARDAUTHORITY_LIST = `/${CARD_MANAGEMENT}/cardauthority-list`;
 export const SAVEAREA_MANAGEMENT = 'guardarea-management';
 export const SAVEAREA_LIST = `/${SAVEAREA_MANAGEMENT}/guardarea-list`;
 export const SAVEAREA_HISTORY = `/${SAVEAREA_MANAGEMENT}/guardarea-history`;
+export const STATUS_AND_COLOR = `/${SAVEAREA_MANAGEMENT}/colors`;
 
 /**
  * OAuth

@@ -13,10 +13,10 @@ export const REFRESH_INTERVAL = 5; // in seconds
 export const DEFAULT_MAP_CENTER = {
   lat: process.env.REACT_APP_DEFAULT_MAP_LAT
     ? Number(process.env.REACT_APP_DEFAULT_MAP_LAT)
-    : 25.031265355352772,
+    : 2.918361,
   lng: process.env.REACT_APP_DEFAULT_MAP_LNG
     ? Number(process.env.REACT_APP_DEFAULT_MAP_LNG)
-    : 121.55866247052585,
+    : 101.660565,
 };
 
 export const GOOGLE_RECAPTCHA_KEY =

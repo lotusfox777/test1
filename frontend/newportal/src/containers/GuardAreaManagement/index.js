@@ -4,10 +4,11 @@ import { Layout } from 'antd';
 import { SideMenu } from 'components';
 import GuardAreaList from 'containers/GuardAreaManagement/GuardAreaList/index';
 import GuardAreaHistory from 'containers/GuardAreaManagement/GuardAreaHistory/index';
+import Colors from 'containers/GuardAreaManagement/Colors/index';
 import { withI18next } from 'locales/withI18next'
 
 import styled from 'styled-components';
-import { SAVEAREA_LIST, SAVEAREA_HISTORY } from 'constants/routes';
+import { SAVEAREA_LIST, SAVEAREA_HISTORY, STATUS_AND_COLOR } from 'constants/routes';
 const { Content, Sider } = Layout;
 
 const styleInnerContent = {
@@ -109,17 +110,24 @@ class DeviceManagement extends PureComponent {
     }
   };
   render() {
+    const {
+      history: {
+        location: { pathname },
+      },
+    } = this.props;
+
     return (
       <Layout>
         <StyleSider width="360">
           <SideMenu />
         </StyleSider>
-        <StyleContent>
+        <StyleContent className={pathname === '/guardarea-management/colors' ? 'mt-0 mb-0 ml-0 mr-0' : ''}>
           {this.renderBreadcrumb()}
-          <div style={styleInnerContent}>
+          <div style={styleInnerContent} className={pathname === '/guardarea-management/colors' ? 'pt-0 pb-0 pl-0 pr-0' : ''}>
             <Switch>
               <Route path={SAVEAREA_LIST} component={GuardAreaList} />
               <Route path={SAVEAREA_HISTORY} component={GuardAreaHistory} />
+              <Route path={STATUS_AND_COLOR} component={Colors} />
             </Switch>
           </div>
         </StyleContent>
