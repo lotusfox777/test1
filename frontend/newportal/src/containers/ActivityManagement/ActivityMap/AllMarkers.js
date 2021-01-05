@@ -68,7 +68,7 @@ class AllMarkers extends Component {
     const { unreadNotifyHistory } = this.props;
 
     const handleMarkerColor = status => (
-      status === 4 ? '#f6b141' : status === 5 || status === 1 ? '#84be70' : status === 6 ? '#fc7f80' : '#fe2e2e'
+      status === 1 || status === 5 ? '#e38141' : status === 2 ? '#b52615' : status === 3 || status === 4 ? '#fac03f' : status === 6 ? '#4672be' : '#7aa953'
     )
 
     return (
