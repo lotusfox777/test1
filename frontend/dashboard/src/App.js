@@ -11,17 +11,7 @@ import { SideMenu, AppHeader } from 'components';
 import { normalize } from 'polished';
 import { Home, NotFound, CheckAuth } from 'containers';
 import CardManagement from 'containers/CardManagement';
-import UserManagement from 'containers/UserManagement';
-import DeviceManagement from 'containers/DeviceManagement';
-import SystemManagement from 'containers/SystemManagement';
-import MissingManagement from 'containers/AssistFindingManagement';
-import {
-  CARD_MANAGEMENT,
-  MEMBER_MANAGEMENT,
-  DEVICE_MANAGEMENT,
-  SYSTEM_MANAGEMENT,
-  ASSIST_FINDING_MANAGEMENT,
-} from 'constants/routes';
+import { CARD_MANAGEMENT } from 'constants/routes';
 import { APP_TITLE } from 'constants/endpoint';
 import { shouldDisplayError } from 'utils/NormalError';
 import { MarkerProvider } from './marker-context';
@@ -139,22 +129,6 @@ class App extends PureComponent {
                   <Route
                     path={`/${CARD_MANAGEMENT}/:subPath`}
                     component={CardManagement}
-                  />
-                  <Route
-                    path={`/${MEMBER_MANAGEMENT}/:subPath`}
-                    component={UserManagement}
-                  />
-                  <Route
-                    path={`/${DEVICE_MANAGEMENT}/:subPath`}
-                    component={DeviceManagement}
-                  />
-                  <Route
-                    path={`/${SYSTEM_MANAGEMENT}/:subPath`}
-                    component={SystemManagement}
-                  />
-                  <Route
-                    path={`/${ASSIST_FINDING_MANAGEMENT}/:subPath`}
-                    component={MissingManagement}
                   />
                   <Route component={NotFound} />
                 </Switch>
